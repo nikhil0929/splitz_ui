@@ -13,6 +13,8 @@ import CameraScreen from"./splitz/screens/CameraScreen";
 import RootStack from "./splitz/navigators/RootStack";
 import CameraStack from "./splitz/navigators/CameraStack";
 
+//fuck bruh
+
 export default function App() {
   return <RootStack/>
 }
