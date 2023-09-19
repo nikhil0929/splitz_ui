@@ -15,9 +15,9 @@ import TitleText from '../components/TitleText';
 import ButtonText from '../components/ButtonText';
 import CameraButton from '../components/CameraButton';
 
-const CameraPictureScreen= () => {
+const CameraPictureScreen= ({route}) => {
 
-    const picture = route.params.paramKey
+    const picture = route.params.picture
 
     return (
         <View style={styles.container}>
@@ -29,7 +29,7 @@ const CameraPictureScreen= () => {
             </SafeAreaView> 
         <View style={styles.containerBox}>
                 <Pressable onPress={this.handleOnPress4}><Image source={require("../assets/exit.png")}style={styles.exitButton}></Image></Pressable>
-                <Image source={navigation.getParam("imageData")}></Image>
+                <Image source={{picture}}></Image>
             </View>
             </View>  
     );
@@ -65,6 +65,9 @@ const styles = StyleSheet.create({
         width: 35,
         alignSelf:"flex-end",
     },
+    pictureStyle: {
+        flex: 1,
+    }
 
 })
 

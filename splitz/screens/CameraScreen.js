@@ -28,7 +28,7 @@ const CameraScreen= ({navigation}) => {
         const {uri, width, height} =  await cameraRef?.current.takePictureAsync();
         setPictureUri(uri);
         console.log(uri);
-        navigation.navigate("CameraPictureScreen", {imageData: require(uri)})
+        navigation.navigate("CameraPictureScreen", {picture: (uri)})
     };
 
     useEffect(() => {
