@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "SplitzOfficial",
+    "slug": "SplitzOfficial",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./splitz/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./splitz/assets/splitzofficiallogo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#85EFBC",
+      "justifyContent": "center",
+      "alignItems": "center"
+
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./splitz/assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./splitz/assets/favicon.png"
+    }
+  }
+}
