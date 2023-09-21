@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useRef } from 'react'
-import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, TouchableHighlight, Pressable } from 'react-native';
+import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from "expo-image-picker"
 
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -13,14 +13,40 @@ import TitleText from '../components/TitleText';
 import ButtonText from '../components/ButtonText';
 
 const ReceiptScreen = () => {
-  
-    const inputRef = useRef();
-    const secondBox = useRef();
 
-    const [fullGroupName, setFullGroupName] = useState("")
-    const [password, setPassword] = useState("")
+    const [image, setImage] = useState(null);
 
-    const newGroupInfo = fullGroupName + ";" + password
+const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync ({
+        mediaTypes : ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [16,9],
+        quality: 1,
+    });
+
+    console.log(result);
+
+    if(!result.canceled){
+        setImage(result.uri)
+    }
+};
+
+const openCamera = async () => {
+
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            Alert.alert("Access Denied", "Please allow camera access for splitz!"); return;
+        }
+        const result = await ImagePicker.launchCameraAsync();
+
+        console.log(result);
+
+        if (!result.canceled) {
+            setImage(result.uri);
+            console.log(result)
+        }
+};
 
     handleOnPress1 = () =>{
         console.log("Camera")
@@ -48,14 +74,14 @@ const ReceiptScreen = () => {
             <TitleText>Please provide a receipt:</TitleText>
             </View>
             <View style={styles.buttonBoxes}>
-            <TouchableOpacity style={styles.receiptButton} onPress={this.handleOnPress1}>
+            <TouchableOpacity style={styles.receiptButton} onPress={openCamera}>
             <Text style={styles.buttonText}>Camera</Text>
                 <Image
                 style={styles.buttonPicture}
                 source={require("../assets/camera.png")}>
                 </Image>
                 </TouchableOpacity>
-            <TouchableOpacity style={styles.receiptButton} onPress={this.handleOnPress2}>
+            <TouchableOpacity style={styles.receiptButton} onPress={pickImage}>
             <Image
                 style={styles.buttonPicture}
                 source={require("../assets/cameraroll.png")}>
