@@ -29,7 +29,7 @@ const CameraPictureScreen= ({route}) => {
             </SafeAreaView> 
         <View style={styles.containerBox}>
                 <Pressable onPress={this.handleOnPress4}><Image source={require("../assets/exit.png")}style={styles.exitButton}></Image></Pressable>
-                <Image source={{picture}}></Image>
+                <Image style={styles.pictureStyle} source={{uri: picture}}></Image>
             </View>
             </View>  
     );
@@ -67,7 +67,9 @@ const styles = StyleSheet.create({
     },
     pictureStyle: {
         flex: 1,
-    }
+        width: "100%",
+        height: "100%",
+    },
 
 })
 
