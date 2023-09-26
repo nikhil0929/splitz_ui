@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     itemBox2: {
         borderRadius: 20,
         backgroundColor: "#E5F3FF",
-        height: 80,
+        height: 75,
         width: 360,
         flexDirection: "row",
         marginTop: 15,

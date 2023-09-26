@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import * as ImagePicker from "expo-image-picker"
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import colors from '../config/colors';
 import HeadingText from '../components/HeadingText';
@@ -25,25 +24,25 @@ const receiptItems = [
         itemId: 1,
         itemTitle: "Spaghetti",
         quantity: 1,
-        price: 12.60,
+        price: "12.60",
     },
     {
         itemId: 2,
         itemTitle: "White Claws",
         quantity: 4,
-        price: 32.00,
+        price: "32.00",
     },
     {
         itemId: 3,
         itemTitle: "BBQ Chicken Pizza",
         quantity: 1,
-        price: 20.00,
+        price: "20.00",
     },
     {
         itemId: 4,
         itemTitle: "Water",
         quantity: 4,
-        price: 0.00,
+        price: "0.00",
     },
 ]
 
@@ -56,6 +55,7 @@ const receiptItems = [
             </Image>
             </SafeAreaView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAwareScrollView>
         <View style={styles.containerBox}>
                 <View style={styles.topButtons}>
                 <Pressable onPress={this.handleOnPress1}><Image source={require("../assets/redo.png")}style={styles.redoButton}></Image></Pressable>
@@ -72,8 +72,8 @@ const receiptItems = [
             <TextInput style={styles.dollarText} defaultValue="$X.XX" keyboardType='numeric'></TextInput>
             <TouchableOpacity><View style={styles.addButton}><Text style={styles.addSign}>+</Text></View></TouchableOpacity>
         </View>
-        <Text style={styles.descriptionText2}> Current items: </Text>
-        <SafeAreaView>
+        <Text style={styles.descriptionText2}> Current items: (scroll for more) </Text>
+        <View style={styles.listContainer}>
         <FlatList 
             data={receiptItems}
             keyExtractor={receiptItems => receiptItems.itemId.toString()}
@@ -83,8 +83,8 @@ const receiptItems = [
                     itemTitle={item.itemTitle}
                     quantity={item.quantity}
                     price={item.price}/> } />
-        </SafeAreaView>
-        <SafeAreaView>
+        </View>
+        <View>
         <Text style={styles.descriptionText2}> Tip (if applicable): </Text>
         <View style={styles.tipBox}>
             <TextInput defaultValue="0.00" keyboardType='numeric' style={styles.dollarText}></TextInput>
@@ -93,9 +93,10 @@ const receiptItems = [
                 style={styles.primaryButton}>
                 <ButtonText>Continue</ButtonText>
                 </TouchableOpacity>     
-                </SafeAreaView>       
+                </View>       
         </View>
             </View>
+            </KeyboardAwareScrollView>
             </TouchableWithoutFeedback> 
             </View>  
     );
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     itemBox1: {
         borderRadius: 20,
         backgroundColor: "#EEEEEE",
-        height: 80,
+        height: 75,
         width: 360,
         flexDirection: "row",
         marginTop: 15,
@@ -214,6 +215,10 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center",
         marginBottom: 10,
+    },
+    listContainer: {
+        width: "100%",
+        height: "43%",
     },
 })
 

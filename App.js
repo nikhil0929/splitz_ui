@@ -13,5 +13,5 @@ import RootStack from "./splitz/navigators/RootStack";
 import ManualEntryScreen from "./splitz/screens/ManualEntryScreen";
 
 export default function App() {
-  return <RootStack/>
+  return <ManualEntryScreen/>
 }
