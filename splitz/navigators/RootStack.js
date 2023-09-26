@@ -9,7 +9,7 @@ import LandingScreen from '../../splitz/screens/LandingScreen';
 import PhoneVerifyScreen1 from "../../splitz/screens/PhoneVerifyScreen1";
 import PhoneVerifyScreen2 from "../../splitz/screens/PhoneVerifyScreen2";
 import PhoneVerifyScreen3 from "../../splitz/screens/PhoneVerifyScreen3";
-import CreateGroupScreen from "../screens/CreateGroupScreen";
+import GroupStack from "./GroupStack";
 
 const Stack = createStackNavigator();
 
@@ -40,7 +40,7 @@ const RootStack = () => {
                 <Stack.Screen
                     name="PhoneVerifyScreen3" component={PhoneVerifyScreen3}/>         
                 <Stack.Screen
-                    name="CreateGroupScreen" component={CreateGroupScreen}/>          
+                    name="GroupStack" component={GroupStack}/>          
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -23,9 +23,8 @@ const PhoneVerifyScreen2 = () => {
 
 const number = route.params.paramKey
 
-handleAllPresses = () =>{
-    axios
-    .post("http://3.14.255.133:8000/user/complete-verification",
+handleAllPresses = () => {
+    axios.post("http://3.14.255.133:8000/user/complete-verification",
     {
         "phone_number": number,
         "otp": code
@@ -35,7 +34,8 @@ handleAllPresses = () =>{
         navigation.navigate("PhoneVerifyScreen3")
     })
     .catch(error => {
-        Alert.alert("Incorrect Code","Please retry the code again!")});
+        Alert.alert("Incorrect Code","Please retry the code again!");
+        console.log(error)});
 }
 sendNewCode = () => {
     axios

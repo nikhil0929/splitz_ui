@@ -10,7 +10,8 @@ import JoinGroupScreen from "./splitz/screens/JoinGroupScreen";
 import ReceiptScreen from "./splitz/screens/ReceiptScreen";
 
 import RootStack from "./splitz/navigators/RootStack";
+import ManualEntryScreen from "./splitz/screens/ManualEntryScreen";
 
 export default function App() {
-  return <ReceiptScreen/>
+  return <RootStack/>
 }
