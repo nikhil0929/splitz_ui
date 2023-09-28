@@ -86,9 +86,7 @@ const PhoneVerifyScreen3 = () => {
 }
 const styles = StyleSheet.create({
     container: {
-        flex:1,
         backgroundColor: colors.secondary,
-        alignContent:"center",
         justifyContent:"flex-end"
     },
     logo: {

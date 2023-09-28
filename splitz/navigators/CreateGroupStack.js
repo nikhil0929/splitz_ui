@@ -5,12 +5,13 @@ import { createStackNavigator } from "@react-navigation/stack"
 
 import colors from "../config/colors";
 
-import CreateGroupScreen from "../screens/CreateGroupScreen";
-import JoinGroupScreen from "../screens/JoinGroupScreen";
+import ReceiptScreen from "../screens/ReceiptScreen";
+import ManualEntryScreen from "../screens/ManualEntryScreen";
+import SplitScreen from "../screens/SplitScreen";
 
 const Stack = createStackNavigator();
 
-const GroupStack = () => {
+const CreateGroupStack = () => {
     return(
         <NavigationContainer>
             <Stack.Navigator
@@ -26,15 +27,15 @@ const GroupStack = () => {
                     paddingLeft:20
                 },
             }}
-            initialRouteName="CreateGroupScreen"
+            initialRouteName="ManualEntryScreen"
             >         
                 <Stack.Screen
-                    name="CreateGroupScreen" component={CreateGroupScreen}/>
+                    name="ManualEntryScreen" component={ManualEntryScreen}/>
                 <Stack.Screen
-                    name="JoinGroupScreen" component={CreateGroupScreen}/>                    
+                    name="SplitScreen" component={SplitScreen}/>                    
             </Stack.Navigator>
         </NavigationContainer>
     );
 };
 
-export default GroupStack;
+export default CreateGroupStack;

@@ -23,20 +23,6 @@ const PhoneVerifyScreen2 = () => {
 
 const number = route.params.paramKey
 
-handleAllPresses = () => {
-    axios.post("http://3.14.255.133:8000/user/complete-verification",
-    {
-        "phone_number": number,
-        "otp": code
-    })
-    .then(res => {
-        console.log(res);
-        navigation.navigate("PhoneVerifyScreen3")
-    })
-    .catch(error => {
-        Alert.alert("Incorrect Code","Please retry the code again!");
-        console.log(error)});
-}
 sendNewCode = () => {
     axios
     .post("http://3.14.255.133:8000/user/initialize-verification",
@@ -49,6 +35,69 @@ sendNewCode = () => {
     .catch(error => {;
         console.log(error)});
 
+}
+
+handleAllPresses = () => {
+    const postData = {
+        phone_number: number,
+        otp: code,
+      };
+
+      const apiCall1 = axios.post("http://3.14.255.133:8000/user/complete-verification", postData)
+  .catch((error) => {
+    console.error("API call 1 failed:", error);
+
+    if (error.response) {
+      if (error.response.status === 401) {
+        Alert.alert("Authentication Error", "You are not authorized to complete verification.");
+      } else {
+        Alert.alert("API Error", "Failed to complete verification. Please try again.");
+      }
+    } else if (error.request) {
+      Alert.alert("API Error", "No response from the server. Please check your internet connection.");
+    } else {
+      Alert.alert("API Error", "An error occurred. Please try again.");
+    }
+
+    throw error;
+  });
+
+const apiCall2 = axios.get("http://3.14.255.133:8000/user/")
+  .catch((error) => {
+    console.error("API call 2 failed:", error);
+
+    if (error.response) {
+      if (error.response.status === 401) {
+        Alert.alert("Authentication Error", "You are not authorized to fetch user information.");
+      } else {
+        Alert.alert("API Error", "Failed to fetch user information. Please try again.");
+      }
+    } else if (error.request) {
+      Alert.alert("API Error", "No response from the server. Please check your internet connection.");
+    } else {
+      Alert.alert("API Error", "An error occurred. Please try again.");
+    }
+
+    throw error;
+  });
+
+Promise.all([apiCall1, apiCall2])
+  .then((responses) => {
+    const response1 = responses[0];
+    const response2 = responses[1];
+    if (response2.data.name === "") {
+      navigation.navigate("PhoneVerifyScreen3");
+    } else if (response1.status === 200) {
+      navigation.navigate("CreateGroupScreen");
+    } else {
+      console.error("API call 1 failed:", response1);
+      Alert.alert("API Error", "Failed to complete verification. Please try again.");
+    }
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+    Alert.alert("Error", "An error occurred. Please try again.");
+  });
 }
 
     return (
