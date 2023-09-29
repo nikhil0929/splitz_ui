@@ -24,11 +24,12 @@ const CreateGroupStack = () => {
                 headerTintColor: colors.white,
                 headerTransparent: true,
                 headerLeftContainerStyle: {
-                    paddingLeft:20
+                    paddingLeft: 20
                 },
             }}
-            initialRouteName="ManualEntryScreen"
-            >         
+            initialRouteName="ReceiptScreen">
+                <Stack.Screen
+                    name="ReceiptScreen" component={ReceiptScreen}/>
                 <Stack.Screen
                     name="ManualEntryScreen" component={ManualEntryScreen}/>
                 <Stack.Screen

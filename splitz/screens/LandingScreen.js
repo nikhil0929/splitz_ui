@@ -32,7 +32,7 @@ const LandingScreen = ({navigation}) => {
         <View
         style={styles.buttonBox}>
         <View style={styles.textBox}>
-        <HeadingText>Group payments made accurate, interactive, and simple.</HeadingText>
+        <HeadingText>Group payments made simple, social, and central.</HeadingText>
         </View>
         <TouchableOpacity
                 style={styles.primaryButton} 
@@ -53,6 +53,7 @@ const LandingScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.secondary,
+        flex: 1,
     },
 
     LandingScreenImage: {
@@ -76,7 +77,6 @@ const styles = StyleSheet.create({
         alignSelf:"center",
         marginBottom:30,
         bottom:10,
-        left:5,
     },
     topLogo: {
         justifyContent:"flex-start",

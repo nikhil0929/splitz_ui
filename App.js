@@ -8,10 +8,13 @@ import Test from "./splitz/screens/Test";
 import CreateGroupScreen from "./splitz/screens/CreateGroupScreen";
 import JoinGroupScreen from "./splitz/screens/JoinGroupScreen";
 import ReceiptScreen from "./splitz/screens/ReceiptScreen";
+import ManualEntryScreen from "./splitz/screens/ManualEntryScreen";
+import SplitScreen from "./splitz/screens/SplitScreen";
 
 import RootStack from "./splitz/navigators/RootStack";
-import ManualEntryScreen from "./splitz/screens/ManualEntryScreen";
+import CreateGroupStack from "./splitz/navigators/CreateGroupStack";
+
 
 export default function App() {
-  return <ManualEntryScreen/>
+  return <CreateGroupStack/>
 }

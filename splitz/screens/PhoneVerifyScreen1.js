@@ -75,7 +75,8 @@ const PhoneVerifyScreen1 = () => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.secondary,
-        justifyContent:"flex-end"
+        justifyContent:"flex-end",
+        flex: 1,
     },
     logo: {
         marginTop: 10,

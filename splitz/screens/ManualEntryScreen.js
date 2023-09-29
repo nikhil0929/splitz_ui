@@ -39,6 +39,8 @@ const ManualEntryScreen = () => {
         },
       ];
     
+    const navigation = useNavigation();
+
     const [currentItems, setCurrentItems] = useState([]);
     const [itemName, setItemName] = useState('');
     const [itemQuantity, setItemQuantity] = useState('');
@@ -86,6 +88,11 @@ const ManualEntryScreen = () => {
     handleOnPress2 = () => {
       console.log("Exit")
     }
+
+    handleOnPress3 = () => {
+        console.log("Go Split")
+        navigation.navigate("SplitScreen")
+    }
   
     return (
       <View style={styles.container}>
@@ -96,8 +103,7 @@ const ManualEntryScreen = () => {
           </Image>
         </SafeAreaView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAwareScrollView
-            keyboardShouldPersistTaps="always">
+          <KeyboardAwareScrollView>
             <View style={styles.containerBox}>
               <View style={styles.topButtons}>
                 <Pressable onPress={handleOnPress1}><Image source={require("../assets/redo.png")} style={styles.redoButton}></Image></Pressable>
@@ -149,7 +155,7 @@ const ManualEntryScreen = () => {
                 </View>
                 <View>
                   <TouchableOpacity
-                    style={styles.primaryButton}>
+                    style={styles.primaryButton} onPress={this.handleOnPress3}>
                     <ButtonText>Continue</ButtonText>
                   </TouchableOpacity>
                 </View>

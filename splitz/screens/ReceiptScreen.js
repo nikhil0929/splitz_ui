@@ -16,6 +16,8 @@ const ReceiptScreen = () => {
 
     const [image, setImage] = useState(null);
 
+    const navigation = useNavigation();
+
 const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync ({
         mediaTypes : ImagePicker.MediaTypeOptions.Images,
@@ -54,7 +56,8 @@ const openCamera = async () => {
         console.log("Camera Roll")
     }
     handleOnPress3 = () =>{
-        console.log("Enter Manually")
+        console.log("Enter Manually");
+        navigation.navigate("ManualEntryScreen")
     }
     handleOnPress4 = () => {
         console.log("Exit")
@@ -102,7 +105,8 @@ const openCamera = async () => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.secondary,
-        justifyContent:"flex-end"
+        justifyContent:"flex-end",
+        flex: 1,
     },
     logo: {
         marginTop: 10,
