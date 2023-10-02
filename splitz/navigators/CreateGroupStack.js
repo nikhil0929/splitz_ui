@@ -8,6 +8,7 @@ import colors from "../config/colors";
 import ReceiptScreen from "../screens/ReceiptScreen";
 import ManualEntryScreen from "../screens/ManualEntryScreen";
 import SplitScreen from "../screens/SplitScreen";
+import BillTotalScreen from "../screens/BillTotalScreen";
 
 const Stack = createStackNavigator();
 
@@ -33,7 +34,9 @@ const CreateGroupStack = () => {
                 <Stack.Screen
                     name="ManualEntryScreen" component={ManualEntryScreen}/>
                 <Stack.Screen
-                    name="SplitScreen" component={SplitScreen}/>                    
+                    name="SplitScreen" component={SplitScreen}/>
+                <Stack.Screen
+                    name="BillTotalScreen" component={BillTotalScreen}/>                          
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -55,6 +55,8 @@ const SplitScreen = () => {
       const [otherUserSelectedItems, setOtherUserSelectedItems] = useState({});
       const userName = "RD"
 
+      const navigation = useNavigation();
+
       const handleItemPress = (item) => {
         setSelectedItems((prevSelectedItems) => ({
             ...prevSelectedItems,
@@ -86,7 +88,7 @@ const SplitScreen = () => {
     }
 
     handleOnPress3 = () => {
-        Alert.alert("AYOO", "UR ACTUALLY GAY!")
+        navigation.navigate("BillTotalScreen")
       }
   
     return (
@@ -150,7 +152,7 @@ const SplitScreen = () => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.secondary,
-      justifyContent: "flex-end",
+      flex: 1,
     },
     logo: {
       marginTop: 10,
@@ -191,7 +193,7 @@ const SplitScreen = () => {
       alignSelf: "center",
       alignContent: "center",
       justifyContent: "center",
-      height: 385,
+      height: 400,
     },
     topButtons: {
       flexDirection: "row",

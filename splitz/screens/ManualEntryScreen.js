@@ -9,6 +9,7 @@ import GreyText from '../components/GreyText';
 import TitleText from '../components/TitleText';
 import ButtonText from '../components/ButtonText';
 import ReceiptItem from '../components/ReceiptItem';
+import ButtonText2 from '../components/ButtonText2';
 
 const ManualEntryScreen = () => {
     
@@ -106,7 +107,7 @@ const ManualEntryScreen = () => {
           </Image>
         </SafeAreaView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAwareScrollView style={{flex: 0.5}}>
+          <KeyboardAwareScrollView style={{flex: 1}}>
             <View style={styles.containerBox}>
               <View style={styles.topButtons}>
                 <Pressable onPress={handleOnPress1}><Image source={require("../assets/redo.png")} style={styles.redoButton}></Image></Pressable>
@@ -160,6 +161,11 @@ const ManualEntryScreen = () => {
                   <TouchableOpacity
                     style={styles.primaryButton} onPress={this.handleOnPress3}>
                     <ButtonText>Continue</ButtonText>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.secondaryButton}>
+                    <ButtonText2>Share</ButtonText2>
+                    <Image style={styles.share} source={require("../assets/share2.png")}></Image>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -229,7 +235,7 @@ const ManualEntryScreen = () => {
     },
     itemBox2: {
       width: "100%",
-      height: 390,
+      height: 315,
       alignSelf: "center",
       alignContent: "center",
       justifyContent: "center"
@@ -278,6 +284,23 @@ const ManualEntryScreen = () => {
       alignItems: "center",
       marginTop: 25,
     },
+    secondaryButton: {
+        borderRadius: 100,
+        borderWidth: 2,
+        borderColor: colors.primary,
+        width: 355,
+        height: 60,
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "center",
+        marginTop: 15,
+        flexDirection: "row",
+      },
+      share: {
+        height: 25,
+        width: 25,
+        marginLeft: 10,
+      },
   });
   
   export default ManualEntryScreen;

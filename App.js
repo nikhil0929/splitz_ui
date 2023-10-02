@@ -17,5 +17,5 @@ import BillTotalScreen from "./splitz/screens/BillTotalScreen";
 
 
 export default function App() {
-  return <BillTotalScreen/>
+  return <CreateGroupStack/>
 }
