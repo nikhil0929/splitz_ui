@@ -10,7 +10,7 @@ import Profile from '../components/Profile';
 import UserTotals from '../components/UserTotals';
 import ButtonText2 from '../components/ButtonText2';
 
-const BillTotalScreen = () => {
+const GroupView1 = () => {
     
     const userTotals = [
         {
@@ -57,12 +57,6 @@ const BillTotalScreen = () => {
           },
       ];
 
-      const totalAmount = userTotals.reduce((acc, user) => acc + parseFloat(user.userTotal), 0);
-      const formattedTotals = totalAmount.toFixed(2);
-
-      const billTotal = parseFloat("175.36")
-      const formattedBillTotal = billTotal.toFixed(2);
-
       const billNameInputRef = useRef(null);
   
       return (
@@ -71,41 +65,28 @@ const BillTotalScreen = () => {
                 <Image style={styles.logo} source={require("../assets/splitzofficiallogo.png")}></Image>
             </SafeAreaView>
             <View style={styles.containerBox}>
-                <View style={{ flexDirection: "row", marginTop: 40, }}>
-                    <TextInput ref={billNameInputRef} placeholder='Name this Bill!' style={styles.billNameInput}></TextInput>
+                <View style={{ flexDirection: "row", marginTop: 40, alignContent: "center", alignSelf: "center"}}>
+                    <TextInput ref={billNameInputRef} placeholder= "Group Name" style={styles.billNameInput}></TextInput>
                     <TouchableOpacity onPress={() => billNameInputRef.current.focus()}><Image style={styles.editButton} source={require("../assets/editButton.png")}></Image></TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 20, justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
-                    <Text style={{ fontSize: 50, fontWeight: "bold" }}>${billTotal}</Text>
-                    <Text style={{ fontSize: 26, alignSelf: "center", marginTop: 5 }}>Bill Total</Text>
+            <View 
+            style={{flexDirection:"row",
+            alignItems:"center",
+            justifyContent:"center",
+            marginTop: 10,}}>
+            <TouchableOpacity style={styles.clickBox}>
+                <Text style={styles.mainText}>Bills</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.otherBox}>
+                <Text style={styles.otherText}>Dashboard</Text>
+            </TouchableOpacity>
+            </View>
+            <TouchableOpacity>
+                <View style={{alignSelf: "center",backgroundColor:colors.secondary, height:135, width: 270, borderRadius: 20,}}>
+                    <Text style={{fontSize:70, fontWeight: "bold", color: colors.white, alignSelf: "center"}}>+</Text>
+                    <Text style={{fontSize:25, fontWeight: "bold", color: colors.white, alignSelf: "center"}}>Create New Bill</Text>
                 </View>
-                <View style={styles.itemBox2}>
-                <FlatList
-                    data={userTotals}
-                    style={{ flex:1, marginTop: 5 }}
-                    keyExtractor={(user) => user.userId.toString()}
-                    scrollEnabled={true}
-                    renderItem={({ item }) => (
-                        <UserTotals
-                        userName={item.userName}
-                        userTotal={item.userTotal}
-                        userColor={item.userColor}
-                        owner={item.owner}
-                        />
-                    )}
-                />
-                </View>
-                <Text style={{alignSelf: "center", marginTop: 20, fontSize: 18, marginBottom: 10,}}>Split Progress: ${formattedTotals}/${formattedBillTotal}</Text>
-                <TouchableOpacity
-                    style={styles.primaryButton}>
-                    <ButtonText>Share</ButtonText>
-                    <Image style={styles.share} source={require("../assets/share2.png")}></Image>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.secondaryButton}>
-                    <ButtonText2>Send Requests</ButtonText2>
-                  </TouchableOpacity>
-                 
+            </TouchableOpacity>
             </View>
         </View>
     );
@@ -178,6 +159,48 @@ const BillTotalScreen = () => {
         width: 25,
         marginLeft: 10,
       },
+      primaryButton: {
+        backgroundColor: colors.primary,
+        borderRadius:100,
+        width:355,
+        height:60,
+        justifyContent:"center",
+        alignItems:"center",
+        marginTop: 20,
+        marginBottom: 10,
+    },
+    clickBox: {
+        width:80,
+        height: 40,
+        backgroundColor: colors.secondary,
+        borderRadius: 100,
+        justifyContent: "center",
+        alignItems:'center',
+        margin: 5,
+        marginBottom: 25,
+        color: colors.white,
+        fontWeight: "bold",
+    },
+    otherBox: {
+        width:130,
+        height: 40,
+        backgroundColor: "transparent",
+        borderRadius: 100,
+        justifyContent: "center",
+        alignItems:'center',
+        margin: 5,
+        marginBottom: 25,
+    },
+    mainText: {
+        fontSize:16,
+        color: colors.white,
+        fontWeight: "bold",
+    },
+    otherText: {
+        fontSize:16,
+        color: colors.secondary,
+        fontWeight: "bold",
+    },
   });
   
-  export default BillTotalScreen;
+  export default GroupView1;
