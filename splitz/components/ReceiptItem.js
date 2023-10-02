@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 
 function ReceiptItem({ itemTitle, quantity, price, onUpdate }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -20,6 +20,28 @@ function ReceiptItem({ itemTitle, quantity, price, onUpdate }) {
       onUpdate(updatedItem);
       setIsEditing(false);
     };
+
+    const handleDeletePress = () => {
+        Alert.alert(
+            "Delete Item",
+            "Are you sure you want to delete this item?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => {
+                        if (onUpdate) {
+                            onUpdate(null);
+                        }
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    };    
   
     return (
       <View style={styles.itemBox2}>
@@ -58,6 +80,11 @@ function ReceiptItem({ itemTitle, quantity, price, onUpdate }) {
             </TouchableOpacity>
           </>
         )}
+        <TouchableOpacity 
+            style={styles.deleteButton} 
+            onPress={handleDeletePress}>
+            <Image source={require("../assets/delete.png")} style={styles.deleteImage} />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -96,6 +123,21 @@ function ReceiptItem({ itemTitle, quantity, price, onUpdate }) {
       alignSelf: "center",
       marginTop: 23,
     },
+    deleteButton: {
+        position: 'absolute',
+        top: -10, // To protrude it a bit from the top
+        right: 5, // Align to the right edge
+        width: 25,
+        height: 25,
+        zIndex: 1, 
+        justifyContent: 'center',  // Align image to center of the button
+        alignItems: 'center',      // Align image to center of the button
+    },
+    deleteImage: {
+        width: '100%', // Take full width of the button
+        height: '100%', // Take full height of the button
+        resizeMode: 'contain', // Keep image proportions
+    }
   });
-  
+
 export default ReceiptItem;

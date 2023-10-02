@@ -41,7 +41,8 @@ const ManualEntryScreen = () => {
     
     const navigation = useNavigation();
 
-    const [currentItems, setCurrentItems] = useState([]);
+    const initialItems = [...receiptItems];
+    const [items, setItems] = useState(initialItems);
     const [itemName, setItemName] = useState('');
     const [itemQuantity, setItemQuantity] = useState('');
     const [itemPrice, setItemPrice] = useState('');
@@ -49,37 +50,39 @@ const ManualEntryScreen = () => {
     const [itemIdCounter, setItemIdCounter] = useState(receiptItems.length + 1);
   
     const addNewItem = () => {
-      if (itemName && itemPrice) {
-        const newItem = {
-          itemId: itemIdCounter,
-          itemTitle: itemName,
-          quantity: itemQuantity ? parseInt(itemQuantity) : 1,
-          price: itemPrice,
-        };
-  
-        setItemIdCounter(itemIdCounter + 1);
-  
-        setCurrentItems([...currentItems, newItem]);
-  
-        setItemName('');
-        setItemQuantity('');
-        setItemPrice('');
-      } else {
-        Alert.alert('Incomplete Information', 'Please fill in all fields.');
-      }
-    };
-  
-    const handleItemUpdate = (updatedItem) => {
-        const updatedItems = [...currentItems];
-        const index = updatedItems.findIndex((item) => item.itemId === updatedItem.itemId);
+        if (itemName && itemPrice) {
+            const newItem = {
+                itemId: itemIdCounter,
+                itemTitle: itemName,
+                quantity: itemQuantity ? parseInt(itemQuantity) : 1,
+                price: itemPrice,
+            };
+    
+            setItemIdCounter(itemIdCounter + 1);
         
-        if (index !== -1) {
-          updatedItems[index] = updatedItem;
-          setCurrentItems(updatedItems);
+            setItems(prevItems => [...prevItems, newItem]); // Adjusted this line to update 'items'
+        
+            setItemName('');
+            setItemQuantity('');
+            setItemPrice('');
+        } else {
+            Alert.alert('Incomplete Information', 'Please fill in all fields.');
         }
-      };
-  
-    const allItems = [...receiptItems, ...currentItems];
+    };
+
+    const handleItemUpdate = (updatedItem, itemId) => {
+        if (updatedItem === null) {
+            setItems(prevItems => prevItems.filter(item => item.itemId !== itemId));
+        } else {
+            const updatedItems = [...items];
+            const index = updatedItems.findIndex((item) => item.itemId === updatedItem.itemId);
+            
+            if (index !== -1) {
+                updatedItems[index] = updatedItem;
+                setItems(updatedItems);
+            }
+        }
+    };
   
     handleOnPress1 = () => {
       console.log("Redo")
@@ -103,7 +106,7 @@ const ManualEntryScreen = () => {
           </Image>
         </SafeAreaView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAwareScrollView>
+          <KeyboardAwareScrollView style={{flex: 0.5}}>
             <View style={styles.containerBox}>
               <View style={styles.topButtons}>
                 <Pressable onPress={handleOnPress1}><Image source={require("../assets/redo.png")} style={styles.redoButton}></Image></Pressable>
@@ -135,7 +138,7 @@ const ManualEntryScreen = () => {
                 <Text style={styles.descriptionText2}> Current items: (scroll for more) </Text>
                 <View style={styles.itemBox2}>
                 <FlatList
-                    data={allItems}
+                    data={items}
                     keyExtractor={(item) => {
                         return item.itemId.toString();
                     }}
@@ -147,7 +150,7 @@ const ManualEntryScreen = () => {
                             quantity={item.quantity}
                             price={item.price}
                             item={item}
-                            onUpdate={handleItemUpdate}
+                            onUpdate={(updatedItem) => handleItemUpdate(updatedItem, item.itemId)}
                         />
                         );
                     }}
@@ -170,7 +173,7 @@ const ManualEntryScreen = () => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.secondary,
-      justifyContent: "flex-end"
+      flex: 1,
     },
     logo: {
       marginTop: 10,
@@ -189,7 +192,6 @@ const ManualEntryScreen = () => {
       borderTopLeftRadius: 30,
       borderTopRightRadius: 30,
       padding: 30,
-      paddingTop: 30,
     },
     newView: {
       marginTop: 5,
@@ -226,8 +228,8 @@ const ManualEntryScreen = () => {
       alignContent: "center",
     },
     itemBox2: {
-      height: "58%",
       width: "100%",
+      height: 390,
       alignSelf: "center",
       alignContent: "center",
       justifyContent: "center"

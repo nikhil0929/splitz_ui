@@ -52,6 +52,7 @@ const SplitScreen = () => {
 
       const [selectedItems, setSelectedItems] = useState({});
       const [isProfileVisible, setIsProfileVisible] = useState(false);
+      const [otherUserSelectedItems, setOtherUserSelectedItems] = useState({});
       const userName = "RD"
 
       const handleItemPress = (item) => {
@@ -62,10 +63,23 @@ const SplitScreen = () => {
           setIsProfileVisible(Object.values(selectedItems).some((value) => value));
         };
 
-      
-    handleOnPress1 = () => {
-      console.log("Redo")
-    }
+        const computeTotal = () => {
+            let total = 0;
+            for (let item of receiptItems) {
+                let splitCount = 0;
+        
+                // Check if current user selected the item
+                if (selectedItems[item.itemId]) splitCount++;
+        
+                // Check if other user selected the item
+                if (otherUserSelectedItems[item.itemId]) splitCount++;
+        
+                if (splitCount > 0) {
+                    total += (item.quantity * parseFloat(item.price)) / splitCount;
+                }
+            }
+            return total.toFixed(2);
+        }
   
     handleOnPress2 = () => {
       console.log("Exit")
@@ -87,7 +101,6 @@ const SplitScreen = () => {
           <ScrollView>
             <View style={styles.containerBox}>
               <View style={styles.topButtons}>
-                <Pressable onPress={handleOnPress1}><Image source={require("../assets/redo.png")} style={styles.redoButton}></Image></Pressable>
                 <Pressable onPress={handleOnPress2}><Image source={require("../assets/exit.png")} style={styles.exitButton}></Image></Pressable>
               </View>
               <View style={styles.newView}>
@@ -120,7 +133,7 @@ const SplitScreen = () => {
                 </View>
                 <View style={styles.horizontalLine}></View>
                 <View style={styles.profile}><Text style={styles.profileText}> {userName} </Text></View>
-                <Text style= {styles.personTotal}>Total</Text>
+                <Text style={styles.personTotal}>${computeTotal()}</Text>
                 <Text style={styles.totalText}> Your Total </Text>
                   <TouchableOpacity
                     style={styles.primaryButton} onPress={this.handleOnPress3}>
