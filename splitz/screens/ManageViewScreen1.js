@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import colors from '../config/colors';
 import TitleText from '../components/TitleText';
@@ -15,51 +16,30 @@ import Bill from '../components/Bill';
 
 const ManageViewScreen1 = () => {
     
-    const userTotals = [
-        {
-          userId: 1,
-          userName: "Sarang Ambalakkat",
-          userTotal: parseFloat("101.65"),
-          userColor: "#BA4BEF",
-        },
-        {
-            userId: 2,
-            userName: "Nikhil Aggarwal",
-            userTotal: parseFloat("105.30"),
-            userColor:"#6F8DF5",
-          },
-          {
-            userId: 3,
-            userName: "Charles Gutcho",
-            userTotal: parseFloat("104.61"),
-            userColor:"#FFDF8C",
-          },
-          {
-            userId: 4,
-            userName: "Kyle Yun",
-            userTotal: parseFloat("110.29"),
-            userColor:"#FF9473",
-          },
-          {
-            userId: 5,
-            userName: "Raymond Dinh",
-            userTotal: parseFloat("131.31"),
-            userColor:"#6B72AB",
-          },
-          {
-            userId: 6,
-            userName: "Tiffany Yau",
-            userTotal: parseFloat("0.00"),
-            userColor:"#6D1ED4",
-          },
-      ];
+  const bills = [
+    {
+      billId: 1,
+      billName: "Tacos & Beers",
+      createdBy: "Sarang Ambalakkat",
+      createdDays: 7
+    },
+    {
+        billId: 2,
+        billName: "Johnny Rockets",
+        createdBy: "Kyle Yun",
+        createdDays: 3
+      },
+      {
+        billId: 3,
+        billName: "BARSSS",
+        createdBy: "Raymond Dinh",
+        createdDays: 10
+      },
+  ];
 
-      const totalAmount = userTotals.reduce((acc, user) => acc + parseFloat(user.userTotal), 0);
-      const formattedTotals = totalAmount.toFixed(2);
-
-
-      const groupID = "JK76L1"
-      const groupNameInputRef = useRef(null);
+      const totalBills = parseFloat("4")
+      const recentBills = bills.filter(bill => bill.createdBy === "Kyle Yun");
+      const allBills = bills.filter(bill => bill.createdBy !== "Kyle Yun");
   
       return (
         <View style={styles.container}>
@@ -67,6 +47,7 @@ const ManageViewScreen1 = () => {
                 <Image style={styles.logo} source={require("../assets/splitzofficiallogo.png")}></Image>
             </SafeAreaView>
             <View style={styles.containerBox}>
+            <Text style={{marginBottom: 5, color:"black", fontSize:26, alignSelf: "center", fontWeight: "bold"}}>Bill Manager</Text>
             <View 
             style={{flexDirection:"row", alignItems:"center", justifyContent:"center", marginTop: 10}}>
             <TouchableOpacity style={styles.clickBox}>
@@ -76,14 +57,68 @@ const ManageViewScreen1 = () => {
                 <Text style={styles.otherText}>Groups</Text>
             </TouchableOpacity>
             </View>
-            <View style={{justifyContent:"center", alignContent: "center", alignSelf: "center"}}>
+            <View style={{justifyContent:"center", alignContent: "center", alignSelf: "center", marginTop: 20,}}>
+            <LinearGradient
+              colors={['#C58AF3', '#EE8BC6']}
+              start={{x: 0, y: 0}} 
+              end={{x: 1, y: 1}}
+              style={styles.detailBox}>
             <View>
-              <Text></Text>
+              <Text style={{alignSelf: "center", color: "white", fontWeight: "bold", fontSize: 45}}>{totalBills}</Text>
             </View>
-            <View>
-              <Text></Text>
+            </LinearGradient>
+            <View style={styles.detailBox2}>
+              <Text style={{alignSelf: "center", color: "black", fontWeight: "bold", fontSize: 18}}>Bills</Text>
             </View>
             </View>
+            <View style={{marginTop: 25}}>
+                <TitleText>Your Bills</TitleText>
+                <View style= {{flexdirection: "row"}}>
+                <FlatList
+                    data={recentBills}
+                    keyExtractor={(item) => {
+                        return item.billId.toString();
+                    }}
+                    scrollEnabled={true}
+                    horizontal={true}
+                    renderItem={({ item }) => {
+                        return (
+                        <TouchableOpacity>
+                        <Bill
+                            billName={item.billName}
+                            createdBy={item.createdBy}
+                            createdDays={item.createdDays}
+                        />
+                        </TouchableOpacity>
+                        );
+                    }}
+                    />
+                </View>
+            </View>
+            <View style={{marginTop: 25,}}>
+                <TitleText>All Bills</TitleText>
+                <View style= {{flexdirection: "row"}}>
+                <FlatList
+                    data={allBills}
+                    keyExtractor={(item) => {
+                        return item.billId.toString();
+                    }}
+                    scrollEnabled={true}
+                    horizontal={true}
+                    renderItem={({ item }) => {
+                        return (
+                        <TouchableOpacity>
+                        <Bill
+                            billName={item.billName}
+                            createdBy={item.createdBy}
+                            createdDays={item.createdDays}
+                        />
+                        </TouchableOpacity>
+                        );
+                    }}
+                    />
+                </View>
+                </View>
             </View>
         </View>
     );
@@ -125,7 +160,7 @@ const ManageViewScreen1 = () => {
         justifyContent: "center",
         alignItems:'center',
         margin: 5,
-        marginBottom: 15,
+        marginBottom: 10,
         color: colors.white,
         fontWeight: "bold",
     },
@@ -137,7 +172,7 @@ const ManageViewScreen1 = () => {
         justifyContent: "center",
         alignItems:'center',
         margin: 5,
-        marginBottom: 15,
+        marginBottom: 10,
     },
     mainText: {
         fontSize:16,
@@ -153,7 +188,18 @@ const ManageViewScreen1 = () => {
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       height: 70,
-      width: 130,
+      width: 140,
+      justifyContent: "center",
+      alignContent: "center"
+    },
+    detailBox2: {
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
+      height: 40,
+      width: 140,
+      backgroundColor: "#EEEEEE",
+      justifyContent: "center",
+      alignContent: "center",
     },
   });
   
