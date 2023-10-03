@@ -14,9 +14,11 @@ import SplitScreen from "./splitz/screens/SplitScreen";
 import RootStack from "./splitz/navigators/RootStack";
 import CreateGroupStack from "./splitz/navigators/CreateGroupStack";
 import BillTotalScreen from "./splitz/screens/BillTotalScreen";
-import GroupView1 from "./splitz/screens/GroupView1";
+import GroupViewScreen1 from "./splitz/screens/GroupViewScreen1";
+import GroupViewScreen2 from "./splitz/screens/GroupViewScreen2";
+import ManageViewScreen1 from "./splitz/screens/ManageViewScreen1";
 
 
 export default function App() {
-  return <GroupView1/>
+  return <ManageViewScreen1/>
 }

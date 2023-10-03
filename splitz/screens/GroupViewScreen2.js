@@ -9,61 +9,57 @@ import ButtonText from '../components/ButtonText';
 import Profile from '../components/Profile';
 import UserTotals from '../components/UserTotals';
 import ButtonText2 from '../components/ButtonText2';
+import HeadingText from '../components/HeadingText';
 
-const BillTotalScreen = () => {
+import Bill from '../components/Bill';
+
+const GroupView2 = () => {
     
     const userTotals = [
         {
           userId: 1,
           userName: "Sarang Ambalakkat",
-          userTotal: parseFloat("35.20"),
+          userTotal: parseFloat("101.65"),
           userColor: "#BA4BEF",
-          owner: 1,
         },
         {
             userId: 2,
             userName: "Nikhil Aggarwal",
-            userTotal: parseFloat("20.54"),
+            userTotal: parseFloat("105.30"),
             userColor:"#6F8DF5",
-            owner: 0,
           },
           {
             userId: 3,
             userName: "Charles Gutcho",
-            userTotal: parseFloat("28.90"),
+            userTotal: parseFloat("104.61"),
             userColor:"#FFDF8C",
-            owner: 0,
           },
           {
             userId: 4,
             userName: "Kyle Yun",
-            userTotal: parseFloat("34.72"),
+            userTotal: parseFloat("110.29"),
             userColor:"#FF9473",
-            owner: 0,
           },
           {
             userId: 5,
             userName: "Raymond Dinh",
-            userTotal: parseFloat("10.00"),
+            userTotal: parseFloat("131.31"),
             userColor:"#6B72AB",
-            owner: 0,
           },
           {
             userId: 6,
             userName: "Tiffany Yau",
-            userTotal: parseFloat("30.26"),
+            userTotal: parseFloat("0.00"),
             userColor:"#6D1ED4",
-            owner: 0,
           },
       ];
 
       const totalAmount = userTotals.reduce((acc, user) => acc + parseFloat(user.userTotal), 0);
       const formattedTotals = totalAmount.toFixed(2);
 
-      const billTotal = parseFloat("175.36")
-      const formattedBillTotal = billTotal.toFixed(2);
 
-      const billNameInputRef = useRef(null);
+      const groupID = "JK76L1"
+      const groupNameInputRef = useRef(null);
   
       return (
         <View style={styles.container}>
@@ -71,13 +67,28 @@ const BillTotalScreen = () => {
                 <Image style={styles.logo} source={require("../assets/splitzofficiallogo.png")}></Image>
             </SafeAreaView>
             <View style={styles.containerBox}>
-                <View style={{ flexDirection: "row", marginTop: 40, }}>
-                    <TextInput ref={billNameInputRef} placeholder='Name this Bill!' style={styles.billNameInput}></TextInput>
-                    <TouchableOpacity onPress={() => billNameInputRef.current.focus()}><Image style={styles.editButton} source={require("../assets/editButton.png")}></Image></TouchableOpacity>
+            <View style={{justifyContent:"flex-end", alignContent: "flex-end"}}>
+                <Text style={{alignSelf:"flex-end", fontSize: 20, fontWeight: "bold", color: colors.primary}}>Group ID: {groupID}</Text>
+            </View>
+                <View style={{ flexDirection: "row", marginTop: 25, alignContent: "center", alignSelf: "center"}}>
+                    <TextInput ref={groupNameInputRef} placeholder= "Group Name" style={styles.billNameInput}></TextInput>
+                    <TouchableOpacity onPress={() => groupNameInputRef.current.focus()}><Image style={styles.editButton} source={require("../assets/editButton.png")}></Image></TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 20, justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
-                    <Text style={{ fontSize: 50, fontWeight: "bold" }}>${billTotal}</Text>
-                    <Text style={{ fontSize: 23, alignSelf: "center", marginTop: 5 }}>Bill Total</Text>
+            <View 
+            style={{flexDirection:"row",
+            alignItems:"center",
+            justifyContent:"center",
+            marginTop: 10}}>
+            <TouchableOpacity style={styles.otherBox}>
+                <Text style={styles.otherText}>Bills</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.clickBox}>
+                <Text style={styles.mainText}>Dashboard</Text>
+            </TouchableOpacity>
+            </View>
+            <View style={{justifyContent: "center", alignContent: "center", alignSelf: "center" }}>
+                    <Text style={{ fontSize: 45, fontWeight: "bold" }}>${formattedTotals}</Text>
+                    <Text style={{ fontSize: 22, alignSelf: "center", marginTop: 5 }}>Group Totals</Text>
                 </View>
                 <View style={styles.itemBox2}>
                 <FlatList
@@ -90,22 +101,15 @@ const BillTotalScreen = () => {
                         userName={item.userName}
                         userTotal={item.userTotal}
                         userColor={item.userColor}
-                        owner={item.owner}
                         />
                     )}
                 />
                 </View>
-                <Text style={{alignSelf: "center", marginTop: 20, fontSize: 18, marginBottom: 10,}}>Split Progress: ${formattedTotals}/${formattedBillTotal}</Text>
                 <TouchableOpacity
                     style={styles.primaryButton}>
                     <ButtonText>Share</ButtonText>
                     <Image style={styles.share} source={require("../assets/share2.png")}></Image>
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.secondaryButton}>
-                    <ButtonText2>Send Requests</ButtonText2>
-                  </TouchableOpacity>
-                 
             </View>
         </View>
     );
@@ -178,6 +182,38 @@ const BillTotalScreen = () => {
         width: 25,
         marginLeft: 10,
       },
+    clickBox: {
+        width:110,
+        height: 40,
+        backgroundColor: colors.secondary,
+        borderRadius: 100,
+        justifyContent: "center",
+        alignItems:'center',
+        margin: 5,
+        marginBottom: 15,
+        color: colors.white,
+        fontWeight: "bold",
+    },
+    otherBox: {
+        width:130,
+        height: 40,
+        backgroundColor: "transparent",
+        borderRadius: 100,
+        justifyContent: "center",
+        alignItems:'center',
+        margin: 5,
+        marginBottom: 15,
+    },
+    mainText: {
+        fontSize:16,
+        color: colors.white,
+        fontWeight: "bold",
+    },
+    otherText: {
+        fontSize:16,
+        color: colors.secondary,
+        fontWeight: "bold",
+    },
   });
   
-  export default BillTotalScreen;
+  export default GroupView2;

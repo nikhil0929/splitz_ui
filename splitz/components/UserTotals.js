@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 
     itemContainer: {
         alignItems: 'center',
-        marginTop: 5,
+        marginTop: 2,
     },
     
     ownerLabel: {

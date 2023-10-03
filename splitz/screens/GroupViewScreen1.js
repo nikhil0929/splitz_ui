@@ -9,55 +9,38 @@ import ButtonText from '../components/ButtonText';
 import Profile from '../components/Profile';
 import UserTotals from '../components/UserTotals';
 import ButtonText2 from '../components/ButtonText2';
+import HeadingText from '../components/HeadingText';
+
+import Bill from '../components/Bill';
 
 const GroupView1 = () => {
     
-    const userTotals = [
+    const bills = [
         {
-          userId: 1,
-          userName: "Sarang Ambalakkat",
-          userTotal: parseFloat("35.20"),
-          userColor: "#BA4BEF",
-          owner: 1,
+          billId: 1,
+          billName: "Tacos & Beers",
+          createdBy: "Sarang Ambalakkat",
+          createdDays: 7
         },
         {
-            userId: 2,
-            userName: "Nikhil Aggarwal",
-            userTotal: parseFloat("20.54"),
-            userColor:"#6F8DF5",
-            owner: 0,
+            billId: 2,
+            billName: "Johnny Rockets",
+            createdBy: "Kyle Yun",
+            createdDays: 3
           },
           {
-            userId: 3,
-            userName: "Charles Gutcho",
-            userTotal: parseFloat("28.90"),
-            userColor:"#FFDF8C",
-            owner: 0,
-          },
-          {
-            userId: 4,
-            userName: "Kyle Yun",
-            userTotal: parseFloat("34.72"),
-            userColor:"#FF9473",
-            owner: 0,
-          },
-          {
-            userId: 5,
-            userName: "Raymond Dinh",
-            userTotal: parseFloat("10.00"),
-            userColor:"#6B72AB",
-            owner: 0,
-          },
-          {
-            userId: 6,
-            userName: "Tiffany Yau",
-            userTotal: parseFloat("30.26"),
-            userColor:"#6D1ED4",
-            owner: 0,
+            billId: 3,
+            billName: "BARSSS",
+            createdBy: "Raymond Dinh",
+            createdDays: 10
           },
       ];
 
-      const billNameInputRef = useRef(null);
+      const recentBills = bills.filter(bill => bill.createdDays <= 7);
+      const allBills = bills.filter(bill => bill.createdDays > 7);
+
+      const groupID = "JK76L1"
+      const groupNameInputRef = useRef(null);
   
       return (
         <View style={styles.container}>
@@ -65,9 +48,12 @@ const GroupView1 = () => {
                 <Image style={styles.logo} source={require("../assets/splitzofficiallogo.png")}></Image>
             </SafeAreaView>
             <View style={styles.containerBox}>
-                <View style={{ flexDirection: "row", marginTop: 40, alignContent: "center", alignSelf: "center"}}>
-                    <TextInput ref={billNameInputRef} placeholder= "Group Name" style={styles.billNameInput}></TextInput>
-                    <TouchableOpacity onPress={() => billNameInputRef.current.focus()}><Image style={styles.editButton} source={require("../assets/editButton.png")}></Image></TouchableOpacity>
+            <View style={{justifyContent:"flex-end", alignContent: "flex-end"}}>
+                <Text style={{alignSelf:"flex-end", fontSize: 20, fontWeight: "bold", color: colors.primary}}>Group ID: {groupID}</Text>
+            </View>
+                <View style={{ flexDirection: "row", marginTop: 25, alignContent: "center", alignSelf: "center"}}>
+                    <TextInput ref={groupNameInputRef} placeholder= "Group Name" style={styles.billNameInput}></TextInput>
+                    <TouchableOpacity onPress={() => groupNameInputRef.current.focus()}><Image style={styles.editButton} source={require("../assets/editButton.png")}></Image></TouchableOpacity>
                 </View>
             <View 
             style={{flexDirection:"row",
@@ -87,6 +73,54 @@ const GroupView1 = () => {
                     <Text style={{fontSize:25, fontWeight: "bold", color: colors.white, alignSelf: "center"}}>Create New Bill</Text>
                 </View>
             </TouchableOpacity>
+            <View style={{marginTop: 25}}>
+                <TitleText>Recent Bills</TitleText>
+                <View style= {{flexdirection: "row"}}>
+                <FlatList
+                    data={recentBills}
+                    keyExtractor={(item) => {
+                        return item.billId.toString();
+                    }}
+                    scrollEnabled={true}
+                    horizontal={true}
+                    renderItem={({ item }) => {
+                        return (
+                        <TouchableOpacity>
+                        <Bill
+                            billName={item.billName}
+                            createdBy={item.createdBy}
+                            createdDays={item.createdDays}
+                        />
+                        </TouchableOpacity>
+                        );
+                    }}
+                    />
+                </View>
+            </View>
+            <View style={{marginTop: 25,}}>
+                <TitleText>All Bills</TitleText>
+                <View style= {{flexdirection: "row"}}>
+                <FlatList
+                    data={allBills}
+                    keyExtractor={(item) => {
+                        return item.billId.toString();
+                    }}
+                    scrollEnabled={true}
+                    horizontal={true}
+                    renderItem={({ item }) => {
+                        return (
+                        <TouchableOpacity>
+                        <Bill
+                            billName={item.billName}
+                            createdBy={item.createdBy}
+                            createdDays={item.createdDays}
+                        />
+                        </TouchableOpacity>
+                        );
+                    }}
+                    />
+                </View>
+                </View>
             </View>
         </View>
     );
@@ -131,44 +165,6 @@ const GroupView1 = () => {
         justifyContent: "center",
         flex: 1,
       },
-      primaryButton: {
-        backgroundColor: colors.primary,
-        borderRadius: 100,
-        width: 355,
-        height: 60,
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-        marginTop: 15,
-        flexDirection: "row",
-      },
-      secondaryButton: {
-        borderRadius: 100,
-        borderWidth: 2,
-        borderColor: colors.primary,
-        width: 355,
-        height: 60,
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-        marginTop: 15,
-        flexDirection: "row",
-      },
-      share: {
-        height: 25,
-        width: 25,
-        marginLeft: 10,
-      },
-      primaryButton: {
-        backgroundColor: colors.primary,
-        borderRadius:100,
-        width:355,
-        height:60,
-        justifyContent:"center",
-        alignItems:"center",
-        marginTop: 20,
-        marginBottom: 10,
-    },
     clickBox: {
         width:80,
         height: 40,
