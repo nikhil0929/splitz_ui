@@ -1,5 +1,7 @@
 import React from "react";
-import { StatusBar } from 'expo-status-bar';
+
+import { NavigationContainer } from '@react-navigation/native';
+
 import LandingScreen from './splitz/screens/LandingScreen';
 import PhoneVerifyScreen1 from "./splitz/screens/PhoneVerifyScreen1";
 import PhoneVerifyScreen2 from "./splitz/screens/PhoneVerifyScreen2";
@@ -17,8 +19,16 @@ import BillTotalScreen from "./splitz/screens/BillTotalScreen";
 import GroupViewScreen1 from "./splitz/screens/GroupViewScreen1";
 import GroupViewScreen2 from "./splitz/screens/GroupViewScreen2";
 import ManageViewScreen1 from "./splitz/screens/ManageViewScreen1";
+import ManageViewScreen2 from "./splitz/screens/ManageViewScreen2";
+import ProfileScreen from "./splitz/screens/ProfileScreen";
+import GroupStack from "./splitz/navigators/GroupStack";
+import ManageStack from "./splitz/navigators/ManageStack"
 
 
 export default function App() {
-  return <ManageViewScreen1/>
+  return (
+  <NavigationContainer>
+  <GroupStack/>
+  </NavigationContainer>
+  );
 }

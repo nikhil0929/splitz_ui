@@ -13,7 +13,7 @@ import HeadingText from '../components/HeadingText';
 
 import Bill from '../components/Bill';
 
-const GroupView1 = () => {
+const GroupViewScreen1 = () => {
     
     const bills = [
         {
@@ -199,4 +199,4 @@ const GroupView1 = () => {
     },
   });
   
-  export default GroupView1;
+  export default GroupViewScreen1;

@@ -14,6 +14,8 @@ import ButtonText from '../components/ButtonText';
 
 const CreateGroupScreen = () => {
   
+    const navigation = useNavigation();
+
     const inputRef = useRef();
     const secondBox = useRef();
 
@@ -55,7 +57,7 @@ const CreateGroupScreen = () => {
             <TouchableOpacity style={styles.clickBox}>
                 <Text style={styles.mainText}>Create Group</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.otherBox}>
+            <TouchableOpacity style={styles.otherBox} onPress={() => navigation.navigate('JoinGroup')}>
                 <Text style={styles.otherText}>Join Group</Text>
             </TouchableOpacity>
             </View>
@@ -87,7 +89,7 @@ const CreateGroupScreen = () => {
                 </View>
                 <TouchableOpacity
                 style={styles.primaryButton} 
-                onPress={this.handleAllPresses}>
+                onPress={() => navigation.navigate('GroupViewScreen1')}>
                 <ButtonText>Continue</ButtonText>
                 </TouchableOpacity>
                 </KeyboardAwareScrollView>  
@@ -102,8 +104,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     logo: {
-        marginTop: 10,
-        marginBottom: 45,
+        marginTop: 30,
+        marginBottom: 40,
         justifyContent:"center",
         alignContent:"center",
         width: "70%",

@@ -35,70 +35,38 @@ sendNewCode = () => {
     .catch(error => {;
         console.log(error)});
 
-}
+};
 
-handleAllPresses = () => {
-    const postData = {
-        phone_number: number,
-        otp: code,
-      };
+const handleAllPresses = async () => {
+    try {
+        // POST request to complete the verification
+        await axios.post("http://3.14.255.133:8000/user/complete-verification", {
+            phone_number: number,
+            otp: code,
+        });
 
-      const apiCall1 = axios.post("http://3.14.255.133:8000/user/complete-verification", postData)
-  .catch((error) => {
-    console.error("API call 1 failed:", error);
+        // GET request to retrieve the user's information
+        const response = await axios.get(`http://3.14.255.133:8000/user/${number}`);
 
-    if (error.response) {
-      if (error.response.status === 401) {
-        Alert.alert("Authentication Error", "You are not authorized to complete verification.");
-      } else {
-        Alert.alert("API Error", "Failed to complete verification. Please try again.");
-      }
-    } else if (error.request) {
-      Alert.alert("API Error", "No response from the server. Please check your internet connection.");
-    } else {
-      Alert.alert("API Error", "An error occurred. Please try again.");
+        // Checking if the name field exists
+        if (response.data.name) {
+            navigation.navigate("GroupStack");
+        } else {
+            navigation.navigate("PhoneVerifyScreen3");
+        }
+    } catch (error) {
+        console.error("Error with the request:", error.response);
+
+        // Handling specific error codes
+        if (error.response && error.response.status === 422) {
+            Alert.alert("Invalid OTP", "The OTP you entered is incorrect. Please try again.");
+        } else if (error.response && error.response.status === 500) {
+            Alert.alert("Server Error", "The server is currently down. Please try again later.");
+        } else {
+            Alert.alert("Error", "An unexpected error occurred. Please try again.");
+        }
     }
-
-    throw error;
-  });
-
-const apiCall2 = axios.get("http://3.14.255.133:8000/user/")
-  .catch((error) => {
-    console.error("API call 2 failed:", error);
-
-    if (error.response) {
-      if (error.response.status === 401) {
-        Alert.alert("Authentication Error", "You are not authorized to fetch user information.");
-      } else {
-        Alert.alert("API Error", "Failed to fetch user information. Please try again.");
-      }
-    } else if (error.request) {
-      Alert.alert("API Error", "No response from the server. Please check your internet connection.");
-    } else {
-      Alert.alert("API Error", "An error occurred. Please try again.");
-    }
-
-    throw error;
-  });
-
-Promise.all([apiCall1, apiCall2])
-  .then((responses) => {
-    const response1 = responses[0];
-    const response2 = responses[1];
-    if (response2.data.name === "") {
-      navigation.navigate("PhoneVerifyScreen3");
-    } else if (response1.status === 200) {
-      navigation.navigate("CreateGroupScreen");
-    } else {
-      console.error("API call 1 failed:", response1);
-      Alert.alert("API Error", "Failed to complete verification. Please try again.");
-    }
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-    Alert.alert("Error", "An error occurred. Please try again.");
-  });
-}
+};
 
     return (
         <View style={styles.container}>
@@ -122,13 +90,13 @@ Promise.all([apiCall1, apiCall2])
             }}>
             <GreyText>Didn't get anything?</GreyText>
             <TouchableOpacity
-            onPress={this.sendNewCode}>
+            onPress={sendNewCode}>
             <Text style={styles.againText}>Get another code here</Text>
             </TouchableOpacity>
             </View>
             <TouchableOpacity
                 style={styles.primaryButton} 
-                onPress={this.handleAllPresses}
+                onPress={handleAllPresses}
                 disabled= {!pinReady}>
                 <ButtonText>Continue</ButtonText>
                 </TouchableOpacity>

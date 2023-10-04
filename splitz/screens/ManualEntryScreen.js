@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, FlatList } from 'react-native';
+import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, Keyboard, Dimensions, FlatList, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -39,6 +39,8 @@ const ManualEntryScreen = () => {
           price: "0.00",
         },
       ];
+
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     
     const navigation = useNavigation();
 
@@ -61,7 +63,7 @@ const ManualEntryScreen = () => {
     
             setItemIdCounter(itemIdCounter + 1);
         
-            setItems(prevItems => [...prevItems, newItem]); // Adjusted this line to update 'items'
+            setItems(prevItems => [...prevItems, newItem]);
         
             setItemName('');
             setItemQuantity('');
@@ -95,7 +97,7 @@ const ManualEntryScreen = () => {
 
     handleOnPress3 = () => {
         console.log("Go Split")
-        navigation.navigate("SplitScreen")
+        navigation.navigate("Split")
     }
   
     return (
@@ -106,8 +108,6 @@ const ManualEntryScreen = () => {
             source={require("../assets/splitzofficiallogo.png")}>
           </Image>
         </SafeAreaView>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAwareScrollView style={{flex: 1}}>
             <View style={styles.containerBox}>
               <View style={styles.topButtons}>
                 <Pressable onPress={handleOnPress1}><Image source={require("../assets/redo.png")} style={styles.redoButton}></Image></Pressable>
@@ -138,6 +138,10 @@ const ManualEntryScreen = () => {
                 </View>
                 <Text style={styles.descriptionText2}> Current items: (scroll for more) </Text>
                 <View style={styles.itemBox2}>
+                <KeyboardAwareScrollView
+                    style={{ flex: 1 }}
+                    keyboardShouldPersistTaps="always"
+                >
                 <FlatList
                     data={items}
                     keyExtractor={(item) => {
@@ -156,8 +160,9 @@ const ManualEntryScreen = () => {
                         );
                     }}
                     />
+                </KeyboardAwareScrollView>
                 </View>
-                <View>
+                <View style={{marginBottom:50,}}>
                   <TouchableOpacity
                     style={styles.primaryButton} onPress={this.handleOnPress3}>
                     <ButtonText>Continue</ButtonText>
@@ -170,8 +175,6 @@ const ManualEntryScreen = () => {
                 </View>
               </View>
             </View>
-          </KeyboardAwareScrollView>
-        </TouchableWithoutFeedback>
       </View>
     );
   }

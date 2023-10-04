@@ -12,36 +12,42 @@ import UserTotals from '../components/UserTotals';
 import ButtonText2 from '../components/ButtonText2';
 import HeadingText from '../components/HeadingText';
 
-import Bill from '../components/Bill';
+import Group from '../components/Group';
 
-const ManageViewScreen1 = () => {
+const ManageViewScreen2 = () => {
   
-  const navigation = useNavigation();
-
-  const bills = [
+    const navigation = useNavigation();
+  
+    const groups = [
     {
-      billId: 1,
-      billName: "Tacos & Beers",
-      createdBy: "Sarang Ambalakkat",
-      createdDays: 7
+      groupId: 1,
+      groupName: "SJ BARS",
+      groupAmount: 7,
+      createdDays: 5,
     },
     {
-        billId: 2,
-        billName: "Johnny Rockets",
-        createdBy: "Kyle Yun",
-        createdDays: 3
+        groupId: 2,
+        groupName: "Las Vegas Baby",
+        groupAmount: 10,
+        createdDays: 10,
       },
       {
-        billId: 3,
-        billName: "BARSSS",
-        createdBy: "Raymond Dinh",
-        createdDays: 10
+        groupId: 3,
+        groupName: "Spain",
+        groupAmount: 20,
+        createdDays: 20,
+      },
+      {
+        groupId: 4,
+        groupName: "House Bills",
+        groupAmount: 6,
+        createdDays: 30,
       },
   ];
 
-      const totalBills = bills.length
-      const recentBills = bills.filter(bill => bill.createdBy === "Kyle Yun");
-      const allBills = bills.filter(bill => bill.createdBy !== "Kyle Yun");
+      const totalGroups = groups.length
+      const recentGroups = groups.filter(group => group.createdDays <= 7);
+      const allGroups = groups.filter(group => group.createdDays > 7);
   
       return (
         <View style={styles.container}>
@@ -49,47 +55,46 @@ const ManageViewScreen1 = () => {
                 <Image style={styles.logo} source={require("../assets/splitzofficiallogo.png")}></Image>
             </SafeAreaView>
             <View style={styles.containerBox}>
-            <Text style={{marginBottom: 5, color:"black", fontSize:26, alignSelf: "center", fontWeight: "bold"}}>Bill Manager</Text>
+            <Text style={{marginBottom: 5, color:"black", fontSize:26, alignSelf: "center", fontWeight: "bold"}}>Group Manager</Text>
             <View 
             style={{flexDirection:"row", alignItems:"center", justifyContent:"center", marginTop: 10}}>
-            <TouchableOpacity style={styles.clickBox}>
-                <Text style={styles.mainText}>Bills</Text>
+            <TouchableOpacity style={styles.otherBox} onPress={() => navigation.navigate('Bills')}>
+                <Text style={styles.otherText}>Bills</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.otherBox} onPress={() => navigation.navigate('Groups')}>
-                <Text style={styles.otherText}>Groups</Text>
+            <TouchableOpacity style={styles.clickBox}>
+                <Text style={styles.mainText}>Groups</Text>
             </TouchableOpacity>
             </View>
             <View style={{justifyContent:"center", alignContent: "center", alignSelf: "center", marginTop: 20,}}>
             <LinearGradient
-              colors={['#C58AF3', '#EE8BC6']}
+              colors={['#8C8AF3', '#8BD6EE']}
               start={{x: 0, y: 0}} 
               end={{x: 1, y: 1}}
               style={styles.detailBox}>
             <View>
-              <Text style={{alignSelf: "center", color: "white", fontWeight: "bold", fontSize: 45}}>{totalBills}</Text>
+              <Text style={{alignSelf: "center", color: "white", fontWeight: "bold", fontSize: 45}}>{totalGroups}</Text>
             </View>
             </LinearGradient>
             <View style={styles.detailBox2}>
-              <Text style={{alignSelf: "center", color: "black", fontWeight: "bold", fontSize: 18}}>Bills</Text>
+              <Text style={{alignSelf: "center", color: "black", fontWeight: "bold", fontSize: 18}}>Groups</Text>
             </View>
             </View>
             <View style={{marginTop: 25}}>
-                <TitleText>Your Bills</TitleText>
+                <TitleText>Recent Groups</TitleText>
                 <View style= {{flexdirection: "row"}}>
                 <FlatList
-                    data={recentBills}
+                    data={recentGroups}
                     keyExtractor={(item) => {
-                        return item.billId.toString();
+                        return item.groupId.toString();
                     }}
                     scrollEnabled={true}
                     horizontal={true}
                     renderItem={({ item }) => {
                         return (
                         <TouchableOpacity>
-                        <Bill
-                            billName={item.billName}
-                            createdBy={item.createdBy}
-                            createdDays={item.createdDays}
+                        <Group
+                            groupName={item.groupName}
+                            groupAmount={item.groupAmount}
                         />
                         </TouchableOpacity>
                         );
@@ -97,30 +102,29 @@ const ManageViewScreen1 = () => {
                     />
                 </View>
             </View>
-            <View style={{marginTop: 25,}}>
-                <TitleText>All Bills</TitleText>
+            <View style={{marginTop: 25}}>
+                <TitleText>All Groups</TitleText>
                 <View style= {{flexdirection: "row"}}>
                 <FlatList
-                    data={allBills}
+                    data={allGroups}
                     keyExtractor={(item) => {
-                        return item.billId.toString();
+                        return item.groupId.toString();
                     }}
                     scrollEnabled={true}
                     horizontal={true}
                     renderItem={({ item }) => {
                         return (
                         <TouchableOpacity>
-                        <Bill
-                            billName={item.billName}
-                            createdBy={item.createdBy}
-                            createdDays={item.createdDays}
+                        <Group
+                            groupName={item.groupName}
+                            groupAmount={item.groupAmount}
                         />
                         </TouchableOpacity>
                         );
                     }}
                     />
                 </View>
-                </View>
+            </View>
             </View>
         </View>
     );
@@ -155,7 +159,7 @@ const ManageViewScreen1 = () => {
         width: 30,
     },
     clickBox: {
-        width:80,
+        width:100,
         height: 40,
         backgroundColor: colors.secondary,
         borderRadius: 100,
@@ -205,4 +209,4 @@ const ManageViewScreen1 = () => {
     },
   });
   
-  export default ManageViewScreen1;
+  export default ManageViewScreen2;

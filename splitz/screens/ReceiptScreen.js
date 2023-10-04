@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, LogBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from "expo-image-picker"
 
@@ -14,6 +14,11 @@ import ButtonText from '../components/ButtonText';
 
 const ReceiptScreen = () => {
 
+    LogBox.ignoreLogs([
+        'Key "cancelled" in the image picker result is deprecated and will be removed in SDK 48, use "canceled" instead',
+        'Key "uri" in the image picker result is deprecated and will be removed in SDK 48, you can access selected assets through the "assets" array instead',
+      ]);
+
     const [image, setImage] = useState(null);
 
     const navigation = useNavigation();
@@ -27,8 +32,9 @@ const pickImage = async () => {
 
     console.log(result);
 
-    if(!result.canceled){
-        setImage(result.uri)
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+        setImage(result.assets[0].uri);
+        navigation.navigate("ManualEntryScreen");
     }
 };
 
@@ -43,11 +49,11 @@ const openCamera = async () => {
 
         console.log(result);
 
-        if (!result.canceled) {
-            setImage(result.uri);
-            console.log(result)
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            setImage(result.assets[0].uri);
+            navigation.navigate("ManualEntryScreen"); 
         }
-};
+    };
 
     handleOnPress1 = () =>{
         console.log("Camera")
@@ -57,7 +63,7 @@ const openCamera = async () => {
     }
     handleOnPress3 = () =>{
         console.log("Enter Manually");
-        navigation.navigate("ManualEntryScreen")
+        navigation.navigate("ManualEntryScreen");
     }
     handleOnPress4 = () => {
         console.log("Exit")

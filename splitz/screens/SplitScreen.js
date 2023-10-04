@@ -100,7 +100,6 @@ const SplitScreen = () => {
           </Image>
         </SafeAreaView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView>
             <View style={styles.containerBox}>
               <View style={styles.topButtons}>
                 <Pressable onPress={handleOnPress2}><Image source={require("../assets/exit.png")} style={styles.exitButton}></Image></Pressable>
@@ -143,7 +142,6 @@ const SplitScreen = () => {
                   </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
         </TouchableWithoutFeedback>
       </View>
     );

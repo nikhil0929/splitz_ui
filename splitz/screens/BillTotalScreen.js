@@ -71,7 +71,8 @@ const BillTotalScreen = () => {
                 <Image style={styles.logo} source={require("../assets/splitzofficiallogo.png")}></Image>
             </SafeAreaView>
             <View style={styles.containerBox}>
-                <View style={{ flexDirection: "row", marginTop: 40, }}>
+                <View style={{alignSelf: "flex-end"}}><TouchableOpacity><Text style={{fontSize: 15, textDecorationLine: "underline"}}>view receipt</Text></TouchableOpacity></View>
+                <View style={{ flexDirection: "row", marginTop: 15, }}>
                     <TextInput ref={billNameInputRef} placeholder='Name this Bill!' style={styles.billNameInput}></TextInput>
                     <TouchableOpacity onPress={() => billNameInputRef.current.focus()}><Image style={styles.editButton} source={require("../assets/editButton.png")}></Image></TouchableOpacity>
                 </View>
@@ -95,7 +96,7 @@ const BillTotalScreen = () => {
                     )}
                 />
                 </View>
-                <Text style={{alignSelf: "center", marginTop: 20, fontSize: 18, marginBottom: 10,}}>Split Progress: ${formattedTotals}/${formattedBillTotal}</Text>
+                <Text style={{alignSelf: "center", marginTop: 20, fontSize: 18, marginBottom: 10,}}>Progress: ${formattedTotals}/${formattedBillTotal}</Text>
                 <TouchableOpacity
                     style={styles.primaryButton}>
                     <ButtonText>Share</ButtonText>
