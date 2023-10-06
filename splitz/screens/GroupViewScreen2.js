@@ -11,6 +11,7 @@ import UserTotals from '../components/UserTotals';
 import ButtonText2 from '../components/ButtonText2';
 import HeadingText from '../components/HeadingText';
 import BottomTabNavigator from '../navigators/BottomTabNavigator';
+import CustomBottomTabBar from '../navigators/CustomBottomTabBar';
 
 import Bill from '../components/Bill';
 
