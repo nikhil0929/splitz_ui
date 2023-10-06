@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, Keyboard, Dimensions, FlatList, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, Keyboard, Dimensions, FlatList, KeyboardAvoidingView, LogBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -12,7 +12,10 @@ import ReceiptItem from '../components/ReceiptItem';
 import ButtonText2 from '../components/ButtonText2';
 
 const ManualEntryScreen = () => {
-    
+  
+  
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+
     const receiptItems = [
         {
           itemId: 1,
@@ -111,7 +114,28 @@ const ManualEntryScreen = () => {
             <View style={styles.containerBox}>
               <View style={styles.topButtons}>
                 <Pressable onPress={handleOnPress1}><Image source={require("../assets/redo.png")} style={styles.redoButton}></Image></Pressable>
-                <Pressable onPress={handleOnPress2}><Image source={require("../assets/exit.png")} style={styles.exitButton}></Image></Pressable>
+                <TouchableOpacity 
+                  onPress={() => {
+                      Alert.alert(
+                          "Exit the Bill?", "You're about to leave the bill",
+                          [
+                              {
+                                  text: "Back to Bill",
+                                  style: "cancel"
+                              },
+                              {
+                                  text: "Save Progress",
+                                  onPress: () => navigation.navigate('GroupView')
+                              }
+                          ],
+                      );
+                  }}
+              >
+                  <Image 
+                      source={require("../assets/exit.png")}
+                      style={styles.exitButton}
+                  />
+              </TouchableOpacity>
               </View>
               <View style={styles.newView}>
                 <TitleText>Confirm your list of items:</TitleText>

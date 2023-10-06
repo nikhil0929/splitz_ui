@@ -9,9 +9,13 @@ import ButtonText from '../components/ButtonText';
 import Profile from '../components/Profile';
 import UserTotals from '../components/UserTotals';
 import ButtonText2 from '../components/ButtonText2';
+import BottomTabNavigator from '../navigators/BottomTabNavigator';
+import CustomBottomTabBar from '../navigators/CustomBottomTabBar';
 
 const BillTotalScreen = () => {
-    
+   
+    const navigation = useNavigation();
+
     const userTotals = [
         {
           userId: 1,
@@ -71,8 +75,10 @@ const BillTotalScreen = () => {
                 <Image style={styles.logo} source={require("../assets/splitzofficiallogo.png")}></Image>
             </SafeAreaView>
             <View style={styles.containerBox}>
-                <View style={{alignSelf: "flex-end"}}><TouchableOpacity><Text style={{fontSize: 15, textDecorationLine: "underline"}}>view receipt</Text></TouchableOpacity></View>
-                <View style={{ flexDirection: "row", marginTop: 15, }}>
+            <View style={styles.topButtons}>
+                <Pressable onPress={() => navigation.navigate('GroupView')}><Image source={require("../assets/exit.png")} style={styles.exitButton}></Image></Pressable>
+              </View>
+                <View style={{ flexDirection: "row", marginTop: 5, }}>
                     <TextInput ref={billNameInputRef} placeholder='Name this Bill!' style={styles.billNameInput}></TextInput>
                     <TouchableOpacity onPress={() => billNameInputRef.current.focus()}><Image style={styles.editButton} source={require("../assets/editButton.png")}></Image></TouchableOpacity>
                 </View>
@@ -98,9 +104,9 @@ const BillTotalScreen = () => {
                 </View>
                 <Text style={{alignSelf: "center", marginTop: 20, fontSize: 18, marginBottom: 10,}}>Progress: ${formattedTotals}/${formattedBillTotal}</Text>
                 <TouchableOpacity
-                    style={styles.primaryButton}>
-                    <ButtonText>Share</ButtonText>
-                    <Image style={styles.share} source={require("../assets/share2.png")}></Image>
+                    style={styles.primaryButton}
+                    onPress={() => navigation.navigate('Split')}>
+                    <ButtonText>Edit Bill</ButtonText>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.secondaryButton}>
@@ -108,6 +114,7 @@ const BillTotalScreen = () => {
                   </TouchableOpacity>
                  
             </View>
+            <CustomBottomTabBar state={{ routes: [{ name: 'Create/Join' }, { name: 'Manage' }, { name: 'Profile' } ] }} navigation={navigation} />
         </View>
     );
   }
@@ -135,6 +142,16 @@ const BillTotalScreen = () => {
       borderTopRightRadius: 30,
       padding: 30,
       paddingTop: 30,
+    },
+    topButtons: {
+      flexDirection: "row",
+      alignItems: "flex-end",
+      justifyContent: "flex-end"
+    },
+    exitButton: {
+      height: 35,
+      width: 35,
+      alignSelf: "flex-end",
     },
     editButton: {
         height: 30,

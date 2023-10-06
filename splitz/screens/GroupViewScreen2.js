@@ -10,11 +10,14 @@ import Profile from '../components/Profile';
 import UserTotals from '../components/UserTotals';
 import ButtonText2 from '../components/ButtonText2';
 import HeadingText from '../components/HeadingText';
+import BottomTabNavigator from '../navigators/BottomTabNavigator';
 
 import Bill from '../components/Bill';
 
 const GroupViewScreen2 = () => {
     
+  const navigation = useNavigation();
+
     const userTotals = [
         {
           userId: 1,
@@ -79,7 +82,7 @@ const GroupViewScreen2 = () => {
             alignItems:"center",
             justifyContent:"center",
             marginTop: 10}}>
-            <TouchableOpacity style={styles.otherBox}>
+            <TouchableOpacity style={styles.otherBox} onPress={() => navigation.navigate('GroupViewScreen1')}>
                 <Text style={styles.otherText}>Bills</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.clickBox}>
@@ -111,6 +114,7 @@ const GroupViewScreen2 = () => {
                     <Image style={styles.share} source={require("../assets/share2.png")}></Image>
                   </TouchableOpacity>
             </View>
+            <CustomBottomTabBar state={{ routes: [{ name: 'Create/Join' }, { name: 'Manage' }, { name: 'Profile' } ] }} navigation={navigation} />
         </View>
     );
   }

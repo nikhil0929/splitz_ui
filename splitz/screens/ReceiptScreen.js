@@ -34,7 +34,7 @@ const pickImage = async () => {
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
         setImage(result.assets[0].uri);
-        navigation.navigate("ManualEntryScreen");
+        navigation.navigate("ManualEntry");
     }
 };
 
@@ -51,7 +51,7 @@ const openCamera = async () => {
 
         if (!result.canceled && result.assets && result.assets.length > 0) {
             setImage(result.assets[0].uri);
-            navigation.navigate("ManualEntryScreen"); 
+            navigation.navigate("ManualEntry"); 
         }
     };
 
@@ -63,7 +63,7 @@ const openCamera = async () => {
     }
     handleOnPress3 = () =>{
         console.log("Enter Manually");
-        navigation.navigate("ManualEntryScreen");
+        navigation.navigate("ManualEntry");
     }
     handleOnPress4 = () => {
         console.log("Exit")
@@ -77,7 +77,28 @@ const openCamera = async () => {
             </Image>
             </SafeAreaView> 
         <View style={styles.containerBox}>
-                <Pressable onPress={this.handleOnPress4}><Image source={require("../assets/exit.png")}style={styles.exitButton}></Image></Pressable>
+        <TouchableOpacity 
+            onPress={() => {
+                Alert.alert(
+                    "Exit the Bill?", "You're about to leave the bill",
+                    [
+                        {
+                            text: "Back to Bill",
+                            style: "cancel"
+                        },
+                        {
+                            text: "Save Progress",
+                            onPress: () => navigation.navigate('GroupView')
+                        }
+                    ],
+                );
+            }}
+        >
+            <Image 
+                source={require("../assets/exit.png")}
+                style={styles.exitButton}
+            />
+        </TouchableOpacity>
         <View style={styles.newView}>
             <TitleText>Please provide a receipt:</TitleText>
             </View>

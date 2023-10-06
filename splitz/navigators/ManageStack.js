@@ -5,7 +5,7 @@ import ManageViewScreen2 from "../screens/ManageViewScreen2";
 
 const GroupTab = createBottomTabNavigator();
 
-const GroupStack = () => (
+const ManageStack = () => (
     <GroupTab.Navigator
         initialRouteName="Bills"
         screenOptions={{
@@ -18,4 +18,4 @@ const GroupStack = () => (
     </GroupTab.Navigator>
 );
 
-export default GroupStack;
+export default ManageStack;

@@ -54,7 +54,7 @@ const JoinGroupScreen = () => {
             flexDirection="row"
             alignItems="center"
             justifyContent="center">
-            <TouchableOpacity style={styles.otherBox} onPress={() => navigation.navigate('CreateGroup')}>
+            <TouchableOpacity style={styles.otherBox} onPress={() => navigation.navigate("Tabs", {screen: 'Create/Join'})}>
                 <Text style={styles.otherText}>Create Group</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.clickBox}>
@@ -89,7 +89,7 @@ const JoinGroupScreen = () => {
                 </View>
                 <TouchableOpacity
                 style={styles.primaryButton} 
-                onPress={() => navigation.navigate('GroupViewScreen1')}>
+                onPress={() => navigation.navigate('GroupStack')}>
                 <ButtonText>Continue</ButtonText>
                 </TouchableOpacity>
                 </KeyboardAwareScrollView>  

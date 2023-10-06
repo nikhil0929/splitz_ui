@@ -1,42 +1,39 @@
 import React from 'react';
+
+import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ManageViewScreen1 from '../screens/ManageViewScreen1';
-import CreateGroupScreen from '../screens/CreateGroupScreen';
+import ManageStack from './ManageStack';
 import ProfileScreen from '../screens/ProfileScreen';
-import { MaterialCommunityIcons } from "react-native-vector-icons/MaterialCommunityIcons"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import CreateGroupScreen from '../screens/CreateGroupScreen';
+import GroupStack from './GroupStack';
+import CustomBottomTabBar from './CustomBottomTabBar';
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
     return (
-        <Tab.Navigator initialRouteName="ManageView">
-            <Tab.Screen
-                name="ManageView"
-                component={ManageViewScreen1}
-                options={{ 
-                    tabBarLabel: 'Manage',
-                    tabBarIcon: () => (
-                        <MaterialCommunityIcons name="list" color="#3AF89C" size={30}></MaterialCommunityIcons>
-                    ), }}
-            />
-            <Tab.Screen
-                name="CreateGroupScreen"
-                component={CreateGroupScreen}
-                options={{ 
-                    tabBarLabel: 'Manage',
-                    tabBarIcon: () => (
-                        <MaterialCommunityIcons name="resize-full-screen" color="#3AF89C" size={30}></MaterialCommunityIcons>
-                    ), }}
-            />
-            <Tab.Screen
-                name="ProfileScreen"
-                component={ProfileScreen}
-                options={{ 
-                    tabBarLabel: 'Manage',
-                    tabBarIcon: () => (
-                        <MaterialCommunityIcons name="user" color="#3AF89C" size={30}></MaterialCommunityIcons>
-                    ), }}
-            />
+        <Tab.Navigator initialRouteName="Create/Join" screenOptions={{headerShown: false}} tabBar={(props) => <CustomBottomTabBar {...props} />}>
+            <Tab.Screen name="Create/Join" component={CreateGroupScreen} screenOptions={{ 
+                        tabBarLabel: 'Create/Join',
+                        headerShown: false
+                    }}
+                />
+                 <Tab.Screen
+                    name="Manage"
+                    component={ManageStack}
+                    screenOptions={{ 
+                        tabBarLabel: 'Manage',
+                        headerShown: false
+                    }}
+                />
+                <Tab.Screen
+                    name="Profile"
+                    component={ProfileScreen}
+                    screenOptions={{ 
+                        tabBarLabel: 'Profile',
+                        headerShown: false
+                    }}/>
         </Tab.Navigator>
     );
 }

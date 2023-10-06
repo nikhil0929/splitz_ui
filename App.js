@@ -14,7 +14,6 @@ import ManualEntryScreen from "./splitz/screens/ManualEntryScreen";
 import SplitScreen from "./splitz/screens/SplitScreen";
 
 import RootStack from "./splitz/navigators/RootStack";
-import CreateGroupStack from "./splitz/navigators/CreateGroupStack";
 import BillTotalScreen from "./splitz/screens/BillTotalScreen";
 import GroupViewScreen1 from "./splitz/screens/GroupViewScreen1";
 import GroupViewScreen2 from "./splitz/screens/GroupViewScreen2";
@@ -23,6 +22,8 @@ import ManageViewScreen2 from "./splitz/screens/ManageViewScreen2";
 import ProfileScreen from "./splitz/screens/ProfileScreen";
 import GroupStack from "./splitz/navigators/GroupStack";
 import ManageStack from "./splitz/navigators/ManageStack"
+import BottomTabNavigator from "./splitz/navigators/BottomTabNavigator";
+import MainContent from "./splitz/navigators/MainContent";
 
 
 export default function App() {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, FlatList } from 'react-native';
+import { View, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity, Alert, Text, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, FlatList, LogBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -10,7 +10,9 @@ import ConfirmedReceiptItem from '../components/ConfirmedReceiptItem';
 import Profile from '../components/Profile';
 
 const SplitScreen = () => {
-    
+   
+  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+
     const receiptItems = [
         {
           itemId: 1,
@@ -88,7 +90,7 @@ const SplitScreen = () => {
     }
 
     handleOnPress3 = () => {
-        navigation.navigate("BillTotalScreen")
+        navigation.navigate("BillTotal")
       }
   
     return (
@@ -102,7 +104,28 @@ const SplitScreen = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.containerBox}>
               <View style={styles.topButtons}>
-                <Pressable onPress={handleOnPress2}><Image source={require("../assets/exit.png")} style={styles.exitButton}></Image></Pressable>
+              <TouchableOpacity 
+                onPress={() => {
+                    Alert.alert(
+                        "Exit the Bill?", "You're about to leave the bill",
+                        [
+                            {
+                                text: "Back to Bill",
+                                style: "cancel"
+                            },
+                            {
+                                text: "Save Progress",
+                                onPress: () => navigation.navigate('GroupView')
+                            }
+                        ],
+                    );
+                }}
+            >
+                <Image 
+                    source={require("../assets/exit.png")}
+                    style={styles.exitButton}
+                />
+            </TouchableOpacity>
               </View>
               <View style={styles.newView}>
                 <TitleText>Tap on the items you're paying for:</TitleText>
@@ -195,7 +218,6 @@ const SplitScreen = () => {
     },
     topButtons: {
       flexDirection: "row",
-      alignItems: "flex-end",
       justifyContent: "flex-end"
     },
     primaryButton: {

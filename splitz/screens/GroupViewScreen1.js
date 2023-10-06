@@ -10,11 +10,17 @@ import Profile from '../components/Profile';
 import UserTotals from '../components/UserTotals';
 import ButtonText2 from '../components/ButtonText2';
 import HeadingText from '../components/HeadingText';
+import BottomTabNavigator from '../navigators/BottomTabNavigator';
+import CustomBottomTabBar from '../navigators/CustomBottomTabBar';
 
 import Bill from '../components/Bill';
 
 const GroupViewScreen1 = () => {
     
+    const [viewMode, setViewMode] = useState('Bills'); // default to 'Bills'
+    const navigation = useNavigation();
+    const groupNameInputRef = useRef(null);
+
     const bills = [
         {
           billId: 1,
@@ -40,7 +46,6 @@ const GroupViewScreen1 = () => {
       const allBills = bills.filter(bill => bill.createdDays > 7);
 
       const groupID = "JK76L1"
-      const groupNameInputRef = useRef(null);
   
       return (
         <View style={styles.container}>
@@ -63,17 +68,18 @@ const GroupViewScreen1 = () => {
             <TouchableOpacity style={styles.clickBox}>
                 <Text style={styles.mainText}>Bills</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.otherBox}>
+            <TouchableOpacity style={styles.otherBox} onPress={() => navigation.navigate('GroupViewScreen2')}>
                 <Text style={styles.otherText}>Dashboard</Text>
             </TouchableOpacity>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Receipt')}>
                 <View style={{alignSelf: "center",backgroundColor:colors.secondary, height:135, width: 270, borderRadius: 20,}}>
                     <Text style={{fontSize:70, fontWeight: "bold", color: colors.white, alignSelf: "center"}}>+</Text>
                     <Text style={{fontSize:25, fontWeight: "bold", color: colors.white, alignSelf: "center"}}>Create New Bill</Text>
                 </View>
             </TouchableOpacity>
-            <View style={{marginTop: 25}}>
+            <ScrollView style={{marginTop: 25}}>
+            <View>
                 <TitleText>Recent Bills</TitleText>
                 <View style= {{flexdirection: "row"}}>
                 <FlatList
@@ -121,7 +127,9 @@ const GroupViewScreen1 = () => {
                     />
                 </View>
                 </View>
+                </ScrollView>
             </View>
+            <CustomBottomTabBar state={{ routes: [{ name: 'Create/Join' }, { name: 'Manage' }, { name: 'Profile' } ] }} navigation={navigation} />
         </View>
     );
   }
