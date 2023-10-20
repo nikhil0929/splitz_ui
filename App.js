@@ -1,8 +1,8 @@
 import React from "react";
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from "@react-navigation/native";
 
-import LandingScreen from './splitz/screens/LandingScreen';
+import LandingScreen from "./splitz/screens/LandingScreen";
 import PhoneVerifyScreen1 from "./splitz/screens/PhoneVerifyScreen1";
 import PhoneVerifyScreen2 from "./splitz/screens/PhoneVerifyScreen2";
 import PhoneVerifyScreen3 from "./splitz/screens/PhoneVerifyScreen3";
@@ -21,15 +21,15 @@ import ManageViewScreen1 from "./splitz/screens/ManageViewScreen1";
 import ManageViewScreen2 from "./splitz/screens/ManageViewScreen2";
 import ProfileScreen from "./splitz/screens/ProfileScreen";
 import GroupStack from "./splitz/navigators/GroupStack";
-import ManageStack from "./splitz/navigators/ManageStack"
+import ManageStack from "./splitz/navigators/ManageStack";
 import BottomTabNavigator from "./splitz/navigators/BottomTabNavigator";
 import MainContent from "./splitz/navigators/MainContent";
 
-
+baseURL = "http://localhost:8000";
 export default function App() {
   return (
-  <NavigationContainer>
-  <GroupStack/>
-  </NavigationContainer>
+    <NavigationContainer>
+      <RootStack baseURL={baseURL} />
+    </NavigationContainer>
   );
 }
