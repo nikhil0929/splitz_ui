@@ -50,7 +50,7 @@ const PhoneVerifyScreen3 = ({ route }) => {
         // let result = await SecureStore.getItemAsync("access_token");
 
         // Alert.alert(`token! ${result}`);
-        navigation.navigate("GroupStack", {
+        navigation.navigate("GroupActionStack", {
           screen: "Tabs",
           params: {
             screen: "Create/Join",

@@ -2,46 +2,35 @@ import React from "react";
 
 import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ManageStack from "./ManageStack";
+import HomeStack from "./HomeStack";
 import ProfileScreen from "../screens/ProfileScreen";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import CreateGroupScreen from "../screens/CreateGroupScreen";
-import GroupStack from "./GroupStack";
-import CustomBottomTabBar from "./CustomBottomTabBar";
+import GroupActionStack from "./GroupActionStack";
+import GroupDetailsStack from "./GroupDetailsStack";
 
 const Tab = createBottomTabNavigator();
 
-function BottomTabNavigator() {
-  console.log("Bottom Tab Navigator");
+function BottomTabNavigator({ baseURL }) {
   return (
-    <Tab.Navigator
-      initialRouteName="Create/Join"
-      screenOptions={{ headerShown: false }}
-      tabBar={(props) => <CustomBottomTabBar {...props} />}
-    >
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
-        name="Create_Join"
-        component={CreateGroupScreen}
-        screenOptions={{
-          tabBarLabel: "Create_Join",
-          headerShown: false,
-        }}
+        name="Home"
+        component={HomeStack}
+        initialParams={{ baseURL: baseURL }}
       />
       <Tab.Screen
-        name="Manage"
-        component={ManageStack}
-        screenOptions={{
-          tabBarLabel: "Manage",
-          headerShown: false,
-        }}
+        name="GroupAction"
+        component={GroupActionStack}
+        initialParams={{ baseURL: baseURL }}
+      />
+      <Tab.Screen
+        name="GroupDetails"
+        component={GroupDetailsStack}
+        initialParams={{ baseURL: baseURL }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        screenOptions={{
-          tabBarLabel: "Profile",
-          headerShown: false,
-        }}
+        initialParams={{ baseURL: baseURL }}
       />
     </Tab.Navigator>
   );

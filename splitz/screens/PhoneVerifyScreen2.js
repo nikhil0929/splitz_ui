@@ -86,14 +86,8 @@ const PhoneVerifyScreen2 = ({ route }) => {
             if (!res.data.name) {
               navigation.navigate("PhoneVerifyScreen3", { baseURL: baseURL });
             } else {
-              navigation.navigate("GroupStack", {
-                screen: "Tabs",
-                params: {
-                  screen: "Create_Join",
-                  params: {
-                    baseURL: baseURL,
-                  },
-                },
+              navigation.navigate("BottomTabNavigator", {
+                baseURL: baseURL,
               });
             }
           })
