@@ -1,29 +1,34 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import GroupViewScreen1 from "../screens/GroupViewScreen1";
-import GroupViewScreen2 from "../screens/GroupViewScreen2";
+import ReceiptScreen from "../screens/ReceiptScreen";
+import ManualEntryScreen from "../screens/ManualEntryScreen";
+import SplitScreen from "../screens/SplitScreen";
 
-const GroupTab = createBottomTabNavigator();
+const CreateBillStackNavigavtor = createBottomTabNavigator();
 
 const CreateBillStack = ({ baseURL }) => (
-  <GroupTab.Navigator
-    initialRouteName="GroupViewScreen1"
+  <CreateBillStackNavigavtor.Navigator
     screenOptions={{
       headerShown: false, // This hides the header
     }}
     tabBar={() => null} // This hides the tab bar
   >
-    <GroupTab.Screen
-      name="GroupViewScreen1"
-      component={GroupViewScreen1}
+    <CreateBillStackNavigavtor.Screen
+      name="ReceiptUpload"
+      component={ReceiptScreen}
       initialParams={{ baseURL: baseURL }}
     />
-    <GroupTab.Screen
-      name="GroupViewScreen2"
-      component={GroupViewScreen2}
+    <CreateBillStackNavigavtor.Screen
+      name="ManualEntry"
+      component={ManualEntryScreen}
       initialParams={{ baseURL: baseURL }}
     />
-  </GroupTab.Navigator>
+    <CreateBillStackNavigavtor.Screen
+      name="Split"
+      component={SplitScreen}
+      initialParams={{ baseURL: baseURL }}
+    />
+  </CreateBillStackNavigavtor.Navigator>
 );
 
 export default CreateBillStack;

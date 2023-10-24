@@ -116,7 +116,7 @@ const GroupViewScreen1 = ({ route }) => {
           <TouchableOpacity
             style={styles.otherBox}
             onPress={() =>
-              navigation.navigate("GroupDashboard", { baseURL: baseURL })
+              navigation.navigate("CreateBillStack", { baseURL: baseURL })
             }
           >
             <Text style={styles.otherText}>Dashboard</Text>

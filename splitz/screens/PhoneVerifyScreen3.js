@@ -48,10 +48,6 @@ const PhoneVerifyScreen3 = ({ route }) => {
     console.log(allNames);
   };
   const handleOnPress2 = async () => {
-    const data = {
-      name: fullName,
-      username: userName,
-    };
     if (fullName == "" || userName == "") {
       Alert.alert("Please fill in all fields");
       return;
@@ -59,26 +55,42 @@ const PhoneVerifyScreen3 = ({ route }) => {
 
     console.log("HEREERER");
     const access_token = await SecureStore.getItemAsync("access_token");
-    headers = {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
     };
-    axios
-      .put(baseURL + "/user/update/", data, headers)
-      .then((res) => {
-        console.log("IN here");
-        // let result = await SecureStore.getItemAsync("access_token");
 
-        // Alert.alert(`token! ${result}`);
-        console.log(res.data);
+    const data = {
+      name: fullName,
+      username: userName,
+    };
+
+    axios
+      .put(`${baseURL}/user/update`, data, { headers: headers })
+      .then((response) => {
+        console.log(response.data);
         Alert.alert("Update Success!");
-        navigation.navigate("GroupActionStack", { baseURL: baseURL });
+        navigation.navigate("BottomTabNavigator", { baseURL: baseURL });
       })
       .catch((error) => {
         Alert.alert("Failed!");
-        console.log(error);
+        console.log("error", error);
       });
+    // axios
+    //   .put(baseURL + "/user/update/", data, headers)
+    //   .then((res) => {
+    //     console.log("IN here");
+    //     // let result = await SecureStore.getItemAsync("access_token");
+
+    //     // Alert.alert(`token! ${result}`);
+    //     console.log(res.data);
+    //     Alert.alert("Update Success!");
+    //     navigation.navigate("GroupActionStack", { baseURL: baseURL });
+    //   })
+    //   .catch((error) => {
+    //     Alert.alert("Failed!");
+    //     console.log(error);
+    //   });
   };
 
   return (

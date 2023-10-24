@@ -44,7 +44,7 @@ const ReceiptScreen = ({ route }) => {
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
       setImage(result.assets[0].uri);
-      navigation.navigate("ManualEntry");
+      navigation.navigate("ManualEntry", { baseURL: baseURL });
     }
   };
 
@@ -61,7 +61,7 @@ const ReceiptScreen = ({ route }) => {
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
       setImage(result.assets[0].uri);
-      navigation.navigate("ManualEntry");
+      navigation.navigate("ManualEntry", { baseURL: baseURL });
     }
   };
 
@@ -73,7 +73,7 @@ const ReceiptScreen = ({ route }) => {
   };
   handleOnPress3 = () => {
     console.log("Enter Manually");
-    navigation.navigate("ManualEntry");
+    navigation.navigate("ManualEntry", { baseURL: baseURL });
   };
   handleOnPress4 = () => {
     console.log("Exit");
@@ -91,12 +91,12 @@ const ReceiptScreen = ({ route }) => {
           onPress={() => {
             Alert.alert("Exit the Bill?", "You're about to leave the bill", [
               {
-                text: "Back to Bill",
+                text: "Continue",
                 style: "cancel",
               },
               {
-                text: "Save Progress",
-                onPress: () => navigation.navigate("GroupView"),
+                text: "Exit",
+                onPress: () => navigation.goBack(),
               },
             ]);
           }}

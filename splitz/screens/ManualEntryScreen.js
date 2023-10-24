@@ -119,7 +119,7 @@ const ManualEntryScreen = ({ route }) => {
 
   handleOnPress3 = () => {
     console.log("Go Split");
-    navigation.navigate("Split");
+    navigation.navigate("Split", { baseURL: baseURL });
   };
 
   return (
@@ -142,12 +142,12 @@ const ManualEntryScreen = ({ route }) => {
             onPress={() => {
               Alert.alert("Exit the Bill?", "You're about to leave the bill", [
                 {
-                  text: "Back to Bill",
+                  text: "Continue",
                   style: "cancel",
                 },
                 {
-                  text: "Save Progress",
-                  onPress: () => navigation.navigate("GroupView"),
+                  text: "Exit",
+                  onPress: () => navigation.goBack(),
                 },
               ]);
             }}

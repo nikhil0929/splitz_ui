@@ -54,6 +54,7 @@ const ProfileScreen = ({ route }) => {
             <View style={styles.profilePicture}></View>
             <Text style={styles.nameText}>Kyle Yun</Text>
             <Text style={styles.nameText2}>@kylexyun</Text>
+            <Text style={styles.nameText2}>+1 (408) 691-9112</Text>
           </View>
           <ScrollView>
             <TitleText>Full Name:</TitleText>
@@ -73,19 +74,6 @@ const ProfileScreen = ({ route }) => {
             <View style={{ flexDirection: "row" }}>
               <TextInput
                 defaultValue="@kylexyun"
-                style={styles.entryBox}
-              ></TextInput>
-              <TouchableOpacity>
-                <Image
-                  style={styles.go}
-                  source={require("../assets/go.png")}
-                ></Image>
-              </TouchableOpacity>
-            </View>
-            <TitleText>Phone Number:</TitleText>
-            <View style={{ flexDirection: "row" }}>
-              <TextInput
-                defaultValue="+1 (408) 691-9112"
                 style={styles.entryBox}
               ></TextInput>
               <TouchableOpacity>
