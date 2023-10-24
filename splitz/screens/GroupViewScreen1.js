@@ -122,7 +122,11 @@ const GroupViewScreen1 = ({ route }) => {
             <Text style={styles.otherText}>Dashboard</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Receipt")}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("CreateBill", { baseURL: baseURL })
+          }
+        >
           <View
             style={{
               alignSelf: "center",

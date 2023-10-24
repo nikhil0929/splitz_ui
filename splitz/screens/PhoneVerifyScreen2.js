@@ -67,7 +67,7 @@ const PhoneVerifyScreen2 = ({ route }) => {
         // extract the access token from the response
         // const access_token = res.data.access_token;
         saveKey("access_token", res.data.access_token);
-        let access_token = await SecureStore.getItemAsync("access_token");
+        const access_token = await SecureStore.getItemAsync("access_token");
         console.log("access token: ", access_token);
         // GET request to retrieve the user's information
         axios
@@ -84,7 +84,7 @@ const PhoneVerifyScreen2 = ({ route }) => {
               res.data.name ? console.log("true") : console.log("false")
             );
             if (!res.data.name) {
-              navigation.navigate("PhoneVerifyScreen3", { baseURL: baseURL });
+              navigation.navigate("PhoneVerifyScreen3");
             } else {
               navigation.navigate("BottomTabNavigator", {
                 baseURL: baseURL,

@@ -36,30 +36,47 @@ const PhoneVerifyScreen3 = ({ route }) => {
   const navigation = useNavigation();
   //   const route = useRoute();
 
+  // async function getValueFor(key) {
+  //   let result = await SecureStore.getItemAsync(key);
+  //   if (result) {
+  //     return result;
+  //   } else {
+  //     alert("No values stored under that key.");
+  //   }
+  // }
   handleOnPress1 = () => {
     console.log(allNames);
   };
-  handleOnPress2 = () => {
+  const handleOnPress2 = async () => {
+    const data = {
+      name: fullName,
+      username: userName,
+    };
+    if (fullName == "" || userName == "") {
+      Alert.alert("Please fill in all fields");
+      return;
+    }
+
+    console.log("HEREERER");
+    const access_token = await SecureStore.getItemAsync("access_token");
+    headers = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    };
     axios
-      .post(baseURL + "/user/update/", {
-        name: fullName,
-        username: userName,
-      })
+      .put(baseURL + "/user/update/", data, headers)
       .then((res) => {
         console.log("IN here");
         // let result = await SecureStore.getItemAsync("access_token");
 
         // Alert.alert(`token! ${result}`);
-        navigation.navigate("GroupActionStack", {
-          screen: "Tabs",
-          params: {
-            screen: "Create/Join",
-            params: { baseURL: baseURL },
-          },
-        });
+        console.log(res.data);
+        Alert.alert("Update Success!");
+        navigation.navigate("GroupActionStack", { baseURL: baseURL });
       })
       .catch((error) => {
-        Alert("Failed!");
+        Alert.alert("Failed!");
         console.log(error);
       });
   };

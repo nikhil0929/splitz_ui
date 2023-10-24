@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import GroupViewScreen1 from "../screens/GroupViewScreen1";
 import GroupViewScreen2 from "../screens/GroupViewScreen2";
+import CreateBillStack from "./CreateBillStack";
 
 const GroupDetailsNavigator = createStackNavigator();
 
@@ -17,6 +18,11 @@ const GroupDetailsStack = ({ baseURL }) => {
       <GroupDetailsNavigator.Screen
         name="GroupDashboard"
         component={GroupViewScreen2}
+        initialParams={{ baseURL: baseURL }}
+      />
+      <GroupDetailsNavigator.Screen
+        name="CreateBill"
+        component={CreateBillStack}
         initialParams={{ baseURL: baseURL }}
       />
     </GroupDetailsNavigator.Navigator>
