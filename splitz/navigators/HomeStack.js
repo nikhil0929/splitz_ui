@@ -5,8 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import colors from "../config/colors";
 
-import ManageViewScreen1 from "../screens/ManageViewScreen1";
-import ManageViewScreen2 from "../screens/ManageViewScreen2";
+import ManageViewScreen from "../screens/UserBillsListScreen";
+import GroupDetailsStack from "./GroupDetailsStack";
 
 const Stack = createStackNavigator();
 
@@ -29,12 +29,12 @@ const HomeStack = ({ baseURL }) => {
     >
       <Stack.Screen
         name="Bills"
-        component={ManageViewScreen1}
+        component={ManageViewScreen}
         initialParams={{ baseURL: baseURL }}
       />
       <Stack.Screen
-        name="Groups"
-        component={ManageViewScreen2}
+        name="GroupDetails"
+        component={GroupDetailsStack}
         initialParams={{ baseURL: baseURL }}
       />
     </Stack.Navigator>

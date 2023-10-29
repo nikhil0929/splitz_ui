@@ -10,6 +10,7 @@ import {
   Text,
   Pressable,
   LogBox,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -21,6 +22,9 @@ import HeadingText from "../components/HeadingText";
 import GreyText from "../components/GreyText";
 import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const ReceiptScreen = ({ route }) => {
   const { baseURL } = route.params;
@@ -96,7 +100,8 @@ const ReceiptScreen = ({ route }) => {
               },
               {
                 text: "Exit",
-                onPress: () => navigation.goBack(),
+                onPress: () =>
+                  navigation.navigate("GroupDetails", { baseURL: baseURL }),
               },
             ]);
           }}
@@ -157,8 +162,8 @@ const styles = StyleSheet.create({
   },
   buttonPicture: {
     marginBottom: 40,
-    width: 95,
-    height: 95,
+    height: 50,
+    width: 50,
   },
   containerBox: {
     flex: 1,
@@ -210,10 +215,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: colors.secondary,
     borderRadius: 20,
-    width: 340,
-    height: 178,
+    width: "95%",
     alignItems: "center",
     justifyContent: "center",
+    padding: 20,
   },
   buttonText: {
     fontSize: 25,

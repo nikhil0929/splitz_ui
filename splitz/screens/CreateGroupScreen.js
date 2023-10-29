@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Text,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -16,6 +17,9 @@ import HeadingText from "../components/HeadingText";
 import GreyText from "../components/GreyText";
 import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const CreateGroupScreen = ({ route }) => {
   const { baseURL } = route.params;
@@ -81,34 +85,29 @@ const CreateGroupScreen = ({ route }) => {
           )}
 
           <TitleText>{isCreatingGroup ? "Group Name:" : "Group ID:"}</TitleText>
-          <View style={styles.phoneNumberBox}>
-            <TextInput
-              style={styles.nameInput}
-              ref={inputRef}
-              value={fullGroupName}
-              keyboardType="ascii-capable"
-              autoCapitalize="words"
-              onChangeText={(text) => setFullGroupName(text)}
-              onSubmitEditing={() => {
-                secondBox.current.focus();
-              }}
-            />
-          </View>
+          <TextInput
+            style={styles.phoneNumberBox}
+            ref={inputRef}
+            value={fullGroupName}
+            autoCapitalize="words"
+            onChangeText={(text) => setFullGroupName(text)}
+            onSubmitEditing={() => {
+              secondBox.current.focus();
+            }}
+          />
 
           <TitleText>
             {isCreatingGroup ? "Set a password:" : "Enter password:"}
           </TitleText>
-          <View style={styles.phoneNumberBox}>
-            <TextInput
-              style={styles.nameInput}
-              ref={secondBox}
-              value={password}
-              placeholder={isCreatingGroup ? "(Optional)" : "(If applicable)"}
-              onChangeText={(text) => setPassword(text)}
-              keyboardType="ascii-capable"
-              secureTextEntry={true}
-            />
-          </View>
+          <TextInput
+            style={styles.phoneNumberBox}
+            ref={secondBox}
+            value={password}
+            placeholder={isCreatingGroup ? "(Optional)" : "(If applicable)"}
+            onChangeText={(text) => setPassword(text)}
+            keyboardType="ascii-capable"
+            secureTextEntry={true}
+          />
           <TouchableOpacity
             style={styles.primaryButton}
             onPress={() =>
@@ -128,14 +127,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     justifyContent: "flex-end",
     flex: 1,
+    width: screenWidth,
+    height: screenHeight,
   },
   logo: {
-    marginTop: 30,
-    marginBottom: 40,
+    marginTop: 20,
+    marginBottom: 20,
     justifyContent: "center",
     alignContent: "center",
-    width: "70%",
-    height: 100,
+    width: screenWidth * 0.6,
+    height: screenHeight * 0.1,
     alignSelf: "center",
   },
   verificationBox: {
@@ -146,29 +147,29 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     padding: 30,
     paddingTop: 40,
+    width: screenWidth,
   },
   phoneNumberBox: {
     borderWidth: 2,
     borderColor: "#CFCFCF",
     borderRadius: 10,
-    width: 350,
+    width: "100%",
     height: 60,
     marginTop: 25,
     marginBottom: 30,
     flexDirection: "row",
-  },
-  nameInput: {
     fontSize: 20,
     padding: 10,
-    marginLeft: 5,
   },
+
   primaryButton: {
     backgroundColor: colors.primary,
     borderRadius: 100,
-    width: 355,
+    width: "100%",
     height: 60,
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
     marginTop: 20,
     marginBottom: 10,
   },

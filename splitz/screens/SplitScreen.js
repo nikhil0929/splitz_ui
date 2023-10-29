@@ -14,6 +14,7 @@ import {
   ScrollView,
   FlatList,
   LogBox,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -23,6 +24,9 @@ import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
 import ConfirmedReceiptItem from "../components/ConfirmedReceiptItem";
 import Profile from "../components/Profile";
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const SplitScreen = ({ route }) => {
   const { baseURL } = route.params;
@@ -106,7 +110,7 @@ const SplitScreen = ({ route }) => {
   };
 
   handleOnPress3 = () => {
-    navigation.navigate("BillTotal");
+    navigation.navigate("BillTotal", { baseURL: baseURL });
   };
 
   return (
@@ -127,12 +131,15 @@ const SplitScreen = ({ route }) => {
                   "You're about to leave the bill",
                   [
                     {
-                      text: "Back to Bill",
+                      text: "Continue",
                       style: "cancel",
                     },
                     {
-                      text: "Save Progress",
-                      onPress: () => navigation.navigate("GroupView"),
+                      text: "Exit",
+                      onPress: () =>
+                        navigation.navigate("GroupDetails", {
+                          baseURL: baseURL,
+                        }),
                     },
                   ]
                 );
@@ -175,9 +182,6 @@ const SplitScreen = ({ route }) => {
               />
             </View>
             <View style={styles.horizontalLine}></View>
-            <View style={styles.profile}>
-              <Text style={styles.profileText}> {userName} </Text>
-            </View>
             <Text style={styles.personTotal}>${computeTotal()}</Text>
             <Text style={styles.totalText}> Your Total </Text>
             <TouchableOpacity
@@ -197,6 +201,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.secondary,
     flex: 1,
+    screenWidth: screenWidth,
   },
   logo: {
     marginTop: 10,
@@ -237,7 +242,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignContent: "center",
     justifyContent: "center",
-    height: 400,
+    height: 300,
+    width: "100%",
   },
   topButtons: {
     flexDirection: "row",
@@ -246,7 +252,7 @@ const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: colors.primary,
     borderRadius: 100,
-    width: 355,
+    width: "100%",
     height: 60,
     justifyContent: "center",
     alignItems: "center",

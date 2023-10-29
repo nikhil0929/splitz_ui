@@ -26,6 +26,9 @@ import ButtonText from "../components/ButtonText";
 import ReceiptItem from "../components/ReceiptItem";
 import ButtonText2 from "../components/ButtonText2";
 
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
+
 const ManualEntryScreen = ({ route }) => {
   const { baseURL } = route.params;
 
@@ -132,37 +135,48 @@ const ManualEntryScreen = ({ route }) => {
       </SafeAreaView>
       <View style={styles.containerBox}>
         <View style={styles.topButtons}>
-          <Pressable onPress={handleOnPress1}>
-            <Image
-              source={require("../assets/redo.png")}
-              style={styles.redoButton}
-            ></Image>
-          </Pressable>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert("Exit the Bill?", "You're about to leave the bill", [
-                {
-                  text: "Continue",
-                  style: "cancel",
-                },
-                {
-                  text: "Exit",
-                  onPress: () => navigation.goBack(),
-                },
-              ]);
+          <View>
+            <TitleText>Confirm item list:</TitleText>
+            <Text style={styles.descriptionText}> Add new items/tip: </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            <Image
-              source={require("../assets/exit.png")}
-              style={styles.exitButton}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.newView}>
-          <TitleText>Confirm your list of items:</TitleText>
+            <Pressable onPress={handleOnPress1}>
+              <Image
+                source={require("../assets/redo.png")}
+                style={styles.redoButton}
+              ></Image>
+            </Pressable>
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert(
+                  "Exit the Bill?",
+                  "You're about to leave the bill",
+                  [
+                    {
+                      text: "Continue",
+                      style: "cancel",
+                    },
+                    {
+                      text: "Exit",
+                      onPress: () => navigation.goBack(),
+                    },
+                  ]
+                );
+              }}
+            >
+              <Image
+                source={require("../assets/exit.png")}
+                style={styles.exitButton}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View>
-          <Text style={styles.descriptionText}> Add new items/tip: </Text>
           <View style={styles.itemBox1}>
             <TextInput
               value={itemName}
@@ -194,7 +208,12 @@ const ManualEntryScreen = ({ route }) => {
           </Text>
           <View style={styles.itemBox2}>
             <KeyboardAwareScrollView
-              style={{ flex: 1 }}
+              style={{
+                flex: 1,
+                backgroundColor: "#f9f9f9",
+                margin: 7,
+                borderRadius: 20,
+              }}
               keyboardShouldPersistTaps="always"
             >
               <FlatList
@@ -219,7 +238,7 @@ const ManualEntryScreen = ({ route }) => {
               />
             </KeyboardAwareScrollView>
           </View>
-          <View style={{ marginBottom: 50 }}>
+          <View style={{ alignItems: "center" }}>
             <TouchableOpacity
               style={styles.primaryButton}
               onPress={this.handleOnPress3}
@@ -244,6 +263,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.secondary,
     flex: 1,
+    width: screenWidth,
   },
   logo: {
     marginTop: 10,
@@ -261,11 +281,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: 30,
-  },
-  newView: {
-    marginTop: 5,
-    marginBottom: 25,
   },
   exitButton: {
     height: 35,
@@ -275,9 +290,7 @@ const styles = StyleSheet.create({
   redoButton: {
     height: 25,
     width: 25,
-    alignSelf: "flex-end",
-    marginRight: 20,
-    marginBottom: 5,
+    marginRight: 25,
   },
   descriptionText: {
     fontSize: 16,
@@ -290,7 +303,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "#EEEEEE",
     height: 75,
-    width: 360,
+    width: "95%",
     flexDirection: "row",
     marginTop: 15,
     alignSelf: "center",
@@ -299,15 +312,15 @@ const styles = StyleSheet.create({
   },
   itemBox2: {
     width: "100%",
-    height: 315,
+    height: "50%",
     alignSelf: "center",
     alignContent: "center",
     justifyContent: "center",
   },
   topButtons: {
     flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    padding: 20,
   },
   addButton: {
     backgroundColor: colors.primary,
@@ -342,8 +355,8 @@ const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: colors.primary,
     borderRadius: 100,
-    width: 355,
-    height: 60,
+    width: "95%",
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 25,
@@ -352,11 +365,10 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 2,
     borderColor: colors.primary,
-    width: 355,
-    height: 60,
+    width: "95%",
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center",
     marginTop: 15,
     flexDirection: "row",
   },

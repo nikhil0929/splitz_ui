@@ -23,11 +23,6 @@ function BottomTabNavigator({ baseURL }) {
         initialParams={{ baseURL: baseURL }}
       />
       <Tab.Screen
-        name="GroupDetails"
-        component={GroupDetailsStack}
-        initialParams={{ baseURL: baseURL }}
-      />
-      <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         initialParams={{ baseURL: baseURL }}

@@ -96,7 +96,11 @@ const BillTotalScreen = ({ route }) => {
       </SafeAreaView>
       <View style={styles.containerBox}>
         <View style={styles.topButtons}>
-          <Pressable onPress={() => navigation.navigate("GroupView")}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("GroupDetails", { baseURL: baseURL })
+            }
+          >
             <Image
               source={require("../assets/exit.png")}
               style={styles.exitButton}

@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   FlatList,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -28,8 +29,12 @@ import BottomTabNavigator from "../navigators/BottomTabNavigator";
 import CustomBottomTabBar from "../navigators/CustomBottomTabBar";
 
 import Bill from "../components/Bill";
+import GoBackButton from "../components/GoBackButton";
 
-const GroupViewScreen1 = ({ route }) => {
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
+
+const GroupDetailsScreen_CreateBill = ({ route }) => {
   const { baseURL } = route.params;
   const [viewMode, setViewMode] = useState("Bills"); // default to 'Bills'
   const navigation = useNavigation();
@@ -70,10 +75,19 @@ const GroupViewScreen1 = ({ route }) => {
         ></Image>
       </SafeAreaView>
       <View style={styles.containerBox}>
-        <View style={{ justifyContent: "flex-end", alignContent: "flex-end" }}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingEnd: 25,
+            paddingTop: 10,
+          }}
+        >
+          <GoBackButton />
           <Text
             style={{
-              alignSelf: "flex-end",
               fontSize: 20,
               fontWeight: "bold",
               color: colors.primary,
@@ -82,6 +96,7 @@ const GroupViewScreen1 = ({ route }) => {
             Group ID: {groupID}
           </Text>
         </View>
+
         <View
           style={{
             flexDirection: "row",
@@ -116,7 +131,7 @@ const GroupViewScreen1 = ({ route }) => {
           <TouchableOpacity
             style={styles.otherBox}
             onPress={() =>
-              navigation.navigate("CreateBillStack", { baseURL: baseURL })
+              navigation.navigate("GroupDashboard", { baseURL: baseURL })
             }
           >
             <Text style={styles.otherText}>Dashboard</Text>
@@ -131,14 +146,15 @@ const GroupViewScreen1 = ({ route }) => {
             style={{
               alignSelf: "center",
               backgroundColor: colors.secondary,
-              height: 135,
               width: 270,
               borderRadius: 20,
+              padding: 10,
             }}
           >
             <Text
               style={{
-                fontSize: 70,
+                fontSize: 40,
+                marginTop: 0,
                 fontWeight: "bold",
                 color: colors.white,
                 alignSelf: "center",
@@ -158,7 +174,12 @@ const GroupViewScreen1 = ({ route }) => {
             </Text>
           </View>
         </TouchableOpacity>
-        <ScrollView style={{ marginTop: 25 }}>
+        <ScrollView
+          style={{
+            marginTop: 25,
+            paddingLeft: 25,
+          }}
+        >
           <View>
             <TitleText>Recent Bills</TitleText>
             <View style={{ flexdirection: "row" }}>
@@ -217,6 +238,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.secondary,
     flex: 1,
+    width: screenWidth,
+    height: screenHeight,
   },
   logo: {
     marginTop: 10,
@@ -234,8 +257,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: 30,
-    paddingTop: 30,
   },
   editButton: {
     height: 30,
@@ -286,4 +307,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GroupViewScreen1;
+export default GroupDetailsScreen_CreateBill;

@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ReceiptScreen from "../screens/ReceiptScreen";
 import ManualEntryScreen from "../screens/ManualEntryScreen";
 import SplitScreen from "../screens/SplitScreen";
+import BillTotalScreen from "../screens/BillTotalScreen";
+import GroupDetailsStack from "./GroupDetailsStack";
 
 const CreateBillStackNavigavtor = createBottomTabNavigator();
 
@@ -26,6 +28,16 @@ const CreateBillStack = ({ baseURL }) => (
     <CreateBillStackNavigavtor.Screen
       name="Split"
       component={SplitScreen}
+      initialParams={{ baseURL: baseURL }}
+    />
+    <CreateBillStackNavigavtor.Screen
+      name="BillTotal"
+      component={BillTotalScreen}
+      initialParams={{ baseURL: baseURL }}
+    />
+    <CreateBillStackNavigavtor.Screen
+      name="GroupDetails"
+      component={GroupDetailsStack}
       initialParams={{ baseURL: baseURL }}
     />
   </CreateBillStackNavigavtor.Navigator>
