@@ -17,10 +17,8 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 5,
     borderRadius: 5,
     backgroundColor: "transparent",
-    margin: 10,
     width: 70,
     justifyContent: "center",
   },

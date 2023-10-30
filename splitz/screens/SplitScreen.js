@@ -24,6 +24,7 @@ import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
 import ConfirmedReceiptItem from "../components/ConfirmedReceiptItem";
 import Profile from "../components/Profile";
+import GoBackButton from "../components/GoBackButton";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -105,10 +106,6 @@ const SplitScreen = ({ route }) => {
     return total.toFixed(2);
   };
 
-  handleOnPress2 = () => {
-    console.log("Exit");
-  };
-
   handleOnPress3 = () => {
     navigation.navigate("BillTotal", { baseURL: baseURL });
   };
@@ -124,32 +121,7 @@ const SplitScreen = ({ route }) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.containerBox}>
           <View style={styles.topButtons}>
-            <TouchableOpacity
-              onPress={() => {
-                Alert.alert(
-                  "Exit the Bill?",
-                  "You're about to leave the bill",
-                  [
-                    {
-                      text: "Continue",
-                      style: "cancel",
-                    },
-                    {
-                      text: "Exit",
-                      onPress: () =>
-                        navigation.navigate("GroupDetails", {
-                          baseURL: baseURL,
-                        }),
-                    },
-                  ]
-                );
-              }}
-            >
-              <Image
-                source={require("../assets/exit.png")}
-                style={styles.exitButton}
-              />
-            </TouchableOpacity>
+            <GoBackButton />
           </View>
           <View style={styles.newView}>
             <TitleText>Tap on the items you're paying for:</TitleText>
@@ -247,7 +219,7 @@ const styles = StyleSheet.create({
   },
   topButtons: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
   },
   primaryButton: {
     backgroundColor: colors.primary,

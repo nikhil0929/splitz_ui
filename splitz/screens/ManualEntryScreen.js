@@ -25,6 +25,7 @@ import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
 import ReceiptItem from "../components/ReceiptItem";
 import ButtonText2 from "../components/ButtonText2";
+import GoBackButton from "../components/GoBackButton";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -135,6 +136,7 @@ const ManualEntryScreen = ({ route }) => {
       </SafeAreaView>
       <View style={styles.containerBox}>
         <View style={styles.topButtons}>
+          <GoBackButton />
           <View>
             <TitleText>Confirm item list:</TitleText>
             <Text style={styles.descriptionText}> Add new items/tip: </Text>
@@ -151,29 +153,6 @@ const ManualEntryScreen = ({ route }) => {
                 style={styles.redoButton}
               ></Image>
             </Pressable>
-            <TouchableOpacity
-              onPress={() => {
-                Alert.alert(
-                  "Exit the Bill?",
-                  "You're about to leave the bill",
-                  [
-                    {
-                      text: "Continue",
-                      style: "cancel",
-                    },
-                    {
-                      text: "Exit",
-                      onPress: () => navigation.goBack(),
-                    },
-                  ]
-                );
-              }}
-            >
-              <Image
-                source={require("../assets/exit.png")}
-                style={styles.exitButton}
-              />
-            </TouchableOpacity>
           </View>
         </View>
         <View>

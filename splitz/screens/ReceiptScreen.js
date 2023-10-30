@@ -22,6 +22,7 @@ import HeadingText from "../components/HeadingText";
 import GreyText from "../components/GreyText";
 import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
+import GoBackButton from "../components/GoBackButton";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -79,9 +80,6 @@ const ReceiptScreen = ({ route }) => {
     console.log("Enter Manually");
     navigation.navigate("ManualEntry", { baseURL: baseURL });
   };
-  handleOnPress4 = () => {
-    console.log("Exit");
-  };
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -91,26 +89,7 @@ const ReceiptScreen = ({ route }) => {
         ></Image>
       </SafeAreaView>
       <View style={styles.containerBox}>
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert("Exit the Bill?", "You're about to leave the bill", [
-              {
-                text: "Continue",
-                style: "cancel",
-              },
-              {
-                text: "Exit",
-                onPress: () =>
-                  navigation.navigate("GroupDetails", { baseURL: baseURL }),
-              },
-            ]);
-          }}
-        >
-          <Image
-            source={require("../assets/exit.png")}
-            style={styles.exitButton}
-          />
-        </TouchableOpacity>
+        <GoBackButton />
         <View style={styles.newView}>
           <TitleText>Please provide a receipt:</TitleText>
         </View>

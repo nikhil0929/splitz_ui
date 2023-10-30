@@ -81,8 +81,7 @@ const GroupDetailsScreen_CreateBill = ({ route }) => {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingEnd: 25,
-            paddingTop: 10,
+            padding: 15,
           }}
         >
           <GoBackButton />

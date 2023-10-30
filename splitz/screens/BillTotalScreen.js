@@ -96,6 +96,19 @@ const BillTotalScreen = ({ route }) => {
       </SafeAreaView>
       <View style={styles.containerBox}>
         <View style={styles.topButtons}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TextInput
+              ref={billNameInputRef}
+              placeholder="Name this Bill!"
+              style={styles.billNameInput}
+            ></TextInput>
+            <TouchableOpacity onPress={() => billNameInputRef.current.focus()}>
+              <Image
+                style={styles.editButton}
+                source={require("../assets/editButton.png")}
+              />
+            </TouchableOpacity>
+          </View>
           <Pressable
             onPress={() =>
               navigation.navigate("GroupDetails", { baseURL: baseURL })
@@ -107,19 +120,6 @@ const BillTotalScreen = ({ route }) => {
             ></Image>
           </Pressable>
         </View>
-        <View style={{ flexDirection: "row", marginTop: 5 }}>
-          <TextInput
-            ref={billNameInputRef}
-            placeholder="Name this Bill!"
-            style={styles.billNameInput}
-          ></TextInput>
-          <TouchableOpacity onPress={() => billNameInputRef.current.focus()}>
-            <Image
-              style={styles.editButton}
-              source={require("../assets/editButton.png")}
-            ></Image>
-          </TouchableOpacity>
-        </View>
         <View
           style={{
             marginTop: 20,
@@ -128,8 +128,8 @@ const BillTotalScreen = ({ route }) => {
             alignSelf: "center",
           }}
         >
-          <Text style={{ fontSize: 50, fontWeight: "bold" }}>${billTotal}</Text>
-          <Text style={{ fontSize: 23, alignSelf: "center", marginTop: 5 }}>
+          <Text style={{ fontSize: 45, fontWeight: "bold" }}>${billTotal}</Text>
+          <Text style={{ fontSize: 22, alignSelf: "center", marginTop: 5 }}>
             Bill Total
           </Text>
         </View>
@@ -194,13 +194,11 @@ const styles = StyleSheet.create({
     alignContent: "center",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: 30,
-    paddingTop: 30,
+    padding: 15,
   },
   topButtons: {
     flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
   exitButton: {
     height: 35,
@@ -213,20 +211,18 @@ const styles = StyleSheet.create({
   },
   billNameInput: {
     fontSize: 25,
-    marginRight: 15,
+    marginRight: 3,
     fontWeight: "bold",
   },
   itemBox2: {
-    alignSelf: "center",
-    alignContent: "center",
-    justifyContent: "center",
     flex: 1,
   },
   primaryButton: {
     backgroundColor: colors.primary,
     borderRadius: 100,
-    width: 355,
-    height: 60,
+    width: "100%",
+    maxWidth: 400,
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
@@ -237,18 +233,14 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 2,
     borderColor: colors.primary,
-    width: 355,
-    height: 60,
+    width: "100%",
+    maxWidth: 400,
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
     marginTop: 15,
     flexDirection: "row",
-  },
-  share: {
-    height: 25,
-    width: 25,
-    marginLeft: 10,
   },
 });
 
