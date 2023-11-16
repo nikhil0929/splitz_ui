@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -30,41 +30,35 @@ import CustomBottomTabBar from "../navigators/CustomBottomTabBar";
 
 import Bill from "../components/Bill";
 import GoBackButton from "../components/GoBackButton";
+import { AxiosContext } from "../axiosCaller";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const GroupDetailsScreen_CreateBill = ({ route }) => {
-  const { baseURL } = route.params;
+  const { room } = route.params;
   const [viewMode, setViewMode] = useState("Bills"); // default to 'Bills'
   const navigation = useNavigation();
   const groupNameInputRef = useRef(null);
+  const axiosCaller = useContext(AxiosContext);
 
-  const bills = [
-    {
-      billId: 1,
-      billName: "Tacos & Beers",
-      createdBy: "Sarang Ambalakkat",
-      createdDays: 7,
-    },
-    {
-      billId: 2,
-      billName: "Johnny Rockets",
-      createdBy: "Kyle Yun",
-      createdDays: 3,
-    },
-    {
-      billId: 3,
-      billName: "BARSSS",
-      createdBy: "Raymond Dinh",
-      createdDays: 10,
-    },
-  ];
+  const [receiptsData, setReceiptsData] = useState(null);
+  console.log("Room is: ", room);
 
-  const recentBills = bills.filter((bill) => bill.createdDays <= 7);
-  const allBills = bills.filter((bill) => bill.createdDays > 7);
+  useEffect(() => {
+    axiosCaller
+      .get("/receipts/" + room.room_code)
+      .then((response) => {
+        console.log(response.data);
+        setReceiptsData(response.data);
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  }, [room]);
 
-  const groupID = "JK76L1";
+  // const recentBills = receiptsData.filter((bill) => bill.createdDays <= 7);
+  // const allBills = receiptsData.filter((bill) => bill.createdDays > 7);
 
   return (
     <View style={styles.container}>
@@ -92,7 +86,7 @@ const GroupDetailsScreen_CreateBill = ({ route }) => {
               color: colors.primary,
             }}
           >
-            Group ID: {groupID}
+            Group ID: {room.room_code}
           </Text>
         </View>
 
@@ -136,98 +130,100 @@ const GroupDetailsScreen_CreateBill = ({ route }) => {
             <Text style={styles.otherText}>Dashboard</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("CreateBill", { baseURL: baseURL })
-          }
-        >
-          <View
+        <View>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("CreateBill", { baseURL: baseURL })
+            }
+          >
+            <View
+              style={{
+                alignSelf: "center",
+                backgroundColor: colors.secondary,
+                width: 270,
+                borderRadius: 20,
+                padding: 10,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 40,
+                  marginTop: 0,
+                  fontWeight: "bold",
+                  color: colors.white,
+                  alignSelf: "center",
+                }}
+              >
+                +
+              </Text>
+              <Text
+                style={{
+                  fontSize: 25,
+                  fontWeight: "bold",
+                  color: colors.white,
+                  alignSelf: "center",
+                }}
+              >
+                Create New Bill
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <ScrollView
             style={{
-              alignSelf: "center",
-              backgroundColor: colors.secondary,
-              width: 270,
-              borderRadius: 20,
-              padding: 10,
+              marginTop: 25,
+              paddingLeft: 25,
             }}
           >
-            <Text
-              style={{
-                fontSize: 40,
-                marginTop: 0,
-                fontWeight: "bold",
-                color: colors.white,
-                alignSelf: "center",
-              }}
-            >
-              +
-            </Text>
-            <Text
-              style={{
-                fontSize: 25,
-                fontWeight: "bold",
-                color: colors.white,
-                alignSelf: "center",
-              }}
-            >
-              Create New Bill
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <ScrollView
-          style={{
-            marginTop: 25,
-            paddingLeft: 25,
-          }}
-        >
-          <View>
-            <TitleText>Recent Bills</TitleText>
-            <View style={{ flexdirection: "row" }}>
-              <FlatList
-                data={recentBills}
-                keyExtractor={(item) => {
-                  return item.billId.toString();
-                }}
-                scrollEnabled={true}
-                horizontal={true}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity>
-                      <Bill
-                        billName={item.billName}
-                        createdBy={item.createdBy}
-                        createdDays={item.createdDays}
-                      />
-                    </TouchableOpacity>
-                  );
-                }}
-              />
+            <View>
+              <TitleText>Recent Bills</TitleText>
+              <View style={{ flexdirection: "row" }}>
+                <FlatList
+                  data={receiptsData}
+                  keyExtractor={(item) => {
+                    return item.id;
+                  }}
+                  scrollEnabled={true}
+                  horizontal={true}
+                  renderItem={({ item }) => {
+                    return (
+                      <TouchableOpacity>
+                        <Bill
+                          billName={item.receipt_name}
+                          createdBy={item.owner_id}
+                          createdDays={0}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View>
             </View>
-          </View>
-          <View style={{ marginTop: 25 }}>
-            <TitleText>All Bills</TitleText>
-            <View style={{ flexdirection: "row" }}>
-              <FlatList
-                data={allBills}
-                keyExtractor={(item) => {
-                  return item.billId.toString();
-                }}
-                scrollEnabled={true}
-                horizontal={true}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity>
-                      <Bill
-                        billName={item.billName}
-                        createdBy={item.createdBy}
-                        createdDays={item.createdDays}
-                      />
-                    </TouchableOpacity>
-                  );
-                }}
-              />
+            <View style={{ marginTop: 25 }}>
+              <TitleText>All Bills</TitleText>
+              <View style={{ flexdirection: "row" }}>
+                <FlatList
+                  data={receiptsData}
+                  keyExtractor={(item) => {
+                    return item.id;
+                  }}
+                  scrollEnabled={true}
+                  horizontal={true}
+                  renderItem={({ item }) => {
+                    return (
+                      <TouchableOpacity>
+                        <Bill
+                          billName={item.receipt_name}
+                          createdBy={item.owner_id}
+                          createdDays={0}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </View>
     </View>
   );

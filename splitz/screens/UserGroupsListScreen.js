@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -28,39 +28,33 @@ import HeadingText from "../components/HeadingText";
 
 import Group from "../components/Group";
 import GroupCard from "../components/GroupCard";
+import { AxiosContext } from "../axiosCaller";
 
 const ManageViewScreen2 = ({ handleChangeScreen }) => {
+  const axiosCaller = useContext(AxiosContext);
   const navigation = useNavigation();
-  const groups = [
-    {
-      groupId: 1,
-      groupName: "SJ BARS",
-      groupAmount: 7,
-      createdDays: 5,
-    },
-    {
-      groupId: 2,
-      groupName: "Las Vegas Baby",
-      groupAmount: 10,
-      createdDays: 10,
-    },
-    {
-      groupId: 3,
-      groupName: "Spain",
-      groupAmount: 20,
-      createdDays: 20,
-    },
-    {
-      groupId: 4,
-      groupName: "House Bills",
-      groupAmount: 6,
-      createdDays: 30,
-    },
-  ];
+  const [recentGroups, setRecentGroups] = useState([]);
+  const [allGroups, setAllGroups] = useState([]);
 
-  const totalGroups = groups.length;
-  const recentGroups = groups.filter((group) => group.createdDays <= 7);
-  const allGroups = groups.filter((group) => group.createdDays > 7);
+  // const recentGroups = groups.filter((group) => group.createdDays <= 7);
+  // const allGroups = groups.filter((group) => group.createdDays > 7);
+
+  useEffect(() => {
+    axiosCaller
+      .get("/room/")
+      .then((response) => {
+        console.log(response.data[0]);
+        let recentGroups = response.data;
+        let allGroups = response.data;
+        setRecentGroups(recentGroups);
+        setAllGroups(allGroups);
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  }, []);
+
+  const totalGroups = allGroups.length;
 
   return (
     <View>

@@ -27,20 +27,43 @@ const JoinGroupScreen = ({ route }) => {
   const inputRef = useRef();
   const secondBox = useRef();
 
-  const [fullGroupName, setFullGroupName] = useState("");
+  const [groupCode, setGroupCode] = useState("");
   const [password, setPassword] = useState("");
 
   const allGroupInfo = fullGroupName + ";" + password;
 
-  handleOnPress1 = () => {
-    console.log(allGroupInfo);
-  };
-  handleOnPress2 = () => {
-    Alert.alert("Hold Up", "y r u gey?", [{ text: "bcuz" }, { text: "idk" }]);
-  };
-  handleAllPresses = () => {
-    this.handleOnPress1();
-    this.handleOnPress2();
+  const handleGroupJoinAction = async () => {
+    const access_token = await SecureStore.getItemAsync("access_token");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
+    };
+
+    const data = {
+      room_code: groupCode,
+      room_password: password,
+    };
+
+    axiosCaller
+      .post("/room/join", data)
+      .then((response) => {
+        console.log(response.data);
+        // navigation.navigate("GroupDetails");
+        Alert.alert("Success!", "", [
+          {
+            text: "Continue",
+            onPress: () =>
+              navigation.navigate("GroupDetails", {
+                screen: "GroupBills", // Specify the initial route name
+                params: { room: response.data }, // Pass the room parameter to the initial route
+              }),
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.log("ERROR: ", error);
+        Alert.alert("Failed!");
+      });
   };
 
   return (
@@ -68,7 +91,7 @@ const JoinGroupScreen = ({ route }) => {
           </View>
           <HeadingText>Let's get you into a group!</HeadingText>
           <GreyText>Join in a group to see and edit bills.</GreyText>
-          <TitleText>Group ID:</TitleText>
+          <TitleText>Group Code:</TitleText>
           <View style={styles.phoneNumberBox}>
             <TextInput
               style={styles.nameInput}
@@ -76,7 +99,7 @@ const JoinGroupScreen = ({ route }) => {
               value={fullGroupName}
               keyboardType="ascii-capable"
               autoCapitalize="words"
-              onChangeText={(text) => setFullGroupName(text)}
+              onChangeText={(text) => setGroupCode(text)}
               onSubmitEditing={() => {
                 {
                   secondBox.current.focus();

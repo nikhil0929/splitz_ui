@@ -7,7 +7,7 @@ import colors from "../config/colors";
 
 const GroupActionNavigator = createStackNavigator();
 
-const GroupActionStack = ({ baseURL }) => {
+const GroupActionStack = () => {
   console.log("Group Action Stack");
   return (
     <GroupActionNavigator.Navigator
@@ -27,13 +27,11 @@ const GroupActionStack = ({ baseURL }) => {
       <GroupActionNavigator.Screen
         name="CreateGroup"
         component={CreateGroupScreen}
-        initialParams={{ baseURL: baseURL }}
       />
 
       <GroupActionNavigator.Screen
         name="GroupDetails"
         component={GroupDetailsStack}
-        initialParams={{ baseURL: baseURL }}
       />
     </GroupActionNavigator.Navigator>
   );

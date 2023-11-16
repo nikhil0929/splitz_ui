@@ -1,29 +1,22 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import GroupDetailsScreen_CreateBill from "../screens/GroupDetailsScreen_CreateBill";
+import GroupDetailsScreen from "../screens/GroupDetailsScreen";
 import GroupViewScreen2 from "../screens/GroupDetailsScreen_Dashboard";
 import CreateBillStack from "./CreateBillStack";
 
 const GroupDetailsNavigator = createStackNavigator();
 
-const GroupDetailsStack = ({ baseURL }) => {
+const GroupDetailsStack = () => {
   console.log("Group Details Stack");
   return (
     <GroupDetailsNavigator.Navigator screenOptions={{ headerShown: false }}>
       <GroupDetailsNavigator.Screen
-        name="GroupBills"
-        component={GroupDetailsScreen_CreateBill}
-        initialParams={{ baseURL: baseURL }}
-      />
-      <GroupDetailsNavigator.Screen
-        name="GroupDashboard"
-        component={GroupViewScreen2}
-        initialParams={{ baseURL: baseURL }}
+        name="GroupDetails"
+        component={GroupDetailsScreen}
       />
       <GroupDetailsNavigator.Screen
         name="CreateBill"
         component={CreateBillStack}
-        initialParams={{ baseURL: baseURL }}
       />
     </GroupDetailsNavigator.Navigator>
   );

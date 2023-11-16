@@ -9,15 +9,34 @@ import TopLogo from "../components/TopLogo";
 import ButtonText from "../components/ButtonText";
 import ButtonText2 from "../components/ButtonText2";
 import * as SecureStore from "expo-secure-store";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
-const LandingScreen = ({ navigation }) => {
+const LandingScreen = ({ route }) => {
+  const { baseURL } = route.params;
+  const navigation = useNavigation();
   handlePress = async () => {
     console.log("Verify User");
-    let result = await SecureStore.getItemAsync("access_token");
-    if (result) {
-      navigation.navigate("PhoneVerifyScreen2");
+    let token = await SecureStore.getItemAsync("access_token");
+    if (!token) {
+      console.log("User is not logged in");
+      navigation.navigate("PhoneVerifyScreen1");
     }
-    navigation.navigate("PhoneVerifyScreen1");
+    axios
+      .get(baseURL + "/user/", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      })
+      .then((res) => {
+        console.log("User is logged in");
+        navigation.navigate("BottomTabNavigator", { baseURL: baseURL });
+      })
+      .catch((error) => {
+        console.log("Error: User is not logged in");
+        navigation.navigate("PhoneVerifyScreen1");
+      });
   };
 
   return (

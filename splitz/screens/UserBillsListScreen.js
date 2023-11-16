@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -29,10 +29,9 @@ import HeadingText from "../components/HeadingText";
 import Bill from "../components/Bill";
 import BillCard from "../components/BillCard";
 import ManageViewScreen2 from "./UserGroupsListScreen";
+import { AxiosContext } from "../axiosCaller";
 
-const ManageViewScreen1 = ({ route }) => {
-  const { baseURL } = route.params;
-
+const ManageViewScreen1 = () => {
   const navigation = useNavigation();
   const [isScreen1, setIsScreen1] = useState(true); // New state to toggle between ManageViewScreen1 and ManageViewScreen2
 
@@ -60,30 +59,25 @@ const ManageViewScreen1 = ({ route }) => {
 };
 const BillsView = ({ handleChangeScreen }) => {
   const navigation = useNavigation();
-  const bills = [
-    {
-      billId: 1,
-      billName: "Tacos & Beers",
-      createdBy: "Sarang Ambalakkat",
-      createdDays: 7,
-    },
-    {
-      billId: 2,
-      billName: "Johnny Rockets",
-      createdBy: "Kyle Yun",
-      createdDays: 3,
-    },
-    {
-      billId: 3,
-      billName: "BARSSS",
-      createdBy: "Raymond Dinh",
-      createdDays: 10,
-    },
-  ];
+  const axiosCaller = useContext(AxiosContext);
+
+  const [bills, setBills] = useState([]);
+
+  useEffect(() => {
+    axiosCaller
+      .get("/receipts/receipts-list")
+      .then((response) => {
+        // console.log(response.data[0]);
+        setBills(response.data);
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  }, []);
 
   const totalBills = bills.length;
-  const recentBills = bills.filter((bill) => bill.createdBy === "Kyle Yun");
-  const allBills = bills.filter((bill) => bill.createdBy !== "Kyle Yun");
+  const recentBills = bills; // MODIFY THESE LINES
+  const allBills = bills; // MODIFY THESE LINES
   return (
     <View>
       <Text

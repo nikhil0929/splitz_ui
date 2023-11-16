@@ -10,18 +10,24 @@ function GroupCard({ groups }) {
       <FlatList
         data={groups}
         keyExtractor={(item) => {
-          return item.groupId.toString();
+          return item.id;
         }}
         scrollEnabled={true}
         horizontal={true}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
-              onPress={() => navigation.navigate("GroupDetails")}
+              onPress={() => {
+                console.log("Item: ", item);
+                navigation.navigate("GroupDetails", {
+                  screen: "GroupDetails", // Specify the initial route name
+                  params: { room: item }, // Pass the room parameter to the initial route
+                });
+              }}
             >
               <Group
-                groupName={item.groupName}
-                groupAmount={item.groupAmount}
+                groupName={item.room_name}
+                groupAmount={item.num_members}
               />
             </TouchableOpacity>
           );

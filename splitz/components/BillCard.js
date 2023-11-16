@@ -11,7 +11,7 @@ function BillCard({ bills }) {
       <FlatList
         data={bills}
         keyExtractor={(item) => {
-          return item.billId.toString();
+          return item.id.toString();
         }}
         scrollEnabled={true}
         horizontal={true}
@@ -19,9 +19,9 @@ function BillCard({ bills }) {
           return (
             <TouchableOpacity>
               <Bill
-                billName={item.billName}
-                createdBy={item.createdBy}
-                createdDays={item.createdDays}
+                billName={item.receipt_name}
+                createdBy={"Owner ID: " + item.owner_id}
+                createdDays={item.room_code}
               />
             </TouchableOpacity>
           );

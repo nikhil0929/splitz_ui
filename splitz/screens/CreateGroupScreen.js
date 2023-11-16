@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -17,12 +17,14 @@ import HeadingText from "../components/HeadingText";
 import GreyText from "../components/GreyText";
 import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
+import axios from "axios";
+import { AxiosContext } from "../axiosCaller";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const CreateGroupScreen = ({ route }) => {
-  const { baseURL } = route.params;
+  const axiosCaller = useContext(AxiosContext);
   const navigation = useNavigation();
   const inputRef = useRef();
   const secondBox = useRef();
@@ -35,8 +37,45 @@ const CreateGroupScreen = ({ route }) => {
     console.log(fullGroupName + ";" + password);
   };
 
-  const handleOnPress2 = () => {
-    Alert.alert("Hold Up", "y r u gey?", [{ text: "bcuz" }, { text: "idk" }]);
+  const handleGroupCreationAction = async () => {
+    const data = {
+      room_name: fullGroupName,
+      room_password: password,
+    };
+
+    axiosCaller
+      .post("/room/create", data)
+      .then((response) => {
+        console.log(response.data);
+        // navigation.navigate("GroupDetails");
+        Alert.alert("Success!", "", [
+          {
+            text: "Continue",
+            onPress: () =>
+              navigation.navigate("GroupDetails", {
+                screen: "GroupBills", // Specify the initial route name
+                params: { room: response.data }, // Pass the room parameter to the initial route
+              }),
+          },
+        ]);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.log("Error Response");
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log("Error Request");
+          // The request was made but no response was received
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", error.message);
+        }
+        Alert.alert("Failed!");
+      });
   };
 
   return (
@@ -110,9 +149,7 @@ const CreateGroupScreen = ({ route }) => {
           />
           <TouchableOpacity
             style={styles.primaryButton}
-            onPress={() =>
-              navigation.navigate("GroupDetails", { baseURL: baseURL })
-            }
+            onPress={handleGroupCreationAction}
           >
             <ButtonText>Continue</ButtonText>
           </TouchableOpacity>

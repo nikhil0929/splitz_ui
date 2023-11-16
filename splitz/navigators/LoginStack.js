@@ -30,7 +30,11 @@ const LoginStack = ({ baseURL }) => {
       }}
       initialRouteName="LandingScreen"
     >
-      <Stack.Screen name="LandingScreen" component={LandingScreen} />
+      <Stack.Screen
+        name="LandingScreen"
+        component={LandingScreen}
+        initialParams={{ baseURL: baseURL }}
+      />
       <Stack.Screen
         name="PhoneVerifyScreen1"
         component={PhoneVerifyScreen1}

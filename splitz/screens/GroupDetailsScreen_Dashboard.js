@@ -29,9 +29,7 @@ import CustomBottomTabBar from "../navigators/CustomBottomTabBar";
 
 import Bill from "../components/Bill";
 
-const GroupViewScreen2 = ({ route }) => {
-  const { baseURL } = route.params;
-
+const GroupViewScreen2 = () => {
   const navigation = useNavigation();
 
   const userTotals = [
@@ -203,8 +201,8 @@ const styles = StyleSheet.create({
     alignContent: "center",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: 30,
-    paddingTop: 30,
+    padding: 10,
+    paddingBottom: 25,
   },
   editButton: {
     height: 30,
@@ -216,7 +214,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   itemBox2: {
-    alignSelf: "center",
     alignContent: "center",
     justifyContent: "center",
     flex: 1,
@@ -224,8 +221,8 @@ const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: colors.primary,
     borderRadius: 100,
-    width: 355,
-    height: 60,
+    width: "95%",
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",

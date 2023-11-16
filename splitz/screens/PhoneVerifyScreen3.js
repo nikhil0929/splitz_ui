@@ -34,26 +34,13 @@ const PhoneVerifyScreen3 = ({ route }) => {
   const allNames = fullName + ";" + userName;
 
   const navigation = useNavigation();
-  //   const route = useRoute();
 
-  // async function getValueFor(key) {
-  //   let result = await SecureStore.getItemAsync(key);
-  //   if (result) {
-  //     return result;
-  //   } else {
-  //     alert("No values stored under that key.");
-  //   }
-  // }
-  handleOnPress1 = () => {
-    console.log(allNames);
-  };
   const handleOnPress2 = async () => {
     if (fullName == "" || userName == "") {
       Alert.alert("Please fill in all fields");
       return;
     }
 
-    console.log("HEREERER");
     const access_token = await SecureStore.getItemAsync("access_token");
     const headers = {
       "Content-Type": "application/json",

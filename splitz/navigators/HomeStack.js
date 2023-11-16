@@ -10,8 +10,7 @@ import GroupDetailsStack from "./GroupDetailsStack";
 
 const Stack = createStackNavigator();
 
-const HomeStack = ({ baseURL }) => {
-  console.log("Home Stack");
+const HomeStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -27,16 +26,8 @@ const HomeStack = ({ baseURL }) => {
         },
       }}
     >
-      <Stack.Screen
-        name="Bills"
-        component={ManageViewScreen}
-        initialParams={{ baseURL: baseURL }}
-      />
-      <Stack.Screen
-        name="GroupDetails"
-        component={GroupDetailsStack}
-        initialParams={{ baseURL: baseURL }}
-      />
+      <Stack.Screen name="Bills" component={ManageViewScreen} />
+      <Stack.Screen name="GroupDetails" component={GroupDetailsStack} />
     </Stack.Navigator>
   );
 };
