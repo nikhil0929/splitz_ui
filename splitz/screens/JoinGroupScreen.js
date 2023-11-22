@@ -21,6 +21,7 @@ import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
 
 const JoinGroupScreen = ({ route }) => {
+  console.log("JoinGroupScreen");
   const { baseURL } = route.params;
   const navigation = useNavigation();
 

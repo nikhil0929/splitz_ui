@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 const LandingScreen = ({ route }) => {
+  console.log("LandingScreen");
   const { baseURL } = route.params;
   const navigation = useNavigation();
   handlePress = async () => {

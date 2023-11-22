@@ -30,6 +30,7 @@ import CustomBottomTabBar from "../navigators/CustomBottomTabBar";
 import Bill from "../components/Bill";
 
 const GroupViewScreen2 = () => {
+  console.log("GroupViewScreen2");
   const navigation = useNavigation();
 
   const userTotals = [

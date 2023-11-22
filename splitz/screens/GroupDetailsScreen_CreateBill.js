@@ -36,6 +36,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const GroupDetailsScreen_CreateBill = ({ route }) => {
+  console.log("GroupDetailsScreen_CreateBill");
   const { room } = route.params;
   const [viewMode, setViewMode] = useState("Bills"); // default to 'Bills'
   const navigation = useNavigation();

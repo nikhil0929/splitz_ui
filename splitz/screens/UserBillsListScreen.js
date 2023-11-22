@@ -32,6 +32,7 @@ import ManageViewScreen2 from "./UserGroupsListScreen";
 import { AxiosContext } from "../axiosCaller";
 
 const ManageViewScreen1 = () => {
+  console.log("UserBillsListScreen");
   const navigation = useNavigation();
   const [isScreen1, setIsScreen1] = useState(true); // New state to toggle between ManageViewScreen1 and ManageViewScreen2
 

@@ -24,6 +24,7 @@ import * as SecureStore from "expo-secure-store";
 import LoginLayout from "../layouts/LoginLayout";
 
 const PhoneVerifyScreen3 = ({ route }) => {
+  console.log("PhoneVerifyScreen3");
   const { baseURL } = route.params;
   const inputRef = useRef();
   const secondBox = useRef();

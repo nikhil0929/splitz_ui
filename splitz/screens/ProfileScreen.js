@@ -27,6 +27,7 @@ import ButtonText2 from "../components/ButtonText2";
 import HeadingText from "../components/HeadingText";
 
 const ProfileScreen = ({ route }) => {
+  console.log("ProfileScreen");
   const { baseURL } = route.params;
 
   return (

@@ -28,6 +28,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ReceiptScreen = ({ route }) => {
+  console.log("ReceiptScreen");
   const { baseURL } = route.params;
   LogBox.ignoreLogs([
     'Key "cancelled" in the image picker result is deprecated and will be removed in SDK 48, use "canceled" instead',

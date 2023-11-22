@@ -26,6 +26,7 @@ import LoginLayout from "../layouts/LoginLayout";
 import * as SecureStore from "expo-secure-store";
 
 const PhoneVerifyScreen2 = ({ route }) => {
+  console.log("PhoneVerifyScreen2");
   const navigation = useNavigation();
 
   const [code, setCode] = useState("");

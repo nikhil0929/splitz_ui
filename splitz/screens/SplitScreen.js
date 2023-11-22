@@ -30,6 +30,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const SplitScreen = ({ route }) => {
+  console.log("SplitScreen");
   const { baseURL } = route.params;
 
   LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);

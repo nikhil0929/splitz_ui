@@ -27,6 +27,7 @@ import BottomTabNavigator from "../navigators/BottomTabNavigator";
 import CustomBottomTabBar from "../navigators/CustomBottomTabBar";
 
 const BillTotalScreen = ({ route }) => {
+  console.log("BillTotalScreen");
   const { baseURL } = route.params;
   const navigation = useNavigation();
 

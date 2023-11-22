@@ -27,6 +27,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const GroupDetailsScreen = ({ route }) => {
+  console.log("GroupDetailsScreen");
   const { room } = route.params;
   const [viewMode, setViewMode] = useState(true); // default to 'Bills'
   const groupNameInputRef = useRef(null);

@@ -31,6 +31,7 @@ import GroupCard from "../components/GroupCard";
 import { AxiosContext } from "../axiosCaller";
 
 const ManageViewScreen2 = ({ handleChangeScreen }) => {
+  console.log("UserGroupsListScreen");
   const axiosCaller = useContext(AxiosContext);
   const navigation = useNavigation();
   const [recentGroups, setRecentGroups] = useState([]);

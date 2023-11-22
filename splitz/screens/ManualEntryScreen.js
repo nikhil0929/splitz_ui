@@ -31,6 +31,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ManualEntryScreen = ({ route }) => {
+  console.log("ManualEntryScreen");
   const { baseURL } = route.params;
 
   LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);

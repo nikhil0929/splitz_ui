@@ -24,6 +24,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const CreateGroupScreen = ({ route }) => {
+  console.log("CreateGroupScreen");
   const axiosCaller = useContext(AxiosContext);
   const navigation = useNavigation();
   const inputRef = useRef();
