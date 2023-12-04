@@ -27,7 +27,6 @@ import ButtonText2 from "../components/ButtonText2";
 import HeadingText from "../components/HeadingText";
 
 import Bill from "../components/Bill";
-import BillCard from "../components/BillCard";
 import ManageViewScreen2 from "./UserGroupsListScreen";
 import { AxiosContext } from "../axiosCaller";
 
@@ -68,7 +67,6 @@ const BillsView = ({ handleChangeScreen }) => {
     axiosCaller
       .get("/receipts/receipts-list")
       .then((response) => {
-        // console.log(response.data[0]);
         setBills(response.data);
       })
       .catch((error) => {
@@ -149,11 +147,35 @@ const BillsView = ({ handleChangeScreen }) => {
       </View>
       <View style={{ marginTop: 25 }}>
         <TitleText>Your Bills</TitleText>
-        <BillCard bills={recentBills} />
+        <View style={{ flexdirection: "row" }}>
+          <FlatList
+            data={bills}
+            keyExtractor={(item) => {
+              return item.id;
+            }}
+            scrollEnabled={true}
+            horizontal={true}
+            renderItem={({ item }) => {
+              return <Bill currentBill={item} />;
+            }}
+          />
+        </View>
       </View>
       <View style={{ marginTop: 25 }}>
         <TitleText>All Bills</TitleText>
-        <BillCard bills={allBills} />
+        <View style={{ flexdirection: "row" }}>
+          <FlatList
+            data={bills}
+            keyExtractor={(item) => {
+              return item.id;
+            }}
+            scrollEnabled={true}
+            horizontal={true}
+            renderItem={({ item }) => {
+              return <Bill currentBill={item} />;
+            }}
+          />
+        </View>
       </View>
     </View>
   );

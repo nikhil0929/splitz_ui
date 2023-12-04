@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import GroupDetailsScreen from "../screens/GroupDetailsScreen";
-import GroupViewScreen2 from "../screens/GroupDetailsScreen_Dashboard";
 import CreateBillStack from "./CreateBillStack";
 
 const GroupDetailsNavigator = createStackNavigator();
@@ -15,7 +14,7 @@ const GroupDetailsStack = () => {
         component={GroupDetailsScreen}
       />
       <GroupDetailsNavigator.Screen
-        name="CreateBill"
+        name="CreateBillStack"
         component={CreateBillStack}
       />
     </GroupDetailsNavigator.Navigator>

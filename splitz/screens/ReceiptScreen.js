@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,8 +12,8 @@ import {
   LogBox,
   Dimensions,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import { AxiosContext } from "../axiosCaller";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -23,21 +23,22 @@ import GreyText from "../components/GreyText";
 import TitleText from "../components/TitleText";
 import ButtonText from "../components/ButtonText";
 import GoBackButton from "../components/GoBackButton";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ReceiptScreen = ({ route }) => {
   console.log("ReceiptScreen");
-  const { baseURL } = route.params;
+  const { room } = route.params;
+  const axiosCaller = useContext(AxiosContext);
+  const navigation = useNavigation();
   LogBox.ignoreLogs([
     'Key "cancelled" in the image picker result is deprecated and will be removed in SDK 48, use "canceled" instead',
     'Key "uri" in the image picker result is deprecated and will be removed in SDK 48, you can access selected assets through the "assets" array instead',
   ]);
 
   const [image, setImage] = useState(null);
-
-  const navigation = useNavigation();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,6 +51,15 @@ const ReceiptScreen = ({ route }) => {
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
       setImage(result.assets[0].uri);
+      axiosCaller
+        .get("/room/" + room.room_code + "/upload-receipt")
+        .then((response) => {
+          console.log(response.data);
+          setReceiptsData(response.data);
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
       navigation.navigate("ManualEntry", { baseURL: baseURL });
     }
   };

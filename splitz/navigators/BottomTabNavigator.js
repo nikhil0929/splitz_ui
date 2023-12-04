@@ -40,7 +40,14 @@ function BottomTabNavigator({ route }) {
 
   return (
     <AxiosContext.Provider value={axiosCaller}>
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          // tabBarStyle: {
+          //   marginTop: 30,
+          // },
+        }}
+      >
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="GroupAction" component={GroupActionStack} />
         <Tab.Screen name="Profile" component={ProfileScreen} />

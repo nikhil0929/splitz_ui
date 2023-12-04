@@ -19,7 +19,7 @@ const ManageStack = () => (
       initialParams={{ baseURL: baseURL }}
     />
     <GroupTab.Screen
-      name="GroupDetails"
+      name="GroupDetailsStack"
       component={GroupDetailsStack}
       initialParams={{ baseURL: baseURL }}
     />

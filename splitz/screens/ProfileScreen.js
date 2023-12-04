@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -25,10 +25,78 @@ import Profile from "../components/Profile";
 import UserTotals from "../components/UserTotals";
 import ButtonText2 from "../components/ButtonText2";
 import HeadingText from "../components/HeadingText";
+import { AxiosContext } from "../axiosCaller";
 
-const ProfileScreen = ({ route }) => {
+const ProfileScreen = () => {
   console.log("ProfileScreen");
-  const { baseURL } = route.params;
+  const axiosCaller = useContext(AxiosContext);
+
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [tempName, setTempName] = useState("");
+  const [tempUsername, setTempUsername] = useState("");
+  const [tempEmail, setTempEmail] = useState("");
+
+  useEffect(() => {
+    axiosCaller
+      .get("/user/")
+      .then((response) => {
+        const userData = response.data;
+        setPhoneNumber(userData.phone_number);
+        setName(userData.name);
+        setUsername(userData.username);
+        setEmail(userData.email);
+
+        // Initialize temporary variables
+        setTempName(userData.name);
+        setTempUsername(userData.username);
+        setTempEmail(userData.email);
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  }, []);
+
+  const buildUpdateObject = () => {
+    const updateObj = {};
+    if (tempName !== name) updateObj.name = tempName;
+    if (tempUsername !== username) updateObj.username = tempUsername;
+    if (tempEmail !== email) updateObj.email = tempEmail;
+    return updateObj;
+  };
+
+  const handleUpdateUserDetails = async () => {
+    const updateData = buildUpdateObject();
+
+    if (Object.keys(updateData).length === 0) {
+      console.log("No changes to update");
+      return;
+    }
+
+    axiosCaller
+      .put("/user/update", updateData)
+      .then((response) => {
+        // Update the displayed values with the updated data
+        if (updateData.name) setName(updateData.name);
+        if (updateData.username) setUsername(updateData.username);
+        if (updateData.email) setEmail(updateData.email);
+
+        // Reset the temporary values
+        setTempName(name);
+        setTempUsername(username);
+        setTempEmail(email);
+
+        Alert.alert("Update Success!");
+
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -45,55 +113,50 @@ const ProfileScreen = ({ route }) => {
               marginBottom: 5,
               color: "black",
               fontSize: 26,
-              alignSelf: "center",
               fontWeight: "bold",
             }}
           >
             My Profile
           </Text>
-          <View>
+          <View style={{ flexDirection: "row", marginBottom: 25 }}>
             <View style={styles.profilePicture}></View>
-            <Text style={styles.nameText}>Kyle Yun</Text>
-            <Text style={styles.nameText2}>@kylexyun</Text>
-            <Text style={styles.nameText2}>+1 (408) 691-9112</Text>
+            <View style={{ marginLeft: 25 }}>
+              <Text style={styles.nameText}>{name}</Text>
+              <Text style={styles.nameText2}>@{username}</Text>
+              <Text style={styles.nameText2}>{phoneNumber}</Text>
+            </View>
           </View>
           <ScrollView>
             <TitleText>Full Name:</TitleText>
             <View style={{ flexDirection: "row" }}>
               <TextInput
-                defaultValue="Kyle Yun"
+                defaultValue={name}
                 style={styles.entryBox}
+                onChangeText={(text) => setTempName(text)}
               ></TextInput>
-              <TouchableOpacity>
-                <Image
-                  style={styles.go}
-                  source={require("../assets/go.png")}
-                ></Image>
-              </TouchableOpacity>
             </View>
             <TitleText>Username:</TitleText>
             <View style={{ flexDirection: "row" }}>
               <TextInput
-                defaultValue="@kylexyun"
+                defaultValue={username}
                 style={styles.entryBox}
+                onChangeText={(text) => setTempUsername(text)}
               ></TextInput>
-              <TouchableOpacity>
-                <Image
-                  style={styles.go}
-                  source={require("../assets/go.png")}
-                ></Image>
-              </TouchableOpacity>
             </View>
             <TitleText>Email:</TitleText>
             <View style={{ flexDirection: "row" }}>
-              <TextInput style={styles.entryBox}></TextInput>
-              <TouchableOpacity>
-                <Image
-                  style={styles.go}
-                  source={require("../assets/go.png")}
-                ></Image>
-              </TouchableOpacity>
+              <TextInput
+                defaultValue={email}
+                style={styles.entryBox}
+                onChangeText={(text) => setTempEmail(text)}
+              ></TextInput>
             </View>
+            <TouchableOpacity
+              style={styles.primaryButton}
+              onPress={handleUpdateUserDetails}
+            >
+              <ButtonText>Update Credentials</ButtonText>
+            </TouchableOpacity>
             <TitleText>Preferred method of payment:</TitleText>
             <View>
               <Text style={{ fontWeight: "bold", fontSize: 18, marginTop: 15 }}>
@@ -193,7 +256,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: 30,
-    paddingTop: 30,
   },
   profilePicture: {
     backgroundColor: "orange",
@@ -206,25 +268,22 @@ const styles = StyleSheet.create({
   nameText: {
     fontSize: 22,
     fontWeight: "bold",
-    alignSelf: "center",
     marginTop: 10,
   },
   nameText2: {
     fontSize: 14,
-    alignSelf: "center",
     marginTop: 5,
-    marginBottom: 20,
   },
   entryBox: {
     borderWidth: 2,
     borderRadius: 10,
     height: 50,
-    width: 270,
+    width: "100%",
     borderColor: "#CFCFCF",
-    marginTop: 15,
+    marginTop: 10,
+    marginBottom: 10,
     padding: 10,
     fontSize: 18,
-    marginBottom: 20,
   },
   go: {
     height: 40,
@@ -244,6 +303,17 @@ const styles = StyleSheet.create({
     width: 50,
     alignSelf: "center",
     marginTop: 15,
+  },
+  primaryButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 100,
+    width: "100%",
+    height: 45,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 15,
+    marginBottom: 10,
   },
 });
 

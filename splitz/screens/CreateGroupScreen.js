@@ -25,59 +25,8 @@ const screenHeight = Dimensions.get("window").height;
 
 const CreateGroupScreen = ({ route }) => {
   console.log("CreateGroupScreen");
-  const axiosCaller = useContext(AxiosContext);
-  const navigation = useNavigation();
-  const inputRef = useRef();
-  const secondBox = useRef();
 
-  const [fullGroupName, setFullGroupName] = useState("");
-  const [password, setPassword] = useState("");
   const [isCreatingGroup, setIsCreatingGroup] = useState(true); // New state to toggle between creating and joining
-
-  const handleOnPress1 = () => {
-    console.log(fullGroupName + ";" + password);
-  };
-
-  const handleGroupCreationAction = async () => {
-    const data = {
-      room_name: fullGroupName,
-      room_password: password,
-    };
-
-    axiosCaller
-      .post("/room/create", data)
-      .then((response) => {
-        console.log(response.data);
-        // navigation.navigate("GroupDetails");
-        Alert.alert("Success!", "", [
-          {
-            text: "Continue",
-            onPress: () =>
-              navigation.navigate("GroupDetails", {
-                screen: "GroupBills", // Specify the initial route name
-                params: { room: response.data }, // Pass the room parameter to the initial route
-              }),
-          },
-        ]);
-      })
-      .catch((error) => {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          console.log("Error Response");
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log("Error Request");
-          // The request was made but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
-        }
-        Alert.alert("Failed!");
-      });
-  };
 
   return (
     <View style={styles.container}>
@@ -91,71 +40,209 @@ const CreateGroupScreen = ({ route }) => {
         <KeyboardAwareScrollView>
           <View flexDirection="row" alignItems="center" justifyContent="center">
             <TouchableOpacity
-              style={isCreatingGroup ? styles.clickBox : styles.otherBox}
-              onPress={() => setIsCreatingGroup(true)}
+              style={
+                isCreatingGroup ? styles.selectedTab : styles.unselectedTab
+              }
+              onPress={() => {
+                setIsCreatingGroup(true);
+              }}
             >
               <Text
-                style={isCreatingGroup ? styles.mainText : styles.otherText}
+                style={
+                  isCreatingGroup ? styles.selectedText : styles.unselectedText
+                }
               >
                 Create Group
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={!isCreatingGroup ? styles.clickBox : styles.otherBox}
-              onPress={() => setIsCreatingGroup(false)}
+              style={
+                !isCreatingGroup ? styles.selectedTab : styles.unselectedTab
+              }
+              onPress={() => {
+                setIsCreatingGroup(false);
+              }}
             >
               <Text
-                style={!isCreatingGroup ? styles.mainText : styles.otherText}
+                style={
+                  !isCreatingGroup ? styles.selectedText : styles.unselectedText
+                }
               >
                 Join Group
               </Text>
             </TouchableOpacity>
           </View>
-
-          {isCreatingGroup ? (
-            <>
-              <HeadingText>Let's get a new group started!</HeadingText>
-              <GreyText>Create one first, then add in bills.</GreyText>
-            </>
-          ) : (
-            <>
-              <HeadingText>Let's get you into a group!</HeadingText>
-              <GreyText>Join in a group to see and edit bills.</GreyText>
-            </>
-          )}
-
-          <TitleText>{isCreatingGroup ? "Group Name:" : "Group ID:"}</TitleText>
-          <TextInput
-            style={styles.phoneNumberBox}
-            ref={inputRef}
-            value={fullGroupName}
-            autoCapitalize="words"
-            onChangeText={(text) => setFullGroupName(text)}
-            onSubmitEditing={() => {
-              secondBox.current.focus();
-            }}
-          />
-
-          <TitleText>
-            {isCreatingGroup ? "Set a password:" : "Enter password:"}
-          </TitleText>
-          <TextInput
-            style={styles.phoneNumberBox}
-            ref={secondBox}
-            value={password}
-            placeholder={isCreatingGroup ? "(Optional)" : "(If applicable)"}
-            onChangeText={(text) => setPassword(text)}
-            keyboardType="ascii-capable"
-            secureTextEntry={true}
-          />
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={handleGroupCreationAction}
-          >
-            <ButtonText>Continue</ButtonText>
-          </TouchableOpacity>
         </KeyboardAwareScrollView>
+        {isCreatingGroup ? <CreateGroupTab /> : <JoinGroupTab />}
       </View>
+    </View>
+  );
+};
+
+const CreateGroupTab = () => {
+  const inputRef = useRef();
+  const secondBox = useRef();
+
+  const axiosCaller = useContext(AxiosContext);
+  const navigation = useNavigation();
+
+  const [fullGroupName, setFullGroupName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleGroupCreationAction = async () => {
+    const data = {
+      room_name: fullGroupName,
+      room_password: password,
+    };
+
+    axiosCaller
+      .post("/room/create", data)
+      .then((response) => {
+        console.log(response.data);
+        Alert.alert("Create Success!", "", [
+          {
+            text: "Continue",
+            onPress: () =>
+              navigation.navigate("GroupDetailsStack", {
+                screen: "GroupDetails", // Specify the initial route name
+                params: { room: response.data }, // Pass the room parameter to the initial route
+              }),
+          },
+        ]);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.log("Error Response");
+          console.log(error.response.data);
+        } else if (error.request) {
+          console.log("Error Request");
+          // The request was made but no response was received
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", error.message);
+        }
+        Alert.alert("Failed Create!");
+      });
+  };
+  return (
+    <View>
+      <HeadingText>Let's get a new group started!</HeadingText>
+      <GreyText>Create one first, then add in bills.</GreyText>
+
+      <TitleText>Group Name:</TitleText>
+      <TextInput
+        style={styles.phoneNumberBox}
+        ref={inputRef}
+        value={fullGroupName}
+        autoCapitalize="words"
+        onChangeText={(text) => setFullGroupName(text)}
+        onSubmitEditing={() => {
+          secondBox.current.focus();
+        }}
+      />
+
+      <TitleText>Set a password:</TitleText>
+      <TextInput
+        style={styles.phoneNumberBox}
+        ref={secondBox}
+        value={password}
+        placeholder={"(Optional)"}
+        onChangeText={(text) => setPassword(text)}
+        keyboardType="ascii-capable"
+        secureTextEntry={true}
+      />
+      <TouchableOpacity
+        style={styles.primaryButton}
+        onPress={handleGroupCreationAction}
+      >
+        <ButtonText>Continue</ButtonText>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const JoinGroupTab = () => {
+  const inputRef = useRef();
+  const secondBox = useRef();
+
+  const axiosCaller = useContext(AxiosContext);
+  const navigation = useNavigation();
+
+  const [groupCode, setGroupCode] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleGroupJoinAction = async () => {
+    const data = {
+      room_code: groupCode,
+      room_password: password,
+    };
+
+    axiosCaller
+      .post("/room/join", data)
+      .then((response) => {
+        console.log(response.data);
+        // navigation.navigate("GroupDetails");
+        Alert.alert("Join Success!", "", [
+          {
+            text: "Continue",
+            onPress: () =>
+              navigation.navigate("GroupDetailsStack", {
+                screen: "GroupDetails", // Specify the initial route name
+                params: { room: response.data }, // Pass the room parameter to the initial route
+              }),
+          },
+        ]);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.log("Error Response");
+          console.log(error.response.data);
+        } else if (error.request) {
+          console.log("Error Request");
+          // The request was made but no response was received
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", error.message);
+        }
+        Alert.alert("Failed Join!");
+      });
+  };
+  return (
+    <View>
+      <HeadingText>Let's get you into a group!</HeadingText>
+      <GreyText>Join in a group to see and edit bills.</GreyText>
+      <TitleText>Group Code:</TitleText>
+      <TextInput
+        style={styles.phoneNumberBox}
+        ref={inputRef}
+        value={groupCode}
+        autoCapitalize="words"
+        onChangeText={(text) => setGroupCode(text)}
+        onSubmitEditing={() => {
+          secondBox.current.focus();
+        }}
+      />
+
+      <TitleText>Enter password:</TitleText>
+      <TextInput
+        style={styles.phoneNumberBox}
+        ref={secondBox}
+        value={password}
+        placeholder={"(Optional)"}
+        onChangeText={(text) => setPassword(text)}
+        keyboardType="ascii-capable"
+        secureTextEntry={true}
+      />
+      <TouchableOpacity
+        style={styles.primaryButton}
+        onPress={handleGroupJoinAction}
+      >
+        <ButtonText>Continue</ButtonText>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -211,7 +298,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
-  clickBox: {
+  selectedTab: {
     width: 130,
     height: 40,
     backgroundColor: colors.secondary,
@@ -223,7 +310,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: "bold",
   },
-  otherBox: {
+  unselectedTab: {
     width: 130,
     height: 40,
     backgroundColor: "transparent",
@@ -233,12 +320,12 @@ const styles = StyleSheet.create({
     margin: 5,
     marginBottom: 25,
   },
-  mainText: {
+  selectedText: {
     fontSize: 16,
     color: colors.white,
     fontWeight: "bold",
   },
-  otherText: {
+  unselectedText: {
     fontSize: 16,
     color: colors.secondary,
     fontWeight: "bold",

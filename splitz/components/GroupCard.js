@@ -19,7 +19,7 @@ function GroupCard({ groups }) {
             <TouchableOpacity
               onPress={() => {
                 console.log("Item: ", item);
-                navigation.navigate("GroupDetails", {
+                navigation.navigate("GroupDetailsStack", {
                   screen: "GroupDetails", // Specify the initial route name
                   params: { room: item }, // Pass the room parameter to the initial route
                 });

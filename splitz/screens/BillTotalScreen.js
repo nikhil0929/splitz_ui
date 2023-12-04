@@ -25,65 +25,21 @@ import UserTotals from "../components/UserTotals";
 import ButtonText2 from "../components/ButtonText2";
 import BottomTabNavigator from "../navigators/BottomTabNavigator";
 import CustomBottomTabBar from "../navigators/CustomBottomTabBar";
+import GoBackButton from "../components/GoBackButton";
+import { userTotalsMapToArray, getTotalAmount } from "../utils/utils";
 
 const BillTotalScreen = ({ route }) => {
-  console.log("BillTotalScreen");
-  const { baseURL } = route.params;
-  const navigation = useNavigation();
+  const { userTotals, receiptName, navigation } = route.params;
+  // const navigation = useNavigation();
 
-  const userTotals = [
-    {
-      userId: 1,
-      userName: "Sarang Ambalakkat",
-      userTotal: parseFloat("35.20"),
-      userColor: "#BA4BEF",
-      owner: 1,
-    },
-    {
-      userId: 2,
-      userName: "Nikhil Aggarwal",
-      userTotal: parseFloat("20.54"),
-      userColor: "#6F8DF5",
-      owner: 0,
-    },
-    {
-      userId: 3,
-      userName: "Charles Gutcho",
-      userTotal: parseFloat("28.90"),
-      userColor: "#FFDF8C",
-      owner: 0,
-    },
-    {
-      userId: 4,
-      userName: "Kyle Yun",
-      userTotal: parseFloat("34.72"),
-      userColor: "#FF9473",
-      owner: 0,
-    },
-    {
-      userId: 5,
-      userName: "Raymond Dinh",
-      userTotal: parseFloat("10.00"),
-      userColor: "#6B72AB",
-      owner: 0,
-    },
-    {
-      userId: 6,
-      userName: "Tiffany Yau",
-      userTotal: parseFloat("30.26"),
-      userColor: "#6D1ED4",
-      owner: 0,
-    },
-  ];
+  console.log("User Totals Array: ");
 
-  const totalAmount = userTotals.reduce(
-    (acc, user) => acc + parseFloat(user.userTotal),
-    0
-  );
-  const formattedTotals = totalAmount.toFixed(2);
+  const userTotalsArray = userTotalsMapToArray(userTotals);
+  const total = parseFloat(getTotalAmount(userTotalsArray)).toFixed(2);
+  console.log(userTotals);
+  console.log(userTotalsArray);
 
-  const billTotal = parseFloat("175.36");
-  const formattedBillTotal = billTotal.toFixed(2);
+  const currTotal = 25.12;
 
   const billNameInputRef = useRef(null);
 
@@ -100,6 +56,7 @@ const BillTotalScreen = ({ route }) => {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TextInput
               ref={billNameInputRef}
+              value={receiptName ? receiptName : ""}
               placeholder="Name this Bill!"
               style={styles.billNameInput}
             ></TextInput>
@@ -110,11 +67,7 @@ const BillTotalScreen = ({ route }) => {
               />
             </TouchableOpacity>
           </View>
-          <Pressable
-            onPress={() =>
-              navigation.navigate("GroupDetails", { baseURL: baseURL })
-            }
-          >
+          <Pressable onPress={() => navigation.goBack()}>
             <Image
               source={require("../assets/exit.png")}
               style={styles.exitButton}
@@ -129,23 +82,22 @@ const BillTotalScreen = ({ route }) => {
             alignSelf: "center",
           }}
         >
-          <Text style={{ fontSize: 45, fontWeight: "bold" }}>${billTotal}</Text>
+          <Text style={{ fontSize: 45, fontWeight: "bold" }}>${total}</Text>
           <Text style={{ fontSize: 22, alignSelf: "center", marginTop: 5 }}>
             Bill Total
           </Text>
         </View>
         <View style={styles.itemBox2}>
           <FlatList
-            data={userTotals}
+            data={userTotalsArray}
             style={{ flex: 1, marginTop: 5 }}
-            keyExtractor={(user) => user.userId.toString()}
+            keyExtractor={(item) => item.id}
             scrollEnabled={true}
             renderItem={({ item }) => (
               <UserTotals
-                userName={item.userName}
-                userTotal={item.userTotal}
-                userColor={item.userColor}
-                owner={item.owner}
+                userName={item.name}
+                userTotal={item.total_cost}
+                // Add other props as needed
               />
             )}
           />
@@ -158,7 +110,7 @@ const BillTotalScreen = ({ route }) => {
             marginBottom: 10,
           }}
         >
-          Progress: ${formattedTotals}/${formattedBillTotal}
+          Progress: ${currTotal}/${total}
         </Text>
         <TouchableOpacity
           style={styles.primaryButton}

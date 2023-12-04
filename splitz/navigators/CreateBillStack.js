@@ -36,7 +36,7 @@ const CreateBillStack = ({ baseURL }) => (
       initialParams={{ baseURL: baseURL }}
     />
     <CreateBillStackNavigavtor.Screen
-      name="GroupDetails"
+      name="GroupDetailsStack"
       component={GroupDetailsStack}
       initialParams={{ baseURL: baseURL }}
     />

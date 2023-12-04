@@ -22,6 +22,7 @@ import ButtonText from "../components/ButtonText";
 import Bill from "../components/Bill";
 import GoBackButton from "../components/GoBackButton";
 import { AxiosContext } from "../axiosCaller";
+import { getTotalAmount } from "../utils/utils";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -99,7 +100,7 @@ const GroupBillsComponent = ({ room, setViewMode }) => {
   const navigation = useNavigation();
   const axiosCaller = useContext(AxiosContext);
 
-  console.log("Room is: ", room);
+  // console.log("Room is: ", room);
 
   useEffect(() => {
     axiosCaller
@@ -112,6 +113,15 @@ const GroupBillsComponent = ({ room, setViewMode }) => {
         console.log("Error", error);
       });
   }, [room]);
+
+  const createBillClick = () => {
+    navigation.navigate("CreateBillStack", {
+      screen: "ReceiptUpload", // Specify the initial route name
+      params: {
+        room: room,
+      }, // Pass the room parameter to the initial route
+    });
+  };
 
   return (
     <View>
@@ -133,7 +143,7 @@ const GroupBillsComponent = ({ room, setViewMode }) => {
           <Text style={styles.otherText}>Dashboard</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => setViewMode(true)}>
+      <TouchableOpacity onPress={createBillClick}>
         <View
           style={{
             alignSelf: "center",
@@ -183,15 +193,7 @@ const GroupBillsComponent = ({ room, setViewMode }) => {
               scrollEnabled={true}
               horizontal={true}
               renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity>
-                    <Bill
-                      billName={item.receipt_name}
-                      createdBy={item.owner_id}
-                      createdDays={0}
-                    />
-                  </TouchableOpacity>
-                );
+                return <Bill currentBill={item} />;
               }}
             />
           </View>
@@ -207,15 +209,7 @@ const GroupBillsComponent = ({ room, setViewMode }) => {
               scrollEnabled={true}
               horizontal={true}
               renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity>
-                    <Bill
-                      billName={item.receipt_name}
-                      createdBy={item.owner_id}
-                      createdDays={0}
-                    />
-                  </TouchableOpacity>
-                );
+                return <Bill currentBill={item} />;
               }}
             />
           </View>
@@ -227,8 +221,43 @@ const GroupBillsComponent = ({ room, setViewMode }) => {
 
 const GroupDashboardComponent = ({ room, setViewMode }) => {
   const navigation = useNavigation();
+  const axiosCaller = useContext(AxiosContext);
+  const [userTotals, setUserTotals] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0.0);
 
-  const userTotals = [
+  function userTotalsJSONToArray(userTotals) {
+    const userTotalsArray = Object.entries(userTotals).map(([key, value]) => ({
+      id: key,
+      name: value.name,
+      username: value.username,
+      total_cost: value.total_cost,
+    }));
+    return userTotalsArray;
+  }
+
+  useEffect(() => {
+    axiosCaller
+      .get("/room/" + room.room_code + "/user-costs")
+      .then((response) => {
+        console.log("Response");
+        console.log(response.data);
+        res = response.data;
+        userArr = userTotalsJSONToArray(res);
+        totalAmt = getTotalAmount(userArr).toFixed(2);
+        setUserTotals(userArr);
+        setTotalAmount(totalAmt);
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log("User Totals Updated", userTotals);
+    console.log("Total Amount Updated", totalAmount);
+  }, [userTotals, totalAmount]);
+
+  const userTotals1 = [
     {
       userId: 1,
       userName: "Sarang Ambalakkat",
@@ -267,11 +296,10 @@ const GroupDashboardComponent = ({ room, setViewMode }) => {
     },
   ];
 
-  const totalAmount = userTotals.reduce(
-    (acc, user) => acc + parseFloat(user.userTotal),
-    0
-  );
-  const formattedTotals = totalAmount.toFixed(2);
+  // const totalAmount = userTotals.reduce(
+  //   (acc, user) => acc + parseFloat(user.userTotal),
+  //   0
+  // );
   return (
     <View>
       <View
@@ -299,9 +327,7 @@ const GroupDashboardComponent = ({ room, setViewMode }) => {
           alignSelf: "center",
         }}
       >
-        <Text style={{ fontSize: 45, fontWeight: "bold" }}>
-          ${formattedTotals}
-        </Text>
+        <Text style={{ fontSize: 45, fontWeight: "bold" }}>${totalAmount}</Text>
         <Text style={{ fontSize: 22, alignSelf: "center", marginTop: 5 }}>
           Group Totals
         </Text>
@@ -310,15 +336,13 @@ const GroupDashboardComponent = ({ room, setViewMode }) => {
         <FlatList
           data={userTotals}
           style={{ flex: 1, marginTop: 5 }}
-          keyExtractor={(user) => user.userId.toString()}
+          keyExtractor={(item) => item.id}
           scrollEnabled={true}
-          renderItem={({ item }) => (
-            <UserTotals
-              userName={item.userName}
-              userTotal={item.userTotal}
-              userColor={item.userColor}
-            />
-          )}
+          renderItem={({ item }) => {
+            return (
+              <UserTotals userName={item.name} userTotal={item.total_cost} />
+            );
+          }}
         />
       </View>
       <TouchableOpacity style={dashboardStyles.primaryButton}>
@@ -441,7 +465,7 @@ const dashboardStyles = StyleSheet.create({
   itemBox2: {
     alignContent: "center",
     justifyContent: "center",
-    flex: 1,
+    height: "100%",
   },
   primaryButton: {
     backgroundColor: colors.primary,
@@ -502,6 +526,11 @@ const dashboardStyles = StyleSheet.create({
     fontSize: 16,
     color: colors.secondary,
     fontWeight: "bold",
+  },
+  userTotalsList: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: "red",
   },
 });
 

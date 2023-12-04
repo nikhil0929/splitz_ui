@@ -1,10 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 
-function UserTotals({ userName, userTotal, userColor, owner }) {
+function UserTotals({ userName, userTotal }) {
   const truncateName = (name) => {
     return name.length > 9 ? name.substring(0, 9) + "." : name;
   };
+
+  owner = 1;
 
   return (
     <View style={styles.itemContainer}>
@@ -12,7 +14,7 @@ function UserTotals({ userName, userTotal, userColor, owner }) {
         <View style={styles.rowContainer}>
           <View style={styles.leftContainer}>
             <View
-              style={[styles.profile, { backgroundColor: userColor }]}
+              style={[styles.profile, { backgroundColor: "#e06f25" }]}
             ></View>
             <Text style={styles.userNameText}>{truncateName(userName)}</Text>
           </View>
