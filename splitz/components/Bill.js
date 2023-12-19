@@ -59,10 +59,13 @@ function Bill({ currentBill }) {
         console.log(user_totals);
         console.log("Map to Array");
         console.log(userTotalsMapToArray(user_totals));
-        navigation.navigate("BillUserTotals", {
-          userTotals: userTotalsMapToArray(user_totals),
-          receiptName: receipt_name,
-          navigation: navigation,
+        navigation.navigate("GroupDetailsStack", {
+          screen: "BillUserTotals", // Specify the initial route name
+          params: {
+            userTotals: userTotalsMapToArray(user_totals),
+            receiptName: receipt_name,
+            navigation: navigation,
+          }, // Pass the room parameter to the initial route
         });
       })
       .catch((error) => {
