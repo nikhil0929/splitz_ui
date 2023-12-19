@@ -33,12 +33,12 @@ const ReceiptScreen = ({ route }) => {
   const { room } = route.params;
   const axiosCaller = useContext(AxiosContext);
   const navigation = useNavigation();
+  const [image, setImage] = useState(null);
+
   LogBox.ignoreLogs([
     'Key "cancelled" in the image picker result is deprecated and will be removed in SDK 48, use "canceled" instead',
     'Key "uri" in the image picker result is deprecated and will be removed in SDK 48, you can access selected assets through the "assets" array instead',
   ]);
-
-  const [image, setImage] = useState(null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -47,20 +47,35 @@ const ReceiptScreen = ({ route }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      setImage(result.assets[0].uri);
+      const imageUri = result.assets[0].uri;
+      setImage(imageUri);
+      // Prepare the form data
+      const formData = new FormData();
+      formData.append("receipt_img", {
+        uri: imageUri,
+        type: "image/jpeg", // or 'image/png'
+        name: "receipt.jpg", // or 'receipt.png'
+      });
+
+      // Make the request
       axiosCaller
-        .get("/room/" + room.room_code + "/upload-receipt")
+        .post("/receipts/" + room.room_code + "/upload-receipt", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
+          console.log("RESPONSE: ");
           console.log(response.data);
-          setReceiptsData(response.data);
+          res = response.data;
+          navigation.navigate("ManualEntry", {
+            receipt: res,
+          });
         })
         .catch((error) => {
           console.log("Error", error);
         });
-      navigation.navigate("ManualEntry", { baseURL: baseURL });
     }
   };
 

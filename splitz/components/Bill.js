@@ -11,7 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import { AxiosContext } from "../axiosCaller";
-import { getTotalAmount } from "../utils/utils";
+import { getTotalAmount, userTotalsMapToArray } from "../utils/utils";
 
 function parseUserTotals(currentBill) {
   let userTotals = new Map();
@@ -57,13 +57,12 @@ function Bill({ currentBill }) {
         user_totals = parseUserTotals(response.data);
         console.log("User Totals in Bill");
         console.log(user_totals);
-        navigation.navigate("CreateBillStack", {
-          screen: "BillTotal", // Specify the initial route name
-          params: {
-            userTotals: user_totals,
-            receiptName: receipt_name,
-            navigation: navigation,
-          }, // Pass the room parameter to the initial route
+        console.log("Map to Array");
+        console.log(userTotalsMapToArray(user_totals));
+        navigation.navigate("BillUserTotals", {
+          userTotals: userTotalsMapToArray(user_totals),
+          receiptName: receipt_name,
+          navigation: navigation,
         });
       })
       .catch((error) => {

@@ -6,7 +6,13 @@ function UserTotals({ userName, userTotal }) {
     return name.length > 9 ? name.substring(0, 9) + "." : name;
   };
 
+  console.log("UserTotals");
+  console.log("userName", userName);
+  console.log("userTotal", userTotal);
+
   owner = 1;
+
+  // parseFloat(userTotal).toFixed(2)
 
   return (
     <View style={styles.itemContainer}>
@@ -18,9 +24,7 @@ function UserTotals({ userName, userTotal }) {
             ></View>
             <Text style={styles.userNameText}>{truncateName(userName)}</Text>
           </View>
-          <Text style={styles.totalText}>
-            ${parseFloat(userTotal).toFixed(2)}
-          </Text>
+          <Text style={styles.totalText}>${userTotal}</Text>
         </View>
         {owner === 1 && <Text style={styles.ownerLabel}>OWNER</Text>}
       </View>

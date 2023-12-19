@@ -9,6 +9,10 @@ import {
   Alert,
 } from "react-native";
 
+const truncateName = (name) => {
+  return name.length > 15 ? name.substring(0, 15) + "..." : name;
+};
+
 function ReceiptItem({ itemTitle, quantity, price, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedItemTitle, setEditedItemTitle] = useState(itemTitle);
@@ -83,7 +87,7 @@ function ReceiptItem({ itemTitle, quantity, price, onUpdate }) {
         </View>
       ) : (
         <View style={styles.itemDetails}>
-          <Text style={styles.itemTitle}>{editedItemTitle}</Text>
+          <Text style={styles.itemTitle}>{truncateName(editedItemTitle)}</Text>
           <Text>({editedQuantity})</Text>
           <Text style={styles.dollarText}>${editedPrice}</Text>
           <TouchableOpacity onPress={handleEditPress}>

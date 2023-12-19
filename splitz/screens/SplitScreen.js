@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -25,90 +25,67 @@ import ButtonText from "../components/ButtonText";
 import ConfirmedReceiptItem from "../components/ConfirmedReceiptItem";
 import Profile from "../components/Profile";
 import GoBackButton from "../components/GoBackButton";
+import { AxiosContext } from "../axiosCaller";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const SplitScreen = ({ route }) => {
   console.log("SplitScreen");
-  const { baseURL } = route.params;
+  const { receipt_items, receipt } = route.params;
+  const axiosCaller = useContext(AxiosContext);
+  const navigation = useNavigation();
 
   LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
-  const receiptItems = [
-    {
-      itemId: 1,
-      itemTitle: "Spaghetti",
-      quantity: 1,
-      price: "12.60",
-    },
-    {
-      itemId: 2,
-      itemTitle: "White Claws",
-      quantity: 4,
-      price: "32.00",
-    },
-    {
-      itemId: 3,
-      itemTitle: "BBQ Chicken Pizza",
-      quantity: 1,
-      price: "20.00",
-    },
-    {
-      itemId: 4,
-      itemTitle: "Water",
-      quantity: 4,
-      price: "0.00",
-    },
-    {
-      itemId: 5,
-      itemTitle: "Tip",
-      quantity: 1,
-      price: "15.00",
-    },
-    {
-      itemId: 6,
-      itemTitle: "Tax",
-      quantity: 1,
-      price: "10.00",
-    },
-  ];
-
-  const [selectedItems, setSelectedItems] = useState({});
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [total, setTotal] = useState(0);
   const [isProfileVisible, setIsProfileVisible] = useState(false);
   const [otherUserSelectedItems, setOtherUserSelectedItems] = useState({});
   const userName = "RD";
 
-  const navigation = useNavigation();
-
   const handleItemPress = (item) => {
-    setSelectedItems((prevSelectedItems) => ({
-      ...prevSelectedItems,
-      [item.itemId]: !prevSelectedItems[item.itemId],
-    }));
-    setIsProfileVisible(Object.values(selectedItems).some((value) => value));
-  };
-
-  const computeTotal = () => {
-    let total = 0;
-    for (let item of receiptItems) {
-      let splitCount = 0;
-
-      // Check if current user selected the item
-      if (selectedItems[item.itemId]) splitCount++;
-
-      // Check if other user selected the item
-      if (otherUserSelectedItems[item.itemId]) splitCount++;
-
-      if (splitCount > 0) {
-        total += (item.quantity * parseFloat(item.price)) / splitCount;
-      }
+    if (selectedItems.includes(item.id)) {
+      setSelectedItems((prevSelectedItems) => {
+        return prevSelectedItems.filter((itemId) => itemId !== item.id);
+      });
+    } else {
+      setSelectedItems((prevSelectedItems) => {
+        return [...prevSelectedItems, item.id];
+      });
     }
-    return total.toFixed(2);
+
+    setIsProfileVisible(selectedItems.length > 0);
   };
 
-  handleOnPress3 = () => {
-    navigation.navigate("BillTotal", { baseURL: baseURL });
+  const getItemNamesByIds = (itemIds) => {
+    return receipt_items
+      .filter((item) => itemIds.includes(item.id))
+      .map((item) => item.item_name);
+  };
+
+  confirmSelectedItems = () => {
+    const user_selected_items = {
+      item_id_list: selectedItems,
+      user_total_cost: 0,
+    };
+    axiosCaller
+      .post(
+        "/receipts/" + receipt.room_code + "/select-items/" + receipt.id,
+        user_selected_items
+      )
+      .then((response) => {
+        // Update the displayed values with the updated data
+        if (response.data == true) {
+          Alert.alert("Items Selected Successfully!");
+          navigation.navigate("BillTotal", { receipt: receipt });
+        } else {
+          Alert.alert("Error", "Item could not be added.");
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
   };
 
   return (
@@ -130,9 +107,9 @@ const SplitScreen = ({ route }) => {
           <View>
             <View style={styles.itemBox2}>
               <FlatList
-                data={receiptItems}
+                data={receipt_items}
                 keyExtractor={(item) => {
-                  return item.itemId.toString();
+                  return item.id;
                 }}
                 scrollEnabled={true}
                 renderItem={({ item }) => {
@@ -141,12 +118,12 @@ const SplitScreen = ({ route }) => {
                       onPress={() => handleItemPress(item)}
                     >
                       <ConfirmedReceiptItem
-                        itemTitle={item.itemTitle}
-                        quantity={item.quantity}
-                        price={item.price}
+                        itemTitle={item.item_name}
+                        quantity={item.item_quantity}
+                        price={item.item_cost}
                         onPress={() => handleItemPress(item)}
-                        isSelected={selectedItems === item}
-                        showProfile={selectedItems[item.itemId]}
+                        isSelected={selectedItems.includes(item.id)}
+                        showProfile={selectedItems.includes(item.id)}
                         userName={userName}
                       />
                     </TouchableWithoutFeedback>
@@ -155,11 +132,27 @@ const SplitScreen = ({ route }) => {
               />
             </View>
             <View style={styles.horizontalLine}></View>
-            <Text style={styles.personTotal}>${computeTotal()}</Text>
-            <Text style={styles.totalText}> Your Total </Text>
+            <Text style={styles.descriptionText}>Selected items:</Text>
+            <View style={styles.selectedItemsContainer}>
+              <FlatList
+                data={selectedItems.map((itemId) =>
+                  receipt_items.find((item) => item.id === itemId)
+                )}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <Text style={styles.itemText}>
+                    {`${item.item_name} (x${item.item_quantity})`}
+                  </Text>
+                )}
+                ListEmptyComponent={
+                  <Text style={styles.itemText}>No items selected</Text>
+                }
+              />
+            </View>
+
             <TouchableOpacity
               style={styles.primaryButton}
-              onPress={this.handleOnPress3}
+              onPress={confirmSelectedItems}
             >
               <ButtonText>Continue</ButtonText>
             </TouchableOpacity>
@@ -267,6 +260,19 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     marginLeft: 10,
+  },
+  itemText: {
+    fontSize: 13,
+    marginVertical: 2,
+    marginLeft: 10,
+    // Add any additional styling you want for the item text here
+  },
+  selectedItemsContainer: {
+    maxHeight: 100, // Set a maximum height for the container
+    width: "100%",
+    alignSelf: "center",
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
 

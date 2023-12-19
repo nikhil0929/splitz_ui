@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { AxiosContext } from "../axiosCaller";
 
 import colors from "../config/colors";
 import HeadingText from "../components/HeadingText";
@@ -32,65 +33,49 @@ const screenHeight = Dimensions.get("window").height;
 
 const ManualEntryScreen = ({ route }) => {
   console.log("ManualEntryScreen");
-  const { baseURL } = route.params;
-
-  LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-
-  const receiptItems = [
-    {
-      itemId: 1,
-      itemTitle: "Spaghetti",
-      quantity: 1,
-      price: "12.60",
-    },
-    {
-      itemId: 2,
-      itemTitle: "White Claws",
-      quantity: 4,
-      price: "32.00",
-    },
-    {
-      itemId: 3,
-      itemTitle: "BBQ Chicken Pizza",
-      quantity: 1,
-      price: "20.00",
-    },
-    {
-      itemId: 4,
-      itemTitle: "Water",
-      quantity: 4,
-      price: "0.00",
-    },
-  ];
+  const { receipt } = route.params;
+  const axiosCaller = useContext(AxiosContext);
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const navigation = useNavigation();
+  console.log("receipt", receipt);
 
-  const initialItems = [...receiptItems];
-  const [items, setItems] = useState(initialItems);
+  const [items, setItems] = useState(receipt.items ? receipt.items : []);
   const [itemName, setItemName] = useState("");
   const [itemQuantity, setItemQuantity] = useState("");
   const [itemPrice, setItemPrice] = useState("");
 
-  const [itemIdCounter, setItemIdCounter] = useState(receiptItems.length + 1);
-
   const addNewItem = () => {
     if (itemName && itemPrice) {
       const newItem = {
-        itemId: itemIdCounter,
-        itemTitle: itemName,
-        quantity: itemQuantity ? parseInt(itemQuantity) : 1,
-        price: itemPrice,
+        item_name: itemName,
+        item_quantity: itemQuantity ? parseInt(itemQuantity) : 1,
+        item_price: parseFloat(itemPrice),
       };
 
-      setItemIdCounter(itemIdCounter + 1);
+      axiosCaller
+        .post("/receipts/" + receipt.room_code + "/add-item/" + receipt.id, [
+          newItem,
+        ])
+        .then((response) => {
+          // Update the displayed values with the updated data
+          if (response.data) {
+            Alert.alert("Item Added Successfully!");
 
-      setItems((prevItems) => [...prevItems, newItem]);
+            console.log(response.data);
 
-      setItemName("");
-      setItemQuantity("");
-      setItemPrice("");
+            setItems((prevItems) => prevItems.concat(response.data));
+            setItemName("");
+            setItemQuantity("");
+            setItemPrice("");
+          } else {
+            Alert.alert("Error", "Item could not be added.");
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
     } else {
       Alert.alert("Incomplete Information", "Please fill in all fields.");
     }
@@ -122,9 +107,9 @@ const ManualEntryScreen = ({ route }) => {
     console.log("Exit");
   };
 
-  handleOnPress3 = () => {
+  handleReceiptConfirm = () => {
     console.log("Go Split");
-    navigation.navigate("Split", { baseURL: baseURL });
+    navigation.navigate("Split", { receipt_items: items, receipt: receipt });
   };
 
   return (
@@ -187,41 +172,30 @@ const ManualEntryScreen = ({ route }) => {
             Current items: (scroll for more){" "}
           </Text>
           <View style={styles.itemBox2}>
-            <KeyboardAwareScrollView
-              style={{
-                flex: 1,
-                backgroundColor: "#f9f9f9",
-                margin: 7,
-                borderRadius: 20,
+            <FlatList
+              data={items}
+              keyExtractor={(item) => {
+                return item.id;
               }}
-              keyboardShouldPersistTaps="always"
-            >
-              <FlatList
-                data={items}
-                keyExtractor={(item) => {
-                  return item.itemId.toString();
-                }}
-                scrollEnabled={true}
-                renderItem={({ item }) => {
-                  return (
-                    <ReceiptItem
-                      itemTitle={item.itemTitle}
-                      quantity={item.quantity}
-                      price={item.price}
-                      item={item}
-                      onUpdate={(updatedItem) =>
-                        handleItemUpdate(updatedItem, item.itemId)
-                      }
-                    />
-                  );
-                }}
-              />
-            </KeyboardAwareScrollView>
+              scrollEnabled={true}
+              renderItem={({ item }) => {
+                return (
+                  <ReceiptItem
+                    itemTitle={item.item_name}
+                    quantity={item.item_quantity}
+                    price={item.item_cost}
+                    onUpdate={(updatedItem) =>
+                      handleItemUpdate(updatedItem, item.id)
+                    }
+                  />
+                );
+              }}
+            />
           </View>
           <View style={{ alignItems: "center" }}>
             <TouchableOpacity
               style={styles.primaryButton}
-              onPress={this.handleOnPress3}
+              onPress={handleReceiptConfirm}
             >
               <ButtonText>Continue</ButtonText>
             </TouchableOpacity>
