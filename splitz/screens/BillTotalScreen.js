@@ -39,10 +39,8 @@ const BillTotalScreen = ({ route }) => {
 
   const calculateTotals = () => {
     // Initialize an object to hold the totals for each user
-    const userTotals = {};
-    let currTotalPrice = 0;
-    console.log("IN here");
-    console.log(receiptWithItems.items);
+    var userTotals = {};
+    var currTotalPrice = 0;
     setTotalsRevealed(true);
 
     // Iterate over each item
@@ -50,7 +48,7 @@ const BillTotalScreen = ({ route }) => {
       // Only divide the cost if there are users associated with the item
       if (item.users.length > 0) {
         // Determine the cost per user for this item
-        const costPerUser = item.item_cost / item.users.length;
+        let costPerUser = item.item_cost / item.users.length;
         currTotalPrice += item.item_cost;
 
         // Add this cost to each user's total
@@ -64,29 +62,38 @@ const BillTotalScreen = ({ route }) => {
       }
     });
 
-    setUserTotalsMap(userTotals);
-    setTotalPrice(currTotalPrice);
+    return {
+      userTotalsList: userTotals,
+      userTotalPrice: currTotalPrice,
+    };
+  };
 
-    // // Convert userTotals object to an array suitable for FlatList data
-    // const userTotalsArray = Object.keys(userTotals).map((userId) => {
-    //   // Find a user's name from the items list (assuming the user's ID is present)
-    //   const userName = receiptWithItems.items
-    //     .flatMap((item) => item.users)
-    //     .find((user) => user.id.toString() === userId)?.name;
+  const handleFinishSplitting = () => {
+    const { userTotalsList, userTotalPrice } = calculateTotals();
+    setUserTotalsMap(userTotalsList);
+    setTotalPrice(userTotalPrice);
 
-    //   return {
-    //     id: userId,
-    //     name: userName,
-    //     total_cost: userTotals[userId].toFixed(2), // rounded to 2 decimal places
-    //   };
-    // });
+    console.log("Total Price: ", userTotalPrice);
 
-    // // Update the state to reveal the totals and update the list of user totals
-    // setReceiptWithItems((prevState) => ({
-    //   ...prevState,
-    //   userTotals: userTotalsArray,
-    // }));
-    // setTotalsRevealed(true);
+    const user_total_price = {
+      item_id_list: [],
+      user_total_cost: userTotalPrice,
+    };
+    axiosCaller
+      .post(
+        "/receipts/" + receipt.room_code + "/select-items/" + receipt.id,
+        user_total_price
+      )
+      .then((response) => {
+        // Update the displayed values with the updated data
+        if (response.data == true) {
+          Alert.alert("Success!");
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+        Alert.alert("Error", "Could not finish splitting.");
+      });
   };
 
   const getActiveUsers = (receipt_items) => {
@@ -223,7 +230,7 @@ const BillTotalScreen = ({ route }) => {
         </Text>
         <TouchableOpacity
           style={styles.primaryButton}
-          onPress={calculateTotals}
+          onPress={handleFinishSplitting}
         >
           <ButtonText>Finish Splitting</ButtonText>
         </TouchableOpacity>

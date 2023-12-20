@@ -55,10 +55,6 @@ function Bill({ currentBill }) {
         console.log("Response");
         console.log(response.data);
         user_totals = parseUserTotals(response.data);
-        console.log("User Totals in Bill");
-        console.log(user_totals);
-        console.log("Map to Array");
-        console.log(userTotalsMapToArray(user_totals));
         navigation.navigate("GroupDetailsStack", {
           screen: "BillUserTotals", // Specify the initial route name
           params: {

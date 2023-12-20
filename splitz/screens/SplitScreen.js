@@ -67,7 +67,7 @@ const SplitScreen = ({ route }) => {
   confirmSelectedItems = () => {
     const user_selected_items = {
       item_id_list: selectedItems,
-      user_total_cost: 0,
+      user_total_cost: 1,
     };
     axiosCaller
       .post(
