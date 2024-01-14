@@ -5,15 +5,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import colors from "../config/colors";
 
-import LandingScreen from "../../splitz/screens/LandingScreen";
-import PhoneVerifyScreen1 from "../../splitz/screens/PhoneVerifyScreen1";
-import PhoneVerifyScreen2 from "../../splitz/screens/PhoneVerifyScreen2";
-import PhoneVerifyScreen3 from "../../splitz/screens/PhoneVerifyScreen3";
-import GroupStack from "./GroupStack";
+import LandingScreen from "../screens/LandingScreen";
+import PhoneVerifyScreen1 from "../screens/PhoneVerifyScreen1";
+import PhoneVerifyScreen2 from "../screens/PhoneVerifyScreen2";
+import PhoneVerifyScreen3 from "../screens/PhoneVerifyScreen3";
+import BottomTabNavigator from "./BottomTabNavigator";
 
 const Stack = createStackNavigator();
 
-const RootStack = ({ baseURL }) => {
+const LoginStack = ({ baseURL }) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -30,7 +30,11 @@ const RootStack = ({ baseURL }) => {
       }}
       initialRouteName="LandingScreen"
     >
-      <Stack.Screen name="LandingScreen" component={LandingScreen} />
+      <Stack.Screen
+        name="LandingScreen"
+        component={LandingScreen}
+        initialParams={{ baseURL: baseURL }}
+      />
       <Stack.Screen
         name="PhoneVerifyScreen1"
         component={PhoneVerifyScreen1}
@@ -47,12 +51,12 @@ const RootStack = ({ baseURL }) => {
         initialParams={{ baseURL: baseURL }}
       />
       <Stack.Screen
-        name="GroupStack"
-        component={GroupStack}
+        name="BottomTabNavigator"
+        component={BottomTabNavigator}
         initialParams={{ baseURL: baseURL }}
       />
     </Stack.Navigator>
   );
 };
 
-export default RootStack;
+export default LoginStack;

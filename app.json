@@ -2,9 +2,9 @@
   "expo": {
     "name": "SplitzOfficial",
     "slug": "SplitzOfficial",
-    "version": "1.0.0",
+    "version": "1.0.21",
     "orientation": "portrait",
-    "icon": "./splitz/assets/icon.png",
+    "icon": "./splitz/assets/app_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./splitz/assets/splitzofficiallogo.png",
@@ -18,16 +18,24 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.nikhil0929.SplitzOfficial",
+      "buildNumber": "1.0.21"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./splitz/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.nikhil0929.SplitzOfficial"
     },
     "web": {
       "favicon": "./splitz/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "17b82f77-f377-4551-a4e8-467ccfee18df"
+      }
     }
   }
 }

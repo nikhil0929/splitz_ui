@@ -19,6 +19,7 @@ import PhoneInput from "react-native-phone-number-input";
 import LoginLayout from "../layouts/LoginLayout";
 
 const PhoneVerifyScreen1 = ({ route }) => {
+  console.log("PhoneVerifyScreen1");
   const { baseURL } = route.params;
   const [number, setNumber] = useState("");
   const navigation = useNavigation();

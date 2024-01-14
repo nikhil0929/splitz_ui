@@ -10,6 +10,8 @@ import {
   Pressable,
   Keyboard,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
 import { useRoute } from "@react-navigation/native";
@@ -26,6 +28,7 @@ import LoginLayout from "../layouts/LoginLayout";
 import * as SecureStore from "expo-secure-store";
 
 const PhoneVerifyScreen2 = ({ route }) => {
+  console.log("PhoneVerifyScreen2");
   const navigation = useNavigation();
 
   const [code, setCode] = useState("");
@@ -67,7 +70,7 @@ const PhoneVerifyScreen2 = ({ route }) => {
         // extract the access token from the response
         // const access_token = res.data.access_token;
         saveKey("access_token", res.data.access_token);
-        let access_token = await SecureStore.getItemAsync("access_token");
+        const access_token = await SecureStore.getItemAsync("access_token");
         console.log("access token: ", access_token);
         // GET request to retrieve the user's information
         axios
@@ -84,16 +87,10 @@ const PhoneVerifyScreen2 = ({ route }) => {
               res.data.name ? console.log("true") : console.log("false")
             );
             if (!res.data.name) {
-              navigation.navigate("PhoneVerifyScreen3", { baseURL: baseURL });
+              navigation.navigate("PhoneVerifyScreen3");
             } else {
-              navigation.navigate("GroupStack", {
-                screen: "Tabs",
-                params: {
-                  screen: "Create_Join",
-                  params: {
-                    baseURL: baseURL,
-                  },
-                },
+              navigation.navigate("BottomTabNavigator", {
+                baseURL: baseURL,
               });
             }
           })
@@ -107,78 +104,43 @@ const PhoneVerifyScreen2 = ({ route }) => {
   };
 
   return (
-    <LoginLayout
-      headerText="Enter the code we just sent!"
-      greyText={`We texted you at ${phone_number}`}
-      titleText="Enter Code:"
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
-      <OTPInputField
-        setPinReady={setPinReady}
-        code={code}
-        setCode={setCode}
-        maxLength={MAX_CODE_LENGTH}
-      ></OTPInputField>
-      <View
-        style={{
-          flexDirection: "row",
-        }}
+      <LoginLayout
+        headerText="Enter the code we just sent!"
+        greyText={`We texted you at ${phone_number}`}
+        titleText="Enter Code:"
       >
-        <GreyText>Didn't get anything?</GreyText>
-        <TouchableOpacity onPress={sendNewCode}>
-          <Text style={styles.againText}>Get another code here</Text>
+        <OTPInputField
+          setPinReady={setPinReady}
+          code={code}
+          setCode={setCode}
+          maxLength={MAX_CODE_LENGTH}
+        ></OTPInputField>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <GreyText>Didn't get anything?</GreyText>
+          <TouchableOpacity onPress={sendNewCode}>
+            <Text style={styles.againText}>Get another code here</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={handleOTPSubmit}
+          disabled={!pinReady}
+        >
+          <ButtonText>Continue</ButtonText>
         </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={handleOTPSubmit}
-        disabled={!pinReady}
-      >
-        <ButtonText>Continue</ButtonText>
-      </TouchableOpacity>
-    </LoginLayout>
+      </LoginLayout>
+    </KeyboardAvoidingView>
   );
 };
-
-{
-  /* </LoginLayout>
-	<View style={styles.container}>
-	  <SafeAreaView>
-		<Image
-		  style={styles.logo}
-		  source={require("../assets/splitzofficiallogo.png")}
-		></Image>
-	  </SafeAreaView>
-	  <View style={styles.verificationBox}>
-		<HeadingText>Enter the code we just sent!</HeadingText>
-		<GreyText>We texted you at {phone_number}</GreyText>
-		<OTPInputField
-		  setPinReady={setPinReady}
-		  code={code}
-		  setCode={setCode}
-		  maxLength={MAX_CODE_LENGTH}
-		></OTPInputField>
-		<View
-		  style={{
-			flexDirection: "row",
-		  }}
-		>
-		  <GreyText>Didn't get anything?</GreyText>
-		  <TouchableOpacity onPress={sendNewCode}>
-			<Text style={styles.againText}>Get another code here</Text>
-		  </TouchableOpacity>
-		</View>
-		<TouchableOpacity
-		  style={styles.primaryButton}
-		  onPress={handleAllPresses}
-		  disabled={!pinReady}
-		>
-		  <ButtonText>Continue</ButtonText>
-		</TouchableOpacity>
-	  </View>
-	</View>
-  );
-}; */
-}
 
 const styles = StyleSheet.create({
   container: {

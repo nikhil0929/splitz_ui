@@ -24,6 +24,7 @@ import * as SecureStore from "expo-secure-store";
 import LoginLayout from "../layouts/LoginLayout";
 
 const PhoneVerifyScreen3 = ({ route }) => {
+  console.log("PhoneVerifyScreen3");
   const { baseURL } = route.params;
   const inputRef = useRef();
   const secondBox = useRef();
@@ -34,34 +35,50 @@ const PhoneVerifyScreen3 = ({ route }) => {
   const allNames = fullName + ";" + userName;
 
   const navigation = useNavigation();
-  //   const route = useRoute();
 
-  handleOnPress1 = () => {
-    console.log(allNames);
-  };
-  handleOnPress2 = () => {
+  const handleOnPress2 = async () => {
+    if (fullName == "" || userName == "") {
+      Alert.alert("Please fill in all fields");
+      return;
+    }
+
+    const access_token = await SecureStore.getItemAsync("access_token");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
+    };
+
+    const data = {
+      name: fullName,
+      username: userName,
+    };
+
     axios
-      .post(baseURL + "/user/update/", {
-        name: fullName,
-        username: userName,
-      })
-      .then((res) => {
-        console.log("IN here");
-        // let result = await SecureStore.getItemAsync("access_token");
-
-        // Alert.alert(`token! ${result}`);
-        navigation.navigate("GroupStack", {
-          screen: "Tabs",
-          params: {
-            screen: "Create/Join",
-            params: { baseURL: baseURL },
-          },
-        });
+      .put(`${baseURL}/user/update`, data, { headers: headers })
+      .then((response) => {
+        console.log(response.data);
+        Alert.alert("Update Success!");
+        navigation.navigate("BottomTabNavigator", { baseURL: baseURL });
       })
       .catch((error) => {
-        Alert("Failed!");
-        console.log(error);
+        Alert.alert("Failed!");
+        console.log("error", error);
       });
+    // axios
+    //   .put(baseURL + "/user/update/", data, headers)
+    //   .then((res) => {
+    //     console.log("IN here");
+    //     // let result = await SecureStore.getItemAsync("access_token");
+
+    //     // Alert.alert(`token! ${result}`);
+    //     console.log(res.data);
+    //     Alert.alert("Update Success!");
+    //     navigation.navigate("GroupActionStack", { baseURL: baseURL });
+    //   })
+    //   .catch((error) => {
+    //     Alert.alert("Failed!");
+    //     console.log(error);
+    //   });
   };
 
   return (

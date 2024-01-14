@@ -26,9 +26,8 @@ import { userTotalsMapToArray, getTotalAmount } from "../utils/utils";
 import { AxiosContext } from "../axiosCaller";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
-const BillTotalScreen = ({ route }) => {
-  const { receipt } = route.params;
-  const navigation = useNavigation();
+const BillUserTotals = ({ route }) => {
+  const { userTotals, receiptName, navigation } = route.params;
   const axiosCaller = useContext(AxiosContext);
   const billNameInputRef = useRef(null);
   const [receiptWithItems, setReceiptWithItems] = useState({});
@@ -37,132 +36,11 @@ const BillTotalScreen = ({ route }) => {
   const [userTotalsMap, setUserTotalsMap] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const calculateTotals = () => {
-    // Initialize an object to hold the totals for each user
-    var userTotals = {};
-    var currTotalPrice = 0;
-    setTotalsRevealed(true);
-
-    // Iterate over each item
-    receiptWithItems.items.forEach((item) => {
-      // Only divide the cost if there are users associated with the item
-      if (item.users.length > 0) {
-        // Determine the cost per user for this item
-        let costPerUser = item.item_cost / item.users.length;
-        currTotalPrice += item.item_cost;
-
-        // Add this cost to each user's total
-        item.users.forEach((user) => {
-          if (userTotals[user.id]) {
-            userTotals[user.id] += costPerUser;
-          } else {
-            userTotals[user.id] = costPerUser;
-          }
-        });
-      }
-    });
-
-    return {
-      userTotalsList: userTotals,
-      userTotalPrice: currTotalPrice,
-    };
-  };
-
-  const handleFinishSplitting = () => {
-    const { userTotalsList, userTotalPrice } = calculateTotals();
-    setUserTotalsMap(userTotalsList);
-    setTotalPrice(userTotalPrice);
-
-    console.log("Total Price: ", userTotalPrice);
-
-    const user_total_price = {
-      item_id_list: [],
-      user_total_cost: userTotalPrice,
-    };
-    axiosCaller
-      .post(
-        "/receipts/" + receipt.room_code + "/select-items/" + receipt.id,
-        user_total_price
-      )
-      .then((response) => {
-        // Update the displayed values with the updated data
-        if (response.data == true) {
-          Alert.alert("Success!");
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-        Alert.alert("Error", "Could not finish splitting.");
-      });
-  };
-
-  const getActiveUsers = (receipt_items) => {
-    const activeUsers = [];
-    const activeUsersIds = [];
-    receipt_items.forEach((item) => {
-      item.users.forEach((user) => {
-        if (!activeUsersIds.includes(user.id)) {
-          activeUsers.push(user);
-          activeUsersIds.push(user.id);
-        }
-      });
-    });
-    return activeUsers;
-  };
-
   const renderItem = ({ item }) => {
-    let user_cost = totalsRevealed ? userTotalsMap[item.id] : "XX.XX";
-    console.log("totalsRevealed: ", userTotalsMap[item.id]);
-    return <UserTotals userName={item.name} userTotal={`${user_cost}`} />;
+    return <UserTotals userName={item.name} userTotal={item.total_cost} />;
   };
 
-  const handleSendRequests = () => {
-    Alert.alert(
-      "Send Requests",
-      "Are you sure you want to send requests to your friends?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Confirm",
-          onPress: () => {
-            axiosCaller.get("/room/" + receipt.room_code).then((response) => {
-              console.log(JSON.stringify(response.data, null, 2));
-              data_res = response.data;
-
-              navigation.navigate("MainStack", {
-                screen: "GroupDetails", // Specify the initial route name
-                params: {
-                  screen: "GroupInfo",
-                  params: { room: data_res }, // Pass the room parameter to the initial route
-                },
-              });
-            });
-          },
-        },
-      ],
-      { cancelable: false }
-    );
-  };
-
-  useEffect(() => {
-    axiosCaller
-      .get("/receipts/" + receipt.room_code + "/receipt/" + receipt.id)
-      .then((response) => {
-        console.log(JSON.stringify(response.data, null, 2));
-        data_res = response.data;
-        setReceiptWithItems(data_res);
-
-        active_users = getActiveUsers(data_res.items);
-        console.log("Active Users: ", active_users);
-        setActiveUsers(active_users);
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  }, []);
+  const currTotal = 25.12;
 
   return (
     <View style={styles.container}>
@@ -177,7 +55,7 @@ const BillTotalScreen = ({ route }) => {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TextInput
               ref={billNameInputRef}
-              value={receipt.receipt_name}
+              value={receiptName}
               placeholder="Name this Bill!"
               style={styles.billNameInput}
             ></TextInput>
@@ -204,7 +82,7 @@ const BillTotalScreen = ({ route }) => {
           }}
         >
           <Text style={{ fontSize: 45, fontWeight: "bold" }}>
-            ${totalsRevealed ? totalPrice : "XX.XX"}
+            ${getTotalAmount(userTotals)}
           </Text>
           <Text style={{ fontSize: 22, alignSelf: "center", marginTop: 5 }}>
             Bill Total
@@ -212,9 +90,9 @@ const BillTotalScreen = ({ route }) => {
         </View>
         <View style={styles.itemBox2}>
           <FlatList
-            data={activeUsers}
+            data={userTotals}
             style={{ flex: 1, marginTop: 5 }}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
             scrollEnabled={true}
             renderItem={renderItem}
           />
@@ -229,22 +107,6 @@ const BillTotalScreen = ({ route }) => {
         >
           Total Active Splitters: {activeUsers.length}
         </Text>
-        <TouchableOpacity
-          style={styles.primaryButton}
-          onPress={handleFinishSplitting}
-        >
-          <ButtonText>Finish Splitting</ButtonText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.secondaryButton,
-            { borderColor: totalsRevealed ? colors.primary : colors.grey },
-          ]}
-          onPress={handleSendRequests}
-          disabled={!totalsRevealed}
-        >
-          <ButtonText2>Send Requests</ButtonText2>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -324,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BillTotalScreen;
+export default BillUserTotals;
