@@ -103,9 +103,12 @@ const CreateGroupTab = () => {
           {
             text: "Continue",
             onPress: () =>
-              navigation.navigate("GroupDetailsStack", {
+              navigation.navigate("MainStack", {
                 screen: "GroupDetails", // Specify the initial route name
-                params: { room: response.data }, // Pass the room parameter to the initial route
+                params: {
+                  screen: "GroupInfo",
+                  params: { room: response.data }, // Pass the room parameter to the initial route
+                },
               }),
           },
         ]);
@@ -188,9 +191,12 @@ const JoinGroupTab = () => {
           {
             text: "Continue",
             onPress: () =>
-              navigation.navigate("GroupDetailsStack", {
+              navigation.navigate("MainStack", {
                 screen: "GroupDetails", // Specify the initial route name
-                params: { room: response.data }, // Pass the room parameter to the initial route
+                params: {
+                  screen: "GroupInfo",
+                  params: { room: response.data }, // Pass the room parameter to the initial route
+                },
               }),
           },
         ]);

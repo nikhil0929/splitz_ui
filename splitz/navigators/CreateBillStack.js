@@ -4,7 +4,6 @@ import ReceiptScreen from "../screens/ReceiptScreen";
 import ManualEntryScreen from "../screens/ManualEntryScreen";
 import SplitScreen from "../screens/SplitScreen";
 import BillTotalScreen from "../screens/BillTotalScreen";
-import GroupDetailsStack from "./GroupDetailsStack";
 
 const CreateBillStackNavigavtor = createBottomTabNavigator();
 
@@ -35,11 +34,11 @@ const CreateBillStack = ({ baseURL }) => (
       component={BillTotalScreen}
       initialParams={{ baseURL: baseURL }}
     />
-    <CreateBillStackNavigavtor.Screen
+    {/* <CreateBillStackNavigavtor.Screen
       name="GroupDetailsStack"
       component={GroupDetailsStack}
       initialParams={{ baseURL: baseURL }}
-    />
+    /> */}
   </CreateBillStackNavigavtor.Navigator>
 );
 

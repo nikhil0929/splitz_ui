@@ -132,9 +132,12 @@ const BillTotalScreen = ({ route }) => {
               console.log(JSON.stringify(response.data, null, 2));
               data_res = response.data;
 
-              navigation.navigate("GroupDetailsStack", {
+              navigation.navigate("MainStack", {
                 screen: "GroupDetails", // Specify the initial route name
-                params: { room: data_res }, // Pass the room parameter to the initial route
+                params: {
+                  screen: "GroupInfo",
+                  params: { room: data_res }, // Pass the room parameter to the initial route
+                },
               });
             });
           },
@@ -143,8 +146,6 @@ const BillTotalScreen = ({ route }) => {
       { cancelable: false }
     );
   };
-
-  const currTotal = 25.12;
 
   useEffect(() => {
     axiosCaller
@@ -239,7 +240,7 @@ const BillTotalScreen = ({ route }) => {
             styles.secondaryButton,
             { borderColor: totalsRevealed ? colors.primary : colors.grey },
           ]}
-          onPress={() => totalsRevealed && navigation.navigate("Split")}
+          onPress={handleSendRequests}
           disabled={!totalsRevealed}
         >
           <ButtonText2>Send Requests</ButtonText2>

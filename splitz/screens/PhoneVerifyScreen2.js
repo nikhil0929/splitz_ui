@@ -10,6 +10,8 @@ import {
   Pressable,
   Keyboard,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
 import { useRoute } from "@react-navigation/native";
@@ -102,78 +104,43 @@ const PhoneVerifyScreen2 = ({ route }) => {
   };
 
   return (
-    <LoginLayout
-      headerText="Enter the code we just sent!"
-      greyText={`We texted you at ${phone_number}`}
-      titleText="Enter Code:"
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
-      <OTPInputField
-        setPinReady={setPinReady}
-        code={code}
-        setCode={setCode}
-        maxLength={MAX_CODE_LENGTH}
-      ></OTPInputField>
-      <View
-        style={{
-          flexDirection: "row",
-        }}
+      <LoginLayout
+        headerText="Enter the code we just sent!"
+        greyText={`We texted you at ${phone_number}`}
+        titleText="Enter Code:"
       >
-        <GreyText>Didn't get anything?</GreyText>
-        <TouchableOpacity onPress={sendNewCode}>
-          <Text style={styles.againText}>Get another code here</Text>
+        <OTPInputField
+          setPinReady={setPinReady}
+          code={code}
+          setCode={setCode}
+          maxLength={MAX_CODE_LENGTH}
+        ></OTPInputField>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <GreyText>Didn't get anything?</GreyText>
+          <TouchableOpacity onPress={sendNewCode}>
+            <Text style={styles.againText}>Get another code here</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={handleOTPSubmit}
+          disabled={!pinReady}
+        >
+          <ButtonText>Continue</ButtonText>
         </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={handleOTPSubmit}
-        disabled={!pinReady}
-      >
-        <ButtonText>Continue</ButtonText>
-      </TouchableOpacity>
-    </LoginLayout>
+      </LoginLayout>
+    </KeyboardAvoidingView>
   );
 };
-
-{
-  /* </LoginLayout>
-	<View style={styles.container}>
-	  <SafeAreaView>
-		<Image
-		  style={styles.logo}
-		  source={require("../assets/splitzofficiallogo.png")}
-		></Image>
-	  </SafeAreaView>
-	  <View style={styles.verificationBox}>
-		<HeadingText>Enter the code we just sent!</HeadingText>
-		<GreyText>We texted you at {phone_number}</GreyText>
-		<OTPInputField
-		  setPinReady={setPinReady}
-		  code={code}
-		  setCode={setCode}
-		  maxLength={MAX_CODE_LENGTH}
-		></OTPInputField>
-		<View
-		  style={{
-			flexDirection: "row",
-		  }}
-		>
-		  <GreyText>Didn't get anything?</GreyText>
-		  <TouchableOpacity onPress={sendNewCode}>
-			<Text style={styles.againText}>Get another code here</Text>
-		  </TouchableOpacity>
-		</View>
-		<TouchableOpacity
-		  style={styles.primaryButton}
-		  onPress={handleAllPresses}
-		  disabled={!pinReady}
-		>
-		  <ButtonText>Continue</ButtonText>
-		</TouchableOpacity>
-	  </View>
-	</View>
-  );
-}; */
-}
 
 const styles = StyleSheet.create({
   container: {

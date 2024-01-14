@@ -8,6 +8,7 @@ import colors from "../config/colors";
 import ManageViewScreen from "../screens/UserBillsListScreen";
 import GroupDetailsStack from "./GroupDetailsStack";
 import CreateBillStack from "./CreateBillStack";
+import MainNavigator from "./MainStack";
 
 const Stack = createStackNavigator();
 
@@ -28,8 +29,9 @@ const HomeStack = () => {
       }}
     >
       <Stack.Screen name="Bills" component={ManageViewScreen} />
-      <Stack.Screen name="GroupDetailsStack" component={GroupDetailsStack} />
-      <Stack.Screen name="CreateBillStack" component={CreateBillStack} />
+      <Stack.Screen name="MainStack" component={MainNavigator} />
+      {/* <Stack.Screen name="GroupDetailsStack" component={GroupDetailsStack} />
+      <Stack.Screen name="CreateBillStack" component={CreateBillStack} /> */}
     </Stack.Navigator>
   );
 };

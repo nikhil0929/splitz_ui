@@ -77,6 +77,7 @@ const GroupDetailsScreen = ({ route }) => {
             ref={groupNameInputRef}
             placeholder="Group Name"
             style={styles.billNameInput}
+            value={room.room_name}
           ></TextInput>
           <TouchableOpacity onPress={() => groupNameInputRef.current.focus()}>
             <Image
@@ -115,11 +116,12 @@ const GroupBillsComponent = ({ room, setViewMode }) => {
   }, [room]);
 
   const createBillClick = () => {
-    navigation.navigate("CreateBillStack", {
-      screen: "ReceiptUpload", // Specify the initial route name
+    navigation.navigate("MainStack", {
+      screen: "CreateBill", // Specify the initial route name
       params: {
-        room: room,
-      }, // Pass the room parameter to the initial route
+        screen: "ReceiptUpload",
+        params: { room: room }, // Pass the room parameter to the initial route
+      },
     });
   };
 
