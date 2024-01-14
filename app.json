@@ -2,7 +2,7 @@
   "expo": {
     "name": "SplitzOfficial",
     "slug": "SplitzOfficial",
-    "version": "1.0.1",
+    "version": "1.0.21",
     "orientation": "portrait",
     "icon": "./splitz/assets/app_icon.png",
     "userInterfaceStyle": "light",
@@ -13,16 +13,14 @@
       "justifyContent": "center",
       "alignItems": "center"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.nikhil0929.SplitzOfficial",
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.21"
     },
     "android": {
       "adaptiveIcon": {

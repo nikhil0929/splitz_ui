@@ -66,8 +66,6 @@ const ReceiptScreen = ({ route }) => {
           },
         })
         .then((response) => {
-          console.log("RESPONSE: ");
-          console.log(response.data);
           res = response.data;
           navigation.navigate("ManualEntry", {
             receipt: res,
@@ -91,8 +89,32 @@ const ReceiptScreen = ({ route }) => {
     console.log(result);
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      setImage(result.assets[0].uri);
-      navigation.navigate("ManualEntry", { baseURL: baseURL });
+      const imageUri = result.assets[0].uri;
+      setImage(imageUri);
+      // Prepare the form data
+      const formData = new FormData();
+      formData.append("receipt_img", {
+        uri: imageUri,
+        type: "image/jpeg", // or 'image/png'
+        name: "receipt.jpg", // or 'receipt.png'
+      });
+
+      // Make the request
+      axiosCaller
+        .post("/receipts/" + room.room_code + "/upload-receipt", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          res = response.data;
+          navigation.navigate("ManualEntry", {
+            receipt: res,
+          });
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
     }
   };
 
